@@ -1,6 +1,13 @@
 ## Фонд Канона Буддизма
 
 
+### SSR
+
+Запуск ssr-сервера:
+
+```bash
+make vite-build && make ssr-server
+```
 
 ## License
 
