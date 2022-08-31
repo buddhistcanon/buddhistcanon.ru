@@ -1,16 +1,56 @@
 # https://makefile.site
+
+.DEFAULT_GOAL : help
+# This will output the help for each task. thanks to https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
+help: ## Show this help
+	@printf "\033[33m%s:\033[0m\n" 'Available commands'
+	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z0-9_-]+:.*?## / {printf "  \033[32m%-18s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
+
 ARGS = $(filter-out $@,$(MAKECMDGOALS))
 %:
  @:
 
-up:
+up: ## Run sail docker-compose with detach
 	./vendor/bin/sail up -d
 
-down:
+down: ## Terminate sail docker-compose
 	./vendor/bin/sail down
 
-vite-dev:
+vite-dev: ## npm run dev
 	./vendor/bin/sail npm run dev
 
-vite-build:
+vite-build: ## npm run build
 	./vendor/bin/sail npm run build
+
+migrate: ## Run migrate with ide-helper
+	./vendor/bin/sail artisan migrate
+	./vendor/bin/sail artisan ide-helper:models -W -R
+
+migrate-seed: ## Run migrate with ide-helper and seed
+	./vendor/bin/sail artisan migrate --seed
+	./vendor/bin/sail artisan ide-helper:models -W -R
+
+migrate-refresh: ## DELETE ALL DATABASE and scout search cache, then run migrate with ide-helper
+	./vendor/bin/sail artisan scout:flush "App\Models\ContentChunk"
+	./vendor/bin/sail artisan migrate:refresh
+	./vendor/bin/sail artisan ide-helper:models -W -R
+
+migrate-refresh-seed: ## DELETE ALL DATABASE, then run migrate with ide-helper and seed
+	# ./vendor/bin/sail artisan scout:flush "App\Models\ContentChunk"
+	./vendor/bin/sail artisan migrate:refresh --seed
+	./vendor/bin/sail artisan ide-helper:models -W -R
+
+import-file-suttas: ## Import suttas from json files from suttacentral
+	./vendor/bin/sail artisan lb:import_file_suttas --rebuild
+
+import-theravadaru-suttas: ## Import suttas from theravada.ru
+	./vendor/bin/sail artisan lb:import_theravadaru_suttas --rebuild
+
+ide: ## Generate ide-helper and models docblocks
+	./vendor/bin/sail artisan ide-helper:generate
+	./vendor/bin/sail artisan ide-helper:models -W -R
+
+clear: ## Clear config and route cache
+	./vendor/bin/sail artisan cache:clear
+	./vendor/bin/sail artisan config:clear
+	./vendor/bin/sail artisan route:clear

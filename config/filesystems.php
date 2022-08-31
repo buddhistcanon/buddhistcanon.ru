@@ -44,6 +44,16 @@ return [
             'throw' => false,
         ],
 
+        'source_books' => [
+            'driver' => 'local',
+            'root' => storage_path('source_books'),
+        ],
+
+        'source_suttas' => [
+            'driver' => 'local',
+            'root' => storage_path('source_suttas'),
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

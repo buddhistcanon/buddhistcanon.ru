@@ -1,9 +1,9 @@
-<?php
+<?php namespace Database\Seeders;
 
-namespace Database\Seeders;
-
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\SearchToken;
+use DB;
 use Illuminate\Database\Seeder;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,11 +14,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        $this->call(AdminSeeder::class);
+        $this->call(PeopleSeeder::class);
+        //$this->call(BookSeeder::class);
+        $this->call(TermSeeder::class);
+        $this->call(CrawlerSeeder::class);
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        $token = new SearchToken();
+        $token->token = "bd8-us7-lt2";
+        $token->description = "Для dhamma.gift";
+        $token->save();
     }
 }
