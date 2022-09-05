@@ -1,6 +1,6 @@
 <script setup>
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { Bars3Icon, BellIcon, XMarkIcon, ArrowUpIcon, ArrowDownIcon, ChevronDownIcon } from '@heroicons/vue/24/outline'
 import { Link } from '@inertiajs/inertia-vue3';
 
 const user = {
@@ -30,15 +30,50 @@ const userNavigation = [
                 <div class="flex h-16 items-center justify-between">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
-                            <a href="/">
-                            <img class="h-12 w-12" src="/logo-white.png" alt="Logo" />
-                            </a>
+                            <Link href="/">
+                                <img class="h-12 w-12" src="/logo-white.png" alt="Logo" />
+                            </Link>
                         </div>
                         <div class="hidden md:block">
                             <div class="ml-10 flex items-baseline space-x-8">
-                                <Link v-for="item in navigation" :key="item.name" :href="item.href" :class="[item.current ? 'bg-gray-200 text-gray-900' : 'text-gray-700 bg-gray-100 hover:bg-gray-200 hover:text-gray-900', 'px-3 py-2 rounded-2xl text-sm font-medium']" :aria-current="item.current ? 'page' : undefined">{{ item.name }}</Link>
+                                <Menu as="div" class="relative inline-block text-left">
+                                    <MenuButton class="inline-flex w-full justify-center text-gray-700 bg-gray-100 hover:bg-gray-200 hover:text-gray-900 border border-gray-200 px-3 py-2 rounded-2xl text-sm font-medium">
+                                        Палийский канон
+                                        <ChevronDownIcon
+                                            class="ml-2 -mr-1 h-5 w-5 text-gray-600 hover:text-gray-800"
+                                            aria-hidden="true"
+                                        />
+                                    </MenuButton>
+                                    <transition
+                                        enter-active-class="transition duration-100 ease-out"
+                                        enter-from-class="transform scale-95 opacity-0"
+                                        enter-to-class="transform scale-100 opacity-100"
+                                        leave-active-class="transition duration-75 ease-in"
+                                        leave-from-class="transform scale-100 opacity-100"
+                                        leave-to-class="transform scale-95 opacity-0"
+                                    >
+                                    <MenuItems class="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                        <div class="px-2 py-2" v-for="item in navigation" :key="item.name">
+                                        <MenuItem v-slot="{ active }" >
+                                            <Link
+                                                :class="[ active ? 'bg-blue-500 text-white' : 'bg-white text-black', 'text-gray-800 px-2 py-2 text-sm font-medium' ]"
+                                                :href="item.href"
+                                            >
+                                                {{ item.name }}
+                                            </Link>
+                                        </MenuItem>
+                                        </div>
+                                    </MenuItems>
+                                    </transition>
+                                </Menu>
+
+                                <Link v-for="item in navigation" :key="item.name" :href="item.href" :class="[item.current ? 'bg-gray-200 text-gray-900 border-gray-400 ' : 'text-gray-700 bg-gray-100 hover:bg-gray-200 hover:text-gray-900', 'border border-gray-200 px-3 py-2 rounded-2xl text-sm font-medium']" :aria-current="item.current ? 'page' : undefined">{{ item.name }}</Link>
                             </div>
                         </div>
+                    </div>
+                    <div class="md:hidden flex flex-row">
+                        <div class="bg-gray-100 px-3 py-1 rounded-xl text-sm font-medium mr-4 flex flex-row items-baseline">A <ArrowUpIcon class="h-3 w-3" /> </div>
+                        <div class="bg-gray-100 px-3 py-1 rounded-xl text-sm font-medium mr-4 flex flex-row items-baseline">A <ArrowDownIcon class="h-3 w-3" /> </div>
                     </div>
                     <div class="hidden md:block">
                         <div class="ml-4 flex items-center md:ml-6">
@@ -95,7 +130,7 @@ const userNavigation = [
                         </button>
                     </div>
                     <div class="mt-3 space-y-1 px-2">
-                        <DisclosureButton v-for="item in userNavigation" :key="item.name" as="a" :href="item.href" class="block rounded-md px-3 py-2 text-base font-medium text-gray-600 hover:text-gray-700 hover:text-gray-800">{{ item.name }}</DisclosureButton>
+                        <DisclosureButton v-for="item in userNavigation" :key="item.name" :as="Link" :method="item.method" :href="item.href" class="block rounded-md px-3 py-2 text-base font-medium text-gray-600 hover:text-gray-700 hover:text-gray-800">{{ item.name }}</DisclosureButton>
                     </div>
                 </div>
             </DisclosurePanel>
