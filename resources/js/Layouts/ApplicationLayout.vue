@@ -37,7 +37,7 @@ const userNavigation = [
                         <div class="hidden md:block">
                             <div class="ml-10 flex items-baseline space-x-8">
                                 <Menu as="div" class="relative inline-block text-left">
-                                    <MenuButton class="inline-flex w-full justify-center text-gray-700 bg-gray-100 hover:bg-gray-200 hover:text-gray-900 border border-gray-200 px-3 py-2 rounded-2xl text-sm font-medium">
+                                    <MenuButton class="inline-flex w-full justify-center text-gray-700 bg-gray-100 hover:bg-gray-200 hover:text-gray-900 border border-gray-200 px-3 py-2 rounded-xl text-sm font-medium">
                                         Палийский канон
                                         <ChevronDownIcon
                                             class="ml-2 -mr-1 h-5 w-5 text-gray-600 hover:text-gray-800"
@@ -52,22 +52,26 @@ const userNavigation = [
                                         leave-from-class="transform scale-100 opacity-100"
                                         leave-to-class="transform scale-95 opacity-0"
                                     >
-                                    <MenuItems class="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                                        <div class="px-2 py-2" v-for="item in navigation" :key="item.name">
-                                        <MenuItem v-slot="{ active }" >
+                                    <MenuItems class="absolute right-0 mt-2 w-56 py-1 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                        <MenuItem v-slot="{ active }" v-for="item in navigation" :key="item.name">
                                             <Link
-                                                :class="[ active ? 'bg-blue-500 text-white' : 'bg-white text-black', 'text-gray-800 px-2 py-2 text-sm font-medium' ]"
+                                                :class="[ active ? 'bg-blue-50 text-gray-800' : '', 'group flex bg-white text-gray-700 w-full items-center px-2 py-2 text-sm' ]"
                                                 :href="item.href"
                                             >
                                                 {{ item.name }}
                                             </Link>
                                         </MenuItem>
-                                        </div>
                                     </MenuItems>
                                     </transition>
                                 </Menu>
 
-                                <Link v-for="item in navigation" :key="item.name" :href="item.href" :class="[item.current ? 'bg-gray-200 text-gray-900 border-gray-400 ' : 'text-gray-700 bg-gray-100 hover:bg-gray-200 hover:text-gray-900', 'border border-gray-200 px-3 py-2 rounded-2xl text-sm font-medium']" :aria-current="item.current ? 'page' : undefined">{{ item.name }}</Link>
+<!--                                <Link v-for="item in navigation" :key="item.name" :href="item.href" :class="[item.current ? 'bg-gray-200 text-gray-900 border-gray-400 ' : 'text-gray-700 bg-gray-100 hover:bg-gray-200 hover:text-gray-900', 'border border-gray-200 px-3 py-2 rounded-2xl text-sm font-medium']" :aria-current="item.current ? 'page' : undefined">{{ item.name }}</Link>-->
+                            </div>
+                        </div>
+                        <div class="hidden md:block">
+                            <div class="flex flex-row">
+                                <div class="border border-gray-200 bg-gray-100 px-3 py-2 rounded-xl text-sm font-medium ml-8 flex flex-row items-center">A <ArrowUpIcon class="h-3 w-3" /> </div>
+                                <div class="border border-gray-200 bg-gray-100 px-3 py-2 rounded-xl text-sm font-medium ml-4 flex flex-row items-center">A <ArrowDownIcon class="h-3 w-3" /> </div>
                             </div>
                         </div>
                     </div>
@@ -75,13 +79,23 @@ const userNavigation = [
                         <div class="bg-gray-100 px-3 py-1 rounded-xl text-sm font-medium mr-4 flex flex-row items-baseline">A <ArrowUpIcon class="h-3 w-3" /> </div>
                         <div class="bg-gray-100 px-3 py-1 rounded-xl text-sm font-medium mr-4 flex flex-row items-baseline">A <ArrowDownIcon class="h-3 w-3" /> </div>
                     </div>
+
                     <div class="hidden md:block">
                         <div class="ml-4 flex items-center md:ml-6">
-                            <button type="button" class="rounded-full bg-white p-1 text-gray-600 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-white">
-                                <span class="sr-only">Уведомления</span>
-                                <BellIcon class="h-6 w-6" aria-hidden="true" />
-                            </button>
 
+                            <div v-if="!$page.props.auth.user">
+                                <Link href="/login" class="mr-4 text-gray-700 bg-gray-100 hover:bg-gray-200 hover:text-gray-900 border border-gray-200 px-3 py-2 rounded-xl text-sm font-medium">
+                                    Вход
+                                </Link>
+                                <Link href="#" class="text-gray-700 bg-gray-100 hover:bg-gray-200 hover:text-gray-900 border border-gray-200 px-3 py-2 rounded-xl text-sm font-medium">
+                                    Регистрация
+                                </Link>
+                            </div>
+                            <div v-else>
+<!--                            <button type="button" class="rounded-full bg-white p-1 text-gray-600 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-white">-->
+<!--                                <span class="sr-only">Уведомления</span>-->
+<!--                                <BellIcon class="h-6 w-6" aria-hidden="true" />-->
+<!--                            </button>-->
                             <!-- Profile dropdown -->
                             <Menu as="div" class="relative ml-3">
                                 <div>
@@ -93,11 +107,12 @@ const userNavigation = [
                                 <transition enter-active-class="transition ease-out duration-100" enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100" leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
                                     <MenuItems class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                                         <MenuItem v-for="item in userNavigation" :key="item.name" v-slot="{ active }">
-                                            <Link :href="item.href" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']" :method="item.method">{{ item.name }}</Link>
+                                            <Link :href="item.href" :class="[active ? 'bg-blue-50' : '', 'block px-4 py-2 bg-white text-sm text-gray-700']" :method="item.method">{{ item.name }}</Link>
                                         </MenuItem>
                                     </MenuItems>
                                 </transition>
                             </Menu>
+                            </div>
                         </div>
                     </div>
                     <div class="-mr-2 flex md:hidden">
@@ -124,10 +139,10 @@ const userNavigation = [
                             <div class="text-base font-medium leading-none text-gray-600 mb-2">{{ user.name }}</div>
                             <div class="text-sm font-medium leading-none text-gray-500">{{ user.email }}</div>
                         </div>
-                        <button type="button" class="ml-auto flex-shrink-0 rounded-full bg-white p-1 text-gray-600 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-white">
-                            <span class="sr-only">Уведомления</span>
-                            <BellIcon class="h-6 w-6" aria-hidden="true" />
-                        </button>
+<!--                        <button type="button" class="ml-auto flex-shrink-0 rounded-full bg-white p-1 text-gray-600 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-white">-->
+<!--                            <span class="sr-only">Уведомления</span>-->
+<!--                            <BellIcon class="h-6 w-6" aria-hidden="true" />-->
+<!--                        </button>-->
                     </div>
                     <div class="mt-3 space-y-1 px-2">
                         <DisclosureButton v-for="item in userNavigation" :key="item.name" :as="Link" :method="item.method" :href="item.href" class="block rounded-md px-3 py-2 text-base font-medium text-gray-600 hover:text-gray-700 hover:text-gray-800">{{ item.name }}</DisclosureButton>
@@ -142,12 +157,15 @@ const userNavigation = [
 <!--            </div>-->
 <!--        </header>-->
         <main>
-            <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+            <div class="mx-auto max-w-7xl py-6 sm:px-0 lg:px-0">
 
                 <slot />
 
             </div>
         </main>
     </div>
+
+
+
 </template>
 

@@ -6,3 +6,7 @@ html {
     scroll-behavior: smooth;
     font-size: 16px;
 }
+
+.link{
+    @apply text-blue-500 underline;
+}
