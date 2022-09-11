@@ -9,6 +9,7 @@ class CanonController extends Controller
 {
     public function dn()
     {
+        return redirect("/mn");
     }
 
     public function mn()
@@ -27,9 +28,11 @@ class CanonController extends Controller
 
     public function an()
     {
+        return redirect("/mn");
     }
 
     public function sn()
     {
+        return redirect("/mn");
     }
 }

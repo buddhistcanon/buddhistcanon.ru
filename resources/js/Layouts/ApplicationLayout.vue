@@ -87,9 +87,9 @@ const userNavigation = [
                                 <Link href="/login" class="mr-4 text-gray-700 bg-gray-100 hover:bg-gray-200 hover:text-gray-900 border border-gray-200 px-3 py-2 rounded-xl text-sm font-medium">
                                     Вход
                                 </Link>
-                                <Link href="#" class="text-gray-700 bg-gray-100 hover:bg-gray-200 hover:text-gray-900 border border-gray-200 px-3 py-2 rounded-xl text-sm font-medium">
-                                    Регистрация
-                                </Link>
+<!--                                <Link href="#" class="text-gray-700 bg-gray-100 hover:bg-gray-200 hover:text-gray-900 border border-gray-200 px-3 py-2 rounded-xl text-sm font-medium">-->
+<!--                                    Регистрация-->
+<!--                                </Link>-->
                             </div>
                             <div v-else>
 <!--                            <button type="button" class="rounded-full bg-white p-1 text-gray-600 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-white">-->
@@ -131,22 +131,28 @@ const userNavigation = [
                     <DisclosureButton v-for="item in navigation" :key="item.name" as="a" :href="item.href" :class="[item.current ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-800', 'block px-3 py-2 rounded-md text-base font-medium']" :aria-current="item.current ? 'page' : undefined">{{ item.name }}</DisclosureButton>
                 </div>
                 <div class="border-t border-gray-400 pt-4 pb-3">
-                    <div class="flex items-center px-5">
-                        <div class="flex-shrink-0">
-                            <img class="h-10 w-10 rounded-full" :src="user.imageUrl" alt="" />
-                        </div>
-                        <div class="ml-3">
-                            <div class="text-base font-medium leading-none text-gray-600 mb-2">{{ user.name }}</div>
-                            <div class="text-sm font-medium leading-none text-gray-500">{{ user.email }}</div>
-                        </div>
-<!--                        <button type="button" class="ml-auto flex-shrink-0 rounded-full bg-white p-1 text-gray-600 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-white">-->
-<!--                            <span class="sr-only">Уведомления</span>-->
-<!--                            <BellIcon class="h-6 w-6" aria-hidden="true" />-->
-<!--                        </button>-->
+                    <div v-if="!$page.props.auth.user">
+                        <DisclosureButton :as="Link" :method="get" :href="'/login'" class="block rounded-md px-3 py-2 text-base font-medium text-gray-600 hover:text-gray-700 hover:text-gray-800">Вход</DisclosureButton>
                     </div>
-                    <div class="mt-3 space-y-1 px-2">
-                        <DisclosureButton v-for="item in userNavigation" :key="item.name" :as="Link" :method="item.method" :href="item.href" class="block rounded-md px-3 py-2 text-base font-medium text-gray-600 hover:text-gray-700 hover:text-gray-800">{{ item.name }}</DisclosureButton>
+                    <div v-else>
+                        <div class="flex items-center px-5">
+                            <div class="flex-shrink-0">
+                                <img class="h-10 w-10 rounded-full" :src="user.imageUrl" alt="" />
+                            </div>
+                            <div class="ml-3">
+                                <div class="text-base font-medium leading-none text-gray-600 mb-2">{{ user.name }}</div>
+                                <div class="text-sm font-medium leading-none text-gray-500">{{ user.email }}</div>
+                            </div>
+                            <!--                        <button type="button" class="ml-auto flex-shrink-0 rounded-full bg-white p-1 text-gray-600 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-white">-->
+                            <!--                            <span class="sr-only">Уведомления</span>-->
+                            <!--                            <BellIcon class="h-6 w-6" aria-hidden="true" />-->
+                            <!--                        </button>-->
+                        </div>
+                        <div class="mt-3 space-y-1 px-2">
+                            <DisclosureButton v-for="item in userNavigation" :key="item.name" :as="Link" :method="item.method" :href="item.href" class="block rounded-md px-3 py-2 text-base font-medium text-gray-600 hover:text-gray-700 hover:text-gray-800">{{ item.name }}</DisclosureButton>
+                        </div>
                     </div>
+
                 </div>
             </DisclosurePanel>
         </Disclosure>

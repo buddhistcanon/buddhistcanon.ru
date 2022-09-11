@@ -6,7 +6,7 @@ class ProfileController extends Controller
 {
     public function index()
     {
-        return inertia('Profile', [
+        return inertia('User/Profile', [
 
         ]);
     }

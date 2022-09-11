@@ -16,11 +16,11 @@ use Illuminate\Support\Facades\Route;
 
 require __DIR__.'/auth.php';
 
-Route::get('/', \App\Http\Controllers\WelcomeController::class.'@index')->name('welcome');
-
 Route::group(['middleware' => ['auth']], function () {
-    Route::get('/mn', \App\Http\Controllers\ProfileController::class.'@index')->name('profile');
+    Route::get('/profile', \App\Http\Controllers\ProfileController::class.'@index')->name('profile');
 });
+
+Route::get('/', \App\Http\Controllers\WelcomeController::class.'@index')->name('welcome');
 
 Route::get('/dn', \App\Http\Controllers\Canon\CanonController::class.'@dn')->name('dn');
 Route::get('/mn', \App\Http\Controllers\Canon\CanonController::class.'@mn')->name('mn');
