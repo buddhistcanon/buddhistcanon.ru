@@ -1,24 +1,26 @@
-<?php namespace App\Actions\Terms;
+<?php
+
+namespace App\Actions\Terms;
+
 use App\Data\TermData;
 use App\Models\Term;
 use App\Models\TermVariant;
-use DB;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class StoreTermAction
 {
     use AsAction;
 
-    public function __construct(){
-
+    public function __construct()
+    {
     }
 
     public function handle(TermData $termData): Term
     {
         $term = new Term();
-        if($termData->id){
+        if ($termData->id) {
             $term = Term::query()
-                ->where("id", $termData->id)
+                ->where('id', $termData->id)
                 ->firstOrFail();
             // TODO $newTermData и логирование изменений
         }
@@ -32,33 +34,33 @@ class StoreTermAction
 
         // Синонимы
         $existsVariants = TermVariant::query()
-            ->where("term_id", $term->id)
+            ->where('term_id', $term->id)
             ->get();
 
         // Добавление новых
-        foreach($termData->variants as $stringVariant){
-            if($existsVariants->doesntContain(fn($item)=> $item->title===$stringVariant )){
+        foreach ($termData->variants as $stringVariant) {
+            if ($existsVariants->doesntContain(fn ($item) => $item->title === $stringVariant)) {
                 AddTermVariantAction::run($term, $stringVariant);
             }
         }
         // Удаление удалённых
-        foreach($existsVariants as $existsVariant){
-            if(collect($termData->variants)->doesntContain(fn($item)=> $existsVariant->title === $item)){
+        foreach ($existsVariants as $existsVariant) {
+            if (collect($termData->variants)->doesntContain(fn ($item) => $existsVariant->title === $item)) {
                 $existsVariant->delete();
             }
         }
         // Установка is_main для синонима, если нужно
         $isMainExist = TermVariant::query()
-            ->where("term_id", $term->id)
-            ->where("is_main", 1)
+            ->where('term_id', $term->id)
+            ->where('is_main', 1)
             ->count();
-        if( !$isMainExist){
+        if (! $isMainExist) {
             $variant = TermVariant::query()
-                ->where("term_id", $term->id)
-                ->where("is_main", 0)
-                ->orderBy("id","asc")
+                ->where('term_id', $term->id)
+                ->where('is_main', 0)
+                ->orderBy('id', 'asc')
                 ->first();
-            if($variant){
+            if ($variant) {
                 $variant->is_main = 1;
                 $variant->save();
             }

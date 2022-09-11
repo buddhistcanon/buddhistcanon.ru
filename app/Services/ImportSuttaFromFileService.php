@@ -3,12 +3,11 @@
 namespace App\Services;
 
 use App\Data\SuttaData;
-use App\Models\Content;
-use Illuminate\Support\Facades\Storage;
 
 class ImportSuttaFromFileService
 {
     private string $filename;
+
     private array $arrayContent;
 
     public function __construct(string $filename, string $fileContent)
@@ -20,7 +19,8 @@ class ImportSuttaFromFileService
     public function getFullCategory(): string|null
     {
         //preg_match("/n\/(.*?)_root/", $this->filename, $match);
-        preg_match("/^(.*?)_/m", $this->filename, $match);
+        preg_match('/^(.*?)_/m', $this->filename, $match);
+
         return $match[1] ?? null;
     }
 
@@ -28,6 +28,7 @@ class ImportSuttaFromFileService
     {
         $category = $this->getFullCategory();
         preg_match("/([^\d]*)\d*/", $category, $match);
+
         return $match[1] ?? null;
     }
 
@@ -35,29 +36,36 @@ class ImportSuttaFromFileService
     {
         $category = $this->getFullCategory();
         preg_match("/[^\d]*(\d*)/", $category, $match);
+
         return $match[1] ?? null;
     }
 
     public function determineSuborder(): string|null
     {
         $category = $this->getFullCategory();
-        if(!str_contains(".", $category)) return null;
-        $array = explode(".", $category);
+        if (! str_contains('.', $category)) {
+            return null;
+        }
+        $array = explode('.', $category);
+
         return $match[1] ?? null;
     }
 
     public function determineMark($key): string|null
     {
         preg_match("/:(.*)\./", $key, $match);
+
         return $match[1] ?? null;
     }
 
     public function determineTitle(): string
     {
         return trim(
-            collect($this->arrayContent)->filter(function($value, $key){
+            collect($this->arrayContent)->filter(function ($value, $key) {
                 preg_match("/.*:0\.2/", $key, $match);
-                if($match) return $value;
+                if ($match) {
+                    return $value;
+                }
             })->first()
         );
     }
@@ -65,10 +73,12 @@ class ImportSuttaFromFileService
     public function determineSubtitle(): string
     {
         return trim(
-            collect($this->arrayContent)->filter(function($value, $key){
+            collect($this->arrayContent)->filter(function ($value, $key) {
                 preg_match("/.*:0\.(.*)/", $key, $match);
-                if(isset($match[1]) AND $match[1] != 1 AND $match[1] != 2) return $value;
-            })->reduce(function($acc, $item){
+                if (isset($match[1]) and $match[1] != 1 and $match[1] != 2) {
+                    return $value;
+                }
+            })->reduce(function ($acc, $item) {
                 return $acc.$item."\n";
             })
         );
@@ -76,27 +86,27 @@ class ImportSuttaFromFileService
 
     public function getDto(): SuttaData
     {
-        $text = "";
-        $mark = "";
+        $text = '';
+        $mark = '';
         $contentWithMarks = [];
-        if(count($this->arrayContent) > 0){
-            foreach($this->arrayContent as $key=>$value){
+        if (count($this->arrayContent) > 0) {
+            foreach ($this->arrayContent as $key => $value) {
                 $currentMark = $this->determineMark($key);
-                if($currentMark === "0") {
+                if ($currentMark === '0') {
                     continue;
                 }
-                if(!$mark) {
+                if (! $mark) {
                     $mark = $currentMark;
                 }
-                if($mark === $currentMark){
-                    $text .= trim($value) . "\n";
-                }else{
-                    $contentWithMarks["p".$mark] = trim($text);
-                    $text = trim($value) . "\n";
+                if ($mark === $currentMark) {
+                    $text .= trim($value)."\n";
+                } else {
+                    $contentWithMarks['p'.$mark] = trim($text);
+                    $text = trim($value)."\n";
                     $mark = $currentMark;
                 }
             }
-            $contentWithMarks["p".$mark] = trim($text);
+            $contentWithMarks['p'.$mark] = trim($text);
         }
 
         $suttaData = new SuttaData(
@@ -107,7 +117,7 @@ class ImportSuttaFromFileService
             $contentWithMarks
         );
         $suttaData->subtitle = $this->determineSubtitle();
+
         return $suttaData;
     }
-
 }

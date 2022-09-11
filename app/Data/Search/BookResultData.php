@@ -9,14 +9,12 @@ class BookResultData extends Data
 {
     public function __construct(
         public int $bookId,
-        public ?string $author = null,
+        public ?string $author,
         public string $title,
         public ?string $url = null,
         /** @var TextResultData[] */
         public ?DataCollection $textResults = null,
-    )
-    {
+    ) {
         $this->author = $author;
-
     }
 }

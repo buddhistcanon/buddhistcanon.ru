@@ -9,7 +9,9 @@ use function view;
 class ContentChunk extends Component
 {
     public $content;
+
     public $html;
+
     public $numColumns;
 
     public function mount($text, $numColumns)
@@ -19,10 +21,10 @@ class ContentChunk extends Component
         $this->numColumns = $numColumns;
     }
 
-    public function clickTerm($termTitle = "Термин не найден")
+    public function clickTerm($termTitle = 'Термин не найден')
     {
         //$this->clickedTermTitle = $termTitle;
-        $this->emit("showTerm", $termTitle);
+        $this->emit('showTerm', $termTitle);
     }
 
     public function render()

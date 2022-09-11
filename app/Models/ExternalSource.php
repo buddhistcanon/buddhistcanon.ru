@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read Model|\Eloquent $externable
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ExternalSourceLog[] $logs
  * @property-read int|null $logs_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|ExternalSource newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ExternalSource newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ExternalSource query()
@@ -39,7 +40,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class ExternalSource extends Model
 {
-    protected $table = "external_sources";
+    protected $table = 'external_sources';
 
     public function externable()
     {
@@ -48,7 +49,6 @@ class ExternalSource extends Model
 
     public function logs()
     {
-        return $this->hasMany(ExternalSourceLog::class)->orderBy("id", "asc");
+        return $this->hasMany(ExternalSourceLog::class)->orderBy('id', 'asc');
     }
-
 }

@@ -10,8 +10,8 @@ class AdminTermCreateGet extends Controller
     public function __invoke()
     {
         $term = new Term();
-        $term->title = "";
+        $term->title = '';
 
-        return inertia("Admin/Terms/AdminEditTermPage", ['term'=>$term]);
+        return inertia('Admin/Terms/AdminEditTermPage', ['term' => $term]);
     }
 }

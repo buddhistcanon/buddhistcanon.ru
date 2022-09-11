@@ -29,6 +29,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property-read int|null $tokens_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserBookAccess[] $user_book_access
  * @property-read int|null $user_book_access_count
+ *
  * @method static \Database\Factories\UserFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
@@ -50,7 +51,9 @@ use Laravel\Sanctum\HasApiTokens;
  */
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens;
+    use HasFactory;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -62,7 +65,7 @@ class User extends Authenticatable
         'email',
         'password',
         'first_name',
-        'last_name'
+        'last_name',
     ];
 
     /**
@@ -81,8 +84,8 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'permissions'          => 'array',
-        'email_verified_at'    => 'datetime',
+        'permissions' => 'array',
+        'email_verified_at' => 'datetime',
     ];
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -94,7 +97,7 @@ class User extends Authenticatable
 
     public function gravatarUrl()
     {
-        return "https://www.gravatar.com/avatar/".md5(strtolower(trim($this->email)));
+        return 'https://www.gravatar.com/avatar/'.md5(strtolower(trim($this->email)));
     }
 
     public function isAdmin()

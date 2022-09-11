@@ -3,46 +3,43 @@
 namespace Tests\Feature\Import;
 
 use App\Services\ImportSuttaFromFileService;
-use App\Services\SuttaService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class ImportSuttasFromFileTest extends TestCase
 {
     public function test_determine_mark()
     {
-        $suttaService = new ImportSuttaFromFileService("mn132_translation-en-sujato.json", $this->mn132);
+        $suttaService = new ImportSuttaFromFileService('mn132_translation-en-sujato.json', $this->mn132);
 
-        $this->assertEquals("13-19", $suttaService->determineMark("mn132:13-19.1"));
-        $this->assertEquals("0", $suttaService->determineMark("mn132:0.2"));
+        $this->assertEquals('13-19', $suttaService->determineMark('mn132:13-19.1'));
+        $this->assertEquals('0', $suttaService->determineMark('mn132:0.2'));
     }
 
     public function test_sutta_name()
     {
-        $suttaService = new ImportSuttaFromFileService("mn132_translation-en-sujato.json", $this->mn132);
-        $this->assertEquals("mn132", $suttaService->getDto()->name());
+        $suttaService = new ImportSuttaFromFileService('mn132_translation-en-sujato.json', $this->mn132);
+        $this->assertEquals('mn132', $suttaService->getDto()->name());
     }
 
     public function test_create_dto_from_right_content()
     {
-        $suttaService = new ImportSuttaFromFileService("mn132_translation-en-sujato.json", $this->mn132);
+        $suttaService = new ImportSuttaFromFileService('mn132_translation-en-sujato.json', $this->mn132);
 
         $suttaDto = $suttaService->getDto();
 
-        $this->assertEquals("Ānanda and One Fine Night", $suttaDto->title);
+        $this->assertEquals('Ānanda and One Fine Night', $suttaDto->title);
         $this->assertEquals("Several strings \nfor description", $suttaDto->subtitle);
-        $this->assertEquals("“I was doing so in this way, sir,” replied Ānanda.", $suttaDto->contentWithMarks["p3"]);
-        $this->assertTrue(str_contains($suttaDto->contentWithMarks["p4"], "discourse"));
-        $this->assertTrue(str_contains($suttaDto->contentWithMarks["p13-19"], "That is what the Buddha said"));
+        $this->assertEquals('“I was doing so in this way, sir,” replied Ānanda.', $suttaDto->contentWithMarks['p3']);
+        $this->assertTrue(str_contains($suttaDto->contentWithMarks['p4'], 'discourse'));
+        $this->assertTrue(str_contains($suttaDto->contentWithMarks['p13-19'], 'That is what the Buddha said'));
     }
 
     public function test_create_problem_sutta()
     {
-        $suttaService = new ImportSuttaFromFileService("mn1_translation-en-sujato.json", $this->mn1);
+        $suttaService = new ImportSuttaFromFileService('mn1_translation-en-sujato.json', $this->mn1);
         $suttaDto = $suttaService->getDto();
 
-        $this->assertTrue(str_contains($suttaDto->contentWithMarks["p3"], "“Take"));
+        $this->assertTrue(str_contains($suttaDto->contentWithMarks['p3'], '“Take'));
     }
 
     public $mn132 = '{

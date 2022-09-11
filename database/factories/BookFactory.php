@@ -25,25 +25,26 @@ class BookFactory extends Factory
     public function definition()
     {
         $title = $this->faker->sentence;
+
         return [
             'author_id' => 0,
             'title' => $title,
             'slug' => Str::slug($title),
             'short_description' => $this->faker->paragraph,
-            'is_short' => Arr::random([0,1]),
+            'is_short' => Arr::random([0, 1]),
         ];
     }
 
     public function published()
     {
-    	return $this->state([
+        return $this->state([
             'published_at' => Carbon::now()->subDays(5),
         ]);
     }
 
     public function copyrighted()
     {
-    	return $this->state([
+        return $this->state([
             'is_copyrighted' => 1,
         ]);
     }

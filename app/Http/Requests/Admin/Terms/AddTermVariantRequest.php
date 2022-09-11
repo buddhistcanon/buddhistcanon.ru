@@ -11,13 +11,16 @@ class AddTermVariantRequest extends FormRequest
     {
         return [
             'term_id' => ['required', 'integer'],
-            'term_proposal_ids' => ['required', 'array']
+            'term_proposal_ids' => ['required', 'array'],
         ];
     }
 
     public function authorize(): bool
     {
-        if(optional(Auth::user())->is_superadmin) return true;
+        if (optional(Auth::user())->is_superadmin) {
+            return true;
+        }
+
         return false;
     }
 
@@ -25,14 +28,14 @@ class AddTermVariantRequest extends FormRequest
     {
         return [
             'term_id.required' => 'Выберите термин, к которому присоединять варианты.',
-            'term_proposal_ids.required' => 'Выберите варианты синонимов, которые присоединять к термину.'
+            'term_proposal_ids.required' => 'Выберите варианты синонимов, которые присоединять к термину.',
         ];
     }
 
     public function attributes()
     {
-    	return [
-            'term_proposal_ids' => "Массив вариантов терминов"
+        return [
+            'term_proposal_ids' => 'Массив вариантов терминов',
         ];
     }
 }

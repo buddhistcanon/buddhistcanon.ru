@@ -17,15 +17,15 @@ class FindTermProposalListener
     public function handle(TextAddedEvent $event)
     {
         $terms = TextParser::findTerms($event->text);
-        foreach($terms as $termTitle){
+        foreach ($terms as $termTitle) {
             $termVariant = TermVariant::query()
-                ->where("title", $termTitle)
+                ->where('title', $termTitle)
                 ->first();
-            if(!$termVariant){
+            if (! $termVariant) {
                 $termProposal = TermProposal::query()
-                    ->where("title", $termTitle)
+                    ->where('title', $termTitle)
                     ->first();
-                if(!$termProposal){
+                if (! $termProposal) {
                     $termProposal = new TermProposal();
                     $termProposal->title = $termTitle;
                     $termProposal->save();

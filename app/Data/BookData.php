@@ -1,4 +1,6 @@
-<?php namespace App\Data;
+<?php
+
+namespace App\Data;
 
 class BookData
 {
@@ -8,6 +10,5 @@ class BookData
 
     public function __construct()
     {
-
     }
 }

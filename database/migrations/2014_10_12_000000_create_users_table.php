@@ -19,12 +19,12 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('nickname');
             $table->string('first_name')->nullable();
-            $table->string("last_name")->nullable();
+            $table->string('last_name')->nullable();
             $table->boolean('is_superadmin')->default(0);
             $table->string('password');
             $table->unsignedBigInteger('people_id')->nullable();
             $table->rememberToken();
-            $table->longText("display_settings")->nullable();
+            $table->longText('display_settings')->nullable();
             $table->timestamps();
         });
 
@@ -47,8 +47,8 @@ class CreateUsersTable extends Migration
 
         Schema::create('invites', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string("invite_symbols")->index();
-            $table->text("note")->nullable();
+            $table->string('invite_symbols')->index();
+            $table->text('note')->nullable();
             $table->integer('registered_user_id')->nullable()->index();
             $table->timestamps();
         });

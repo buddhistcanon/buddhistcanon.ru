@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $new_content
  * @property string|null $processed_at
  * @property-read \App\Models\ExternalSource|null $source
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|ExternalSourceLog newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ExternalSourceLog newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ExternalSourceLog query()
@@ -25,10 +26,10 @@ use Illuminate\Database\Eloquent\Model;
  */
 class ExternalSourceLog extends Model
 {
-    protected $table = "external_source_logs";
+    protected $table = 'external_source_logs';
 
     public function source()
     {
-    	return $this->belongsTo(ExternalSource::class, "external_source_id");
+        return $this->belongsTo(ExternalSource::class, 'external_source_id');
     }
 }

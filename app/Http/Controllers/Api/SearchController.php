@@ -12,7 +12,7 @@ class SearchController extends Controller
 {
     public function __invoke(SearchApiRequest $request)
     {
-        $meilisearchService = new MeilisearchService(config("scout.meilisearch.host"), config("scout.meilisearch.key"));
+        $meilisearchService = new MeilisearchService(config('scout.meilisearch.host'), config('scout.meilisearch.key'));
         $meilisearchService->createIndexIfNeeded();
         $meilisearchService->createFilterIfNeeded();
 
@@ -21,6 +21,5 @@ class SearchController extends Controller
         $searchResultsData = $action->execute($searchRequestData);
 
         return $searchResultsData->suttasResult;
-
     }
 }

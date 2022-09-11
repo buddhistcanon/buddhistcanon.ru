@@ -12,7 +12,7 @@ class SearchApiRequest extends FormRequest
     {
         return [
             'q' => 'required|min:3',
-            'token' => 'required'
+            'token' => 'required',
         ];
     }
 

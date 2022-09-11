@@ -18,23 +18,24 @@ class AdminTermsAddVariantPost extends Controller
         $termProposalIds = $input['term_proposal_ids'];
 
         $term = Term::query()
-            ->where("id", $termId)
+            ->where('id', $termId)
             ->firstOrFail();
-        $termsAdded = "";
-        foreach($termProposalIds as $i=>$termProposalId){
+        $termsAdded = '';
+        foreach ($termProposalIds as $i => $termProposalId) {
             $termProposal = TermProposal::query()
-                ->where("id", $termProposalId)
+                ->where('id', $termProposalId)
                 ->first();
-            if($termProposal){
+            if ($termProposal) {
                 $action = new AddTermVariantAction($term, $termProposal->title);
                 $action->execute();
                 $termsAdded .= "'$termProposal->title',";
                 $termProposal->delete();
             }
         }
-        $termsAdded = mb_substr($termsAdded, 0, (mb_strlen($termsAdded)-1));
+        $termsAdded = mb_substr($termsAdded, 0, (mb_strlen($termsAdded) - 1));
 
-        $request->session()->flash("success_add_term_variant", "К термину '$term->title' добавлено в синонимы: $termsAdded");
-        return redirect("/admin/terms");
+        $request->session()->flash('success_add_term_variant', "К термину '$term->title' добавлено в синонимы: $termsAdded");
+
+        return redirect('/admin/terms');
     }
 }

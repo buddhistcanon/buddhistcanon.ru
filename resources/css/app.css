@@ -8,5 +8,26 @@ html {
 }
 
 .link{
-    @apply text-blue-500 underline;
+    color: #5B0769;
+    @apply underline;
+}
+
+.button{
+    @apply text-gray-700 bg-gray-50 hover:bg-gray-200 hover:text-gray-900 border border-gray-200 px-3 py-2 rounded-xl text-sm font-medium cursor-pointer;
+}
+
+/** Контент книги, сутты и т.п. */
+.content-text .footnote{
+    @apply  text-sm ml-1 text-orange-600 font-mono
+}
+
+/* текст примечания */
+.content-text .footnotes {
+    @apply mt-2 px-4 text-sm text-gray-600 border-t border-gray-100
+}
+.content-text .footnotes hr {
+    @apply border-gray-100
+}
+.content-text .footnotes ol li p{
+    @apply my-2
 }

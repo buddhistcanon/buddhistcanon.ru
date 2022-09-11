@@ -11,9 +11,8 @@ class SearchRequestData extends Data
     public function __construct(
         #[Min(3)]
         public string $q,
-    )
-    {}
-
+    ) {
+    }
 
     // Валидация
 //    public static function rules(): array

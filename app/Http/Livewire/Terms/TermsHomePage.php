@@ -14,8 +14,9 @@ class TermsHomePage extends Component
 
     public function mount()
     {
-    	$this->allTerms = Term::query()->orderBy('id', 'asc')->get();
+        $this->allTerms = Term::query()->orderBy('id', 'asc')->get();
     }
+
     public function render()
     {
         return view('livewire.terms.terms-home-page');

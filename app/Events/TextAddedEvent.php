@@ -2,7 +2,6 @@
 
 namespace App\Events;
 
-use App\Models\ContentChunk;
 use Illuminate\Foundation\Events\Dispatchable;
 
 class TextAddedEvent
@@ -11,7 +10,7 @@ class TextAddedEvent
 
     public string $text;
 
-    public function __construct(String $text)
+    public function __construct(string $text)
     {
         $this->text = $text;
     }

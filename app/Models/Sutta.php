@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Content[] $contents
  * @property-read int|null $contents_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Sutta byIndexName($indexName)
  * @method static \Illuminate\Database\Eloquent\Builder|Sutta bySuttaName(\App\Data\SuttaNameData $suttaNameData)
  * @method static \Illuminate\Database\Eloquent\Builder|Sutta newModelQuery()
@@ -41,65 +42,81 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Sutta extends Model
 {
-    protected $table = "suttas";
+    protected $table = 'suttas';
 //    protected $appends = ['name'];
 
     public function contents()
     {
-    	return $this->morphMany(Content::class, 'contentable');
+        return $this->morphMany(Content::class, 'contentable');
     }
 
     public function pali_content()
     {
-    	return $this->contents->first(function(Content $content){ return $content->lang === "pali"; });
+        return $this->contents->first(function (Content $content) {
+            return $content->lang === 'pali';
+        });
     }
 
     public function scopeByIndexName($query, $indexName)
     {
-        $array = explode(".", $indexName);
-        $builder = $query->where("category", $array[0])->where("order", $array[1]);
-        if(isset($array[2])) $builder = $builder->where("suborder", $array[2]);
+        $array = explode('.', $indexName);
+        $builder = $query->where('category', $array[0])->where('order', $array[1]);
+        if (isset($array[2])) {
+            $builder = $builder->where('suborder', $array[2]);
+        }
+
         return $builder;
     }
 
     public function scopeBySuttaName($query, SuttaNameData $suttaNameData)
     {
         $builder = $query
-            ->where("category", $suttaNameData->category)
-            ->where("order", $suttaNameData->order);
-        if($suttaNameData->suborder) $builder = $builder->where("suborder", $suttaNameData->suborder);
+            ->where('category', $suttaNameData->category)
+            ->where('order', $suttaNameData->order);
+        if ($suttaNameData->suborder) {
+            $builder = $builder->where('suborder', $suttaNameData->suborder);
+        }
+
         return $builder;
     }
 
     public function displayIndexName(): string
     {
-        $name = $this->category.".".$this->order;
-        if( ! is_null($this->suborder)) $name .= ".".$this->suborder;
+        $name = $this->category.'.'.$this->order;
+        if (! is_null($this->suborder)) {
+            $name .= '.'.$this->suborder;
+        }
+
         return $name;
     }
 
     public function displayName(): string
     {
         $name = strtoupper($this->category).$this->order;
-        if( ! is_null($this->suborder)) $name .= ".".$this->suborder;
+        if (! is_null($this->suborder)) {
+            $name .= '.'.$this->suborder;
+        }
+
         return $name;
     }
 
     public function displaySlug(): string
     {
         $slug = strtolower($this->category).$this->order;
-        if( ! is_null($this->suborder)) $slug .= ".".$this->suborder;
-        return "/".$slug;
+        if (! is_null($this->suborder)) {
+            $slug .= '.'.$this->suborder;
+        }
+
+        return '/'.$slug;
     }
 
     public function displayPaliTitle()
     {
-    	return $this->pali_content()->title;
+        return $this->pali_content()->title;
     }
 
 //    public function getNameAttribute()
 //    {
 //        return $this->displayName();
 //    }
-
 }

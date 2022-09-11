@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string|null $old_content
  * @property int $session
  * @property \Illuminate\Support\Carbon|null $checked_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|CrawlerPage newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CrawlerPage newQuery()
  * @method static \Illuminate\Database\Query\Builder|CrawlerPage onlyTrashed()
@@ -46,7 +47,9 @@ class CrawlerPage extends Model
 {
     use SoftDeletes;
 
-    protected $table = "crawler_pages";
+    protected $table = 'crawler_pages';
+
     protected $fillable = ['url'];
+
     protected $dates = ['hashed_at', 'checked_at'];
 }

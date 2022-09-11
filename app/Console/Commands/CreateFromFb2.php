@@ -38,12 +38,12 @@ class CreateFromFb2 extends Command
      */
     public function handle()
     {
-        $filename = $this->argument("filename");
-        if(!$filename) $filename = "slovami_buddy.fb2";
-        $content = file_get_contents(storage_path()."/source_books/".$filename);
+        $filename = $this->argument('filename');
+        if (! $filename) {
+            $filename = 'slovami_buddy.fb2';
+        }
+        $content = file_get_contents(storage_path().'/source_books/'.$filename);
 
         $fb2Reader = new Fb2Reader($content);
-
-
     }
 }

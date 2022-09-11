@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Book[] $books
  * @property-read int|null $books_count
+ *
  * @method static Builder|People monk()
  * @method static Builder|People newModelQuery()
  * @method static Builder|People newQuery()
@@ -43,26 +44,26 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class People extends Model
 {
-    protected $table = "peoples";
+    protected $table = 'peoples';
 
     public function books(): HasMany
     {
-        return $this->hasMany(Book::class, "author_id");
+        return $this->hasMany(Book::class, 'author_id');
     }
 
     // ------
 
     public function scopeMonk(Builder $query): void
     {
-        $query->where("is_monk", 1);
+        $query->where('is_monk', 1);
     }
 
-    public function displayNameRu(): String
+    public function displayNameRu(): string
     {
-    	if($this->is_monk){
+        if ($this->is_monk) {
             return $this->monkname_ru;
         }
 
-        return $this->fullname_ru. ($this->nickname ? " (".$this->nickname.")" : "");
+        return $this->fullname_ru.($this->nickname ? ' ('.$this->nickname.')' : '');
     }
 }

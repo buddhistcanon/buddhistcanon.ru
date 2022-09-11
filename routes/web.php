@@ -2,7 +2,6 @@
 
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,23 +14,22 @@ use Inertia\Inertia;
 |
 */
 
-//Route::get('/', function () {
-//    return Inertia::render('Welcome', [
-//        'canLogin' => Route::has('login'),
-//        'canRegister' => Route::has('register'),
-//        'laravelVersion' => Application::VERSION,
-//        'phpVersion' => PHP_VERSION,
-//    ]);
-//});
+require __DIR__.'/auth.php';
 
-Route::get("/", \App\Http\Controllers\WelcomeController::class . "@index")->name("welcome");
+Route::get('/', \App\Http\Controllers\WelcomeController::class.'@index')->name('welcome');
 
 Route::group(['middleware' => ['auth']], function () {
-    Route::get("/profile", \App\Http\Controllers\ProfileController::class . "@index")->name("profile");
+    Route::get('/mn', \App\Http\Controllers\ProfileController::class.'@index')->name('profile');
 });
 
-//Route::get('/dashboard', function () {
-//    return Inertia::render('Dashboard');
-//})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dn', \App\Http\Controllers\Canon\CanonController::class.'@dn')->name('dn');
+Route::get('/mn', \App\Http\Controllers\Canon\CanonController::class.'@mn')->name('mn');
+Route::get('/an', \App\Http\Controllers\Canon\CanonController::class.'@an')->name('an');
+Route::get('/sn', \App\Http\Controllers\Canon\CanonController::class.'@sn')->name('sn');
 
-require __DIR__.'/auth.php';
+// Универсальный роут отображения сутты
+Route::get('/{sutta}/{lang?}/{translator?}', \App\Http\Controllers\Canon\SuttaController::class.'@index')
+    ->name('sutta')
+    ->where([
+        'sutta' => "(mn|an|sn|MN|AN|SN)([\d\.]*)",
+    ]);

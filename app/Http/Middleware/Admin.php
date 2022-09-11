@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use Closure;
 use Auth;
+use Closure;
 
 class Admin
 {
@@ -19,7 +19,7 @@ class Admin
         if (Auth::guest()) {
             return redirect(route('login'));
         }
-        if (optional(Auth::user())->isAdmin() OR optional(Auth::user())->is_superadmin) {
+        if (optional(Auth::user())->isAdmin() or optional(Auth::user())->is_superadmin) {
             return $next($request);
         }
 

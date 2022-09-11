@@ -25,16 +25,17 @@ class AddTermVariantAction
      *
      * @return mixed
      */
-    public function handle(Term $term, String $text): TermVariant
+    public function handle(Term $term, string $text): TermVariant
     {
-        $termVariant = TermVariant::query()->where("title", $text)->first();
-        if(!$termVariant){
+        $termVariant = TermVariant::query()->where('title', $text)->first();
+        if (! $termVariant) {
             $termVariant = new TermVariant();
             $termVariant->term_id = $term->id;
             $termVariant->title = $text;
             $termVariant->is_main = 0;
             $termVariant->save();
         }
+
         return $termVariant;
     }
 }

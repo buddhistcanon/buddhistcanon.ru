@@ -17,8 +17,6 @@ class SuttaResultData extends Data
         public ?string $urlTheravadaRu = null,
         /** @var TextResultData[] */
         public ?DataCollection $textResults = null,
-    )
-    {
-
+    ) {
     }
 }

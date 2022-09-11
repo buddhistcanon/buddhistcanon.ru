@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Data\SuttaNameData;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -20,6 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $need_attention
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|TheravadaruSutta byIndexName($indexName)
  * @method static \Illuminate\Database\Eloquent\Builder|TheravadaruSutta newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|TheravadaruSutta newQuery()
@@ -40,39 +40,50 @@ use Illuminate\Database\Eloquent\Model;
  */
 class TheravadaruSutta extends Model
 {
-    protected $table = "theravadaru_suttas";
+    protected $table = 'theravadaru_suttas';
+
     public function scopeByIndexName($query, $indexName)
     {
-        $array = explode(".", $indexName);
-        $builder = $query->where("category_name", $array[0])->where("order", $array[1]);
-        if(isset($array[2])) $builder = $builder->where("suborder", $array[2]);
+        $array = explode('.', $indexName);
+        $builder = $query->where('category_name', $array[0])->where('order', $array[1]);
+        if (isset($array[2])) {
+            $builder = $builder->where('suborder', $array[2]);
+        }
+
         return $builder;
     }
 
     public function displayIndexName()
     {
-        $name = $this->category_name.".".$this->order;
-        if( ! is_null($this->suborder)) $name .= ".".$this->suborder;
+        $name = $this->category_name.'.'.$this->order;
+        if (! is_null($this->suborder)) {
+            $name .= '.'.$this->suborder;
+        }
+
         return $name;
     }
 
     public function displayShortName()
     {
-        $name = $this->category_name." ".$this->order;
-        if( ! is_null($this->suborder)) $name .= ".".$this->suborder;
+        $name = $this->category_name.' '.$this->order;
+        if (! is_null($this->suborder)) {
+            $name .= '.'.$this->suborder;
+        }
+
         return $name;
     }
 
     public function displayContentForEdit()
     {
-        $content = str_replace("\n", "<br>", $this->content);
+        $content = str_replace("\n", '<br>', $this->content);
+
         return $content;
     }
 
     public function displayOriginalContent()
     {
-        $content = str_replace("60%", "100%", $this->original_html);
+        $content = str_replace('60%', '100%', $this->original_html);
+
         return $content;
     }
-
 }

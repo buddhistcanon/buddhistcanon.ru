@@ -12,8 +12,8 @@ class SearchResultsData extends Data
         public ?DataCollection $suttasResult = null,
         /** @var BookResultData[] */
         public ?DataCollection $booksResult = null
-    )
-    {  }
+    ) {
+    }
 
 //    public static function fromArray(array $suttasMeiliHits, array $booksMeiliHits)
 //    {

@@ -6,7 +6,8 @@ class WelcomeController extends Controller
 {
     public function index()
     {
-        return inertia("Welcome", [
+        return redirect("/mn");
+        return inertia('Welcome', [
 
         ]);
     }

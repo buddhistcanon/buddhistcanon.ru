@@ -22,6 +22,7 @@ class TermVariantFactory extends Factory
     public function definition()
     {
         $title = $this->faker->word;
+
         return [
             'term_id' => 0,
             'title' => $title,

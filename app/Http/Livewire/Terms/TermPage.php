@@ -16,7 +16,7 @@ class TermPage extends Component
     public function mount(Request $request)
     {
         $slug = $request->route()->slug;
-        $this->term = Term::query()->where("slug", $slug)->firstOrFail();
+        $this->term = Term::query()->where('slug', $slug)->firstOrFail();
     }
 
     public function render()

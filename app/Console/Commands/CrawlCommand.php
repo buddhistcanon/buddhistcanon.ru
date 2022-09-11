@@ -19,9 +19,9 @@ class CrawlCommand extends Command
     public function handle()
     {
         $projectName = $this->argument('project_name');
-        $projectName = "tipitaka.theravada.su";
-        $project = CrawlerProject::query()->where("name", $projectName)->firstOrFail();
-        $project->increment("session");
+        $projectName = 'tipitaka.theravada.su';
+        $project = CrawlerProject::query()->where('name', $projectName)->firstOrFail();
+        $project->increment('session');
         $this->info("Start crawl project $project->name with session $project->session");
 
         $crawler = Crawler::create()
@@ -30,13 +30,13 @@ class CrawlCommand extends Command
             ->setUserAgent('learn-buddhism.ru crawler')
             ->setParseableMimeTypes(['text/html', 'text/plain']);
 
-        switch($projectName){
-            case "theravada.ru":
+        switch($projectName) {
+            case 'theravada.ru':
                 break;
-            case "theravada.su":
-                $var = "22";
+            case 'theravada.su':
+                $var = '22';
                 break;
-            case "tipitaka.theravada.su":
+            case 'tipitaka.theravada.su':
                 CrawlerPage::query()->delete();
                 $crawler
                     ->setConcurrency(1)
@@ -47,7 +47,6 @@ class CrawlCommand extends Command
                     ->startCrawling($project->root_url.$project->start_url);
                 break;
             default:
-
         }
     }
 }

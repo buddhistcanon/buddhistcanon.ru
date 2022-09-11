@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-
 /**
  * App\Models\Book
  *
@@ -34,6 +33,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \App\Models\People|null $author
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Content[] $contents
  * @property-read int|null $contents_count
+ *
  * @method static \Database\Factories\BookFactory factory(...$parameters)
  * @method static Builder|Book newModelQuery()
  * @method static Builder|Book newQuery()
@@ -65,34 +65,36 @@ use Illuminate\Database\Eloquent\Model;
 class Book extends Model
 {
     use HasFactory;
-    protected $table = "books";
+
+    protected $table = 'books';
+
     protected $dates = ['published_at'];
 
     public function contents()
     {
-    	return $this->morphMany(Content::class, 'contentable');
+        return $this->morphMany(Content::class, 'contentable');
     }
 
     public function author()
     {
-    	return $this->belongsTo(People::class, "author_id");
+        return $this->belongsTo(People::class, 'author_id');
     }
 
     // -----
 
     public function scopePublished(Builder $query)
     {
-    	$query->whereNotNull("published_at");
+        $query->whereNotNull('published_at');
     }
 
     // -----
 
     public function getTranslatorsNames()
     {
-    	return $this->contents->filter(function(Content $content){
-    	    if($content->translator_name) return true;
+        return $this->contents->filter(function (Content $content) {
+            if ($content->translator_name) {
+                return true;
+            }
         })->pluck('translator_name');
     }
-
-
 }

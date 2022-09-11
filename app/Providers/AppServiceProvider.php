@@ -10,7 +10,6 @@ use App\Models\Term;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
-use Livewire;
 use MeiliSearch\Client;
 
 class AppServiceProvider extends ServiceProvider
@@ -37,9 +36,8 @@ class AppServiceProvider extends ServiceProvider
             'term' => Term::class,
             'source' => ExternalSource::class,
             'user' => User::class,
-            'content' => Content::class
+            'content' => Content::class,
         ]);
-
     }
 
     /**

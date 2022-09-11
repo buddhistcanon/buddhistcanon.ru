@@ -22,16 +22,16 @@ class ContentFactory extends Factory
     public function definition()
     {
         return [
-            "lang" => "ru",
-            "translator_name" => $this->faker->firstName,
-            "description" => $this->faker->paragraph,
+            'lang' => 'ru',
+            'translator_name' => $this->faker->firstName,
+            'description' => $this->faker->paragraph,
         ];
     }
 
     public function main()
     {
         return $this->state([
-            'is_main' => 1
+            'is_main' => 1,
         ]);
     }
 }

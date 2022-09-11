@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $old_content
  * @property string $new_content
  * @property string|null $processed_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|CrawlerLog newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CrawlerLog newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CrawlerLog query()
@@ -30,9 +31,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class CrawlerLog extends Model
 {
-    protected $table = "crawler_logs";
-    protected $fillable = ['project_id', "old_content", "new_content", "url"];
+    protected $table = 'crawler_logs';
 
-
-
+    protected $fillable = ['project_id', 'old_content', 'new_content', 'url'];
 }

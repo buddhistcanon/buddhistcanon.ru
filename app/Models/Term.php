@@ -25,6 +25,7 @@ use Str;
  * @property-read \App\Models\TermVariant|null $term
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\TermVariant[] $variants
  * @property-read int|null $variants_count
+ *
  * @method static \Database\Factories\TermFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Term newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Term newQuery()
@@ -45,33 +46,34 @@ class Term extends Model
 {
     use HasFactory;
 
-    protected $table = "terms";
+    // -----
+    use Searchable;
+
+    protected $table = 'terms';
 
     public function variants(): HasMany
     {
-    	return $this->hasMany(TermVariant::class);
+        return $this->hasMany(TermVariant::class);
     }
 
     public function term(): HasOne
     {
-    	return $this->hasOne(TermVariant::class, "term_id", "term_id")->where("is_main", 1);
+        return $this->hasOne(TermVariant::class, 'term_id', 'term_id')->where('is_main', 1);
     }
 
     // -----
 
     public function setTitleAndAutoSlug($title)
     {
-    	$this->title = $title;
-    	$this->slug = Str::slug($title);
+        $this->title = $title;
+        $this->slug = Str::slug($title);
     }
 
-    // -----
-    use Searchable;
     public function toSearchableArray()
     {
         return [
             'content_id' => $this->content_id,
-            'text' => $this->text
+            'text' => $this->text,
         ];
     }
 }

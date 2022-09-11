@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $confirmed_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|EmailSubscribe newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|EmailSubscribe newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|EmailSubscribe query()
@@ -24,6 +25,5 @@ use Illuminate\Database\Eloquent\Model;
  */
 class EmailSubscribe extends Model
 {
-    protected $table = "email_subscribes";
-
+    protected $table = 'email_subscribes';
 }

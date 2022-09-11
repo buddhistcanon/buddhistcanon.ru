@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Http\Controllers\Admin;
 
@@ -8,8 +8,6 @@ class AdminIndexController extends Controller
 {
     public function __invoke()
     {
-        return inertia("Admin/AdminIndexPage");
+        return inertia('Admin/AdminIndexPage');
     }
-
-
 }

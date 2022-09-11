@@ -19,6 +19,7 @@ use Laravel\Scout\Searchable;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Content|null $content
+ *
  * @method static \Database\Factories\ContentChunkFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|ContentChunk newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ContentChunk newQuery()
@@ -37,19 +38,23 @@ use Laravel\Scout\Searchable;
 class ContentChunk extends Model
 {
     use HasFactory;
-    protected $table = "content_chunks";
+
+    // настройка поиска
+    use Searchable;
+
+    protected $table = 'content_chunks';
+
     protected $fillable = ['order', 'mark', 'text'];
 
-    const TYPE_BOOK = 1;
-    const TYPE_SUTTA = 2;
+    public const TYPE_BOOK = 1;
+
+    public const TYPE_SUTTA = 2;
 
     public function content()
     {
         return $this->belongsTo(Content::class);
     }
 
-    // настройка поиска
-    use Searchable;
     public function toSearchableArray()
     {
         return [
@@ -58,8 +63,7 @@ class ContentChunk extends Model
             'chunkable_type' => $this->chunkable_type,
             'chunkable_id' => $this->chunkable_id,
             'text' => $this->text,
-            'mark' => $this->mark
+            'mark' => $this->mark,
         ];
     }
-
 }

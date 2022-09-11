@@ -24,7 +24,8 @@ class AuthorFactory extends Factory
     public function definition()
     {
         $name = $this->faker->firstName;
-        $fullname = Arr::random(['Bhikku', 'Ajahn'])." ".$name;
+        $fullname = Arr::random(['Bhikku', 'Ajahn']).' '.$name;
+
         return [
             'short_name' => $name,
             'full_name' => $fullname,
@@ -36,7 +37,7 @@ class AuthorFactory extends Factory
     public function monk()
     {
         return $this->state([
-            'is_monk' => 1
+            'is_monk' => 1,
         ]);
     }
 }

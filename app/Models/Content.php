@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Laravel\Scout\Searchable;
 
 /**
  * App\Models\Content
@@ -31,6 +30,7 @@ use Laravel\Scout\Searchable;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ExternalSource[] $external_sources
  * @property-read int|null $external_sources_count
  * @property-read \App\Models\People|null $translator
+ *
  * @method static \Database\Factories\ContentFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Content newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Content newQuery()
@@ -56,7 +56,9 @@ use Laravel\Scout\Searchable;
 class Content extends Model
 {
     use HasFactory;
-    protected $table = "contents";
+
+    protected $table = 'contents';
+
     protected $fillable = ['lang', 'title'];
 
     public function contentable(): \Illuminate\Database\Eloquent\Relations\MorphTo
@@ -71,7 +73,7 @@ class Content extends Model
 
     public function translator(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(People::class, "translator_id");
+        return $this->belongsTo(People::class, 'translator_id');
     }
 
     public function external_sources()
@@ -81,16 +83,21 @@ class Content extends Model
 
     public function displaySlug()
     {
-        $slug = "/".$this->lang;
-        if( ! $this->translator_id) return $slug;
-        $slug .= "/".$this->translator->slug;
+        $slug = '/'.$this->lang;
+        if (! $this->translator_id) {
+            return $slug;
+        }
+        $slug .= '/'.$this->translator->slug;
+
         return $slug;
     }
 
     public function displayTranslatorName()
     {
-        if(!$this->translator_id) return "";
+        if (! $this->translator_id) {
+            return '';
+        }
+
         return $this->translator->displayNameRu();
     }
-
 }

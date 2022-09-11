@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $crawled_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CrawlerPage[] $pages
  * @property-read int|null $pages_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|CrawlerProject newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CrawlerProject newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CrawlerProject query()
@@ -36,7 +37,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class CrawlerProject extends Model
 {
-    protected $table = "crawler_projects";
+    protected $table = 'crawler_projects';
 
     protected $casts = [
         'start_pages' => 'array',
@@ -45,6 +46,6 @@ class CrawlerProject extends Model
 
     public function pages()
     {
-    	return $this->hasMany(CrawlerPage::class, "project_id");
+        return $this->hasMany(CrawlerPage::class, 'project_id');
     }
 }

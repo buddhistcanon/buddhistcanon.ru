@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\User|null $user
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Invite newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Invite newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Invite query()
@@ -27,10 +28,10 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Invite extends Model
 {
-    protected $table = "invites";
+    protected $table = 'invites';
 
     public function user()
     {
-    	return $this->belongsTo(User::class, "registered_user_id");
+        return $this->belongsTo(User::class, 'registered_user_id');
     }
 }

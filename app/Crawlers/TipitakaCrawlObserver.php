@@ -1,4 +1,6 @@
-<?php namespace App\Crawlers;
+<?php
+
+namespace App\Crawlers;
 
 use App\Models\CrawlerLog;
 use App\Models\CrawlerPage;
@@ -14,6 +16,7 @@ class TipitakaCrawlObserver extends CrawlObserver
      * @var CrawlerProject
      */
     private CrawlerProject $project;
+
     private bool $isVerbose;
 
     public function __construct(CrawlerProject $project, $isVerbose = false)
@@ -25,29 +28,35 @@ class TipitakaCrawlObserver extends CrawlObserver
     /**
      * Called when the crawler will crawl the url.
      *
-     * @param \Psr\Http\Message\UriInterface $url
+     * @param  \Psr\Http\Message\UriInterface  $url
      */
     public function willCrawl(UriInterface $url)
     {
         $fetchedUrl = $this->urlString($url);
-        if($this->isVerbose) echo "$fetchedUrl .. ";
+        if ($this->isVerbose) {
+            echo "$fetchedUrl .. ";
+        }
     }
 
     public function crawled(UriInterface $url, ResponseInterface $response, ?UriInterface $foundOnUrl = null)
     {
         $html = $response->getBody();
-        $html = preg_replace("/<input.*?type=\"hidden\".*?\/>/", "", $html);
+        $html = preg_replace("/<input.*?type=\"hidden\".*?\/>/", '', $html);
         $status = $response->getStatusCode();
         $hash = md5($html);
 
         $fetchedUrl = $this->urlString($url);
-        if($this->isVerbose) echo "url loaded . ";
+        if ($this->isVerbose) {
+            echo 'url loaded . ';
+        }
 
-        $crawlerPage = CrawlerPage::withTrashed()->where("url", $fetchedUrl)->first();
+        $crawlerPage = CrawlerPage::withTrashed()->where('url', $fetchedUrl)->first();
 
         // Новая страница
-        if( ! $crawlerPage){
-            if($this->isVerbose) echo "this is new page";
+        if (! $crawlerPage) {
+            if ($this->isVerbose) {
+                echo 'this is new page';
+            }
             $crawlerPage = new CrawlerPage();
             $crawlerPage->project_id = $this->project->id;
             $crawlerPage->url = $fetchedUrl;
@@ -57,12 +66,12 @@ class TipitakaCrawlObserver extends CrawlObserver
             $crawlerPage->hashed_at = now();
             $crawlerPage->session = $this->project->session;
             $crawlerPage->checked_at = now();
-        }else{
-
+        } else {
             // Страница обновлена
-            if($crawlerPage AND $crawlerPage->content_hash != $hash){
-
-                if($this->isVerbose) echo "PAGE UPDATED ";
+            if ($crawlerPage and $crawlerPage->content_hash != $hash) {
+                if ($this->isVerbose) {
+                    echo 'PAGE UPDATED ';
+                }
 
                 $crawlerPage->old_content = $crawlerPage->content;
 
@@ -78,30 +87,34 @@ class TipitakaCrawlObserver extends CrawlObserver
                     'project_id' => $this->project->id,
                     'url' => $fetchedUrl,
                     'new_content' => $crawlerPage->content,
-                    'old_content' => $crawlerPage->old_content
+                    'old_content' => $crawlerPage->old_content,
                 ]);
             }
 
             // Страница не изменилась
-            elseif($crawlerPage AND $crawlerPage->content_hash == $hash){
-                if($this->isVerbose) echo "page exists   ";
+            elseif ($crawlerPage and $crawlerPage->content_hash == $hash) {
+                if ($this->isVerbose) {
+                    echo 'page exists   ';
+                }
                 $crawlerPage->session = $this->project->session;
                 $crawlerPage->checked_at = now();
             }
-
         }
 
         $crawlerPage->save();
-        if($this->isVerbose) echo "\n";
+        if ($this->isVerbose) {
+            echo "\n";
+        }
     }
 
     public function crawlFailed(UriInterface $url, RequestException $requestException, ?UriInterface $foundOnUrl = null)
     {
-        $fetchedUrl = $url->getPath()."?".$url->getQuery();
-        echo ("Fetch error $fetchedUrl : ".$requestException->getMessage());
-        $crawlerPage = CrawlerPage::where("url", $fetchedUrl)->first();
-        if($crawlerPage) $crawlerPage->delete();
-
+        $fetchedUrl = $url->getPath().'?'.$url->getQuery();
+        echo "Fetch error $fetchedUrl : ".$requestException->getMessage();
+        $crawlerPage = CrawlerPage::where('url', $fetchedUrl)->first();
+        if ($crawlerPage) {
+            $crawlerPage->delete();
+        }
     }
 
     /**
@@ -115,8 +128,11 @@ class TipitakaCrawlObserver extends CrawlObserver
 
     public function urlString(UriInterface $uri)
     {
-    	$urlString = $uri->getPath();
-    	if($uri->getQuery()) $urlString .= "?".$uri->getQuery();
-    	return $urlString;
+        $urlString = $uri->getPath();
+        if ($uri->getQuery()) {
+            $urlString .= '?'.$uri->getQuery();
+        }
+
+        return $urlString;
     }
 }

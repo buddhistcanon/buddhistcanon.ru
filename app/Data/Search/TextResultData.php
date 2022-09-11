@@ -11,8 +11,6 @@ class TextResultData extends Data
         public string $html,
         public ?string $urlWithMark = null, // урл абзаца (вместе с mark)
         public ?string $translatorName = null // Сергей SV,
-    )
-    {    }
-
-
+    ) {
+    }
 }

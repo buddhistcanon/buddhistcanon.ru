@@ -1,9 +1,9 @@
-<?php namespace App\Data;
+<?php
+
+namespace App\Data;
+
 use App\Models\Term;
-use App\Models\TermVariant;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
-use Spatie\LaravelData\Attributes\Validation\Rule;
 use Spatie\LaravelData\Data;
 use Str;
 
@@ -14,12 +14,11 @@ class TermData extends Data
         public string $title,
         public string $short_text,
         public string $text,
-        public string $slug = "",
-        public ?string $parts_text = "",
+        public string $slug = '',
+        public ?string $parts_text = '',
         public ?array $variants = [], // массив синонимов
-    )
-    {
-        if(!$this->slug){
+    ) {
+        if (! $this->slug) {
             $this->slug = Str::slug($this->title);
         }
     }
@@ -39,7 +38,10 @@ class TermData extends Data
 
     public static function fromModel(Term $term): self
     {
-        $variants = $term->variants->map(function($item){ return $item->title; })->toArray();
+        $variants = $term->variants->map(function ($item) {
+            return $item->title;
+        })->toArray();
+
         return new self(
             id: $term->id,
             title: $term->title,
@@ -67,7 +69,8 @@ class TermData extends Data
     public static function fromRequest(Request $request): self
     {
         self::validate($request->all()); // необходимо ! // TODO проверить в новых версиях, нужно ли, обещали убрать
-        $variants = $request->input("list_variants") ? $variants = explode("\n", $request->input("list_variants")) : [];
+        $variants = $request->input('list_variants') ? $variants = explode("\n", $request->input('list_variants')) : [];
+
         return new self(
             id: $request->input('id') ?? null,
             title: $request->input('title'),
@@ -77,10 +80,4 @@ class TermData extends Data
             variants: $variants,
         );
     }
-
-
-
-
-
-
 }

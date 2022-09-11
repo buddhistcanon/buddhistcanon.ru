@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use App\Models\Content;
-use App\Models\ContentChunk;
 use App\Models\People;
 use App\Models\Sutta;
 use App\Services\ContentService;
@@ -45,18 +44,18 @@ class ImportSuttasFromFilesCommand extends Command
      */
     public function handle()
     {
-        $this->info("Import suttas from disk.");
-        $disk = Storage::disk("source_suttas");
-        $isRebuild = $this->option("rebuild");
+        $this->info('Import suttas from disk.');
+        $disk = Storage::disk('source_suttas');
+        $isRebuild = $this->option('rebuild');
 
-        if($isRebuild){
-            $this->line("Delete MN suttas..");
+        if ($isRebuild) {
+            $this->line('Delete MN suttas..');
             $suttas = Sutta::query()
-                ->where("category", "mn")
-                ->with("contents")
+                ->where('category', 'mn')
+                ->with('contents')
                 ->get();
-            foreach($suttas as $sutta){
-                foreach($sutta->contents as $content){
+            foreach ($suttas as $sutta) {
+                foreach ($sutta->contents as $content) {
                     $content->chunks()->delete();
                     $content->delete();
                 }
@@ -64,17 +63,16 @@ class ImportSuttasFromFilesCommand extends Command
             }
         }
 
-        $pathFolderPali = "pali/sutta/mn/";
-        $pathFolderEn = "en/sujato/sutta/mn/";
+        $pathFolderPali = 'pali/sutta/mn/';
+        $pathFolderEn = 'en/sujato/sutta/mn/';
         $missingEnSuttas = [];
 
         $filesPali = $disk->allFiles($pathFolderPali);
 
-        $peopleSujato = People::where("monkname_en", "Bhante Sujato")->firstOrFail();
+        $peopleSujato = People::where('monkname_en', 'Bhante Sujato')->firstOrFail();
 
-        foreach($filesPali as $pathFile){
-
-            $paliSuttaService = new ImportSuttaFromFileService(str_replace($pathFolderPali, "", $pathFile), $disk->read($pathFile));
+        foreach ($filesPali as $pathFile) {
+            $paliSuttaService = new ImportSuttaFromFileService(str_replace($pathFolderPali, '', $pathFile), $disk->read($pathFile));
             $paliSuttaData = $paliSuttaService->getDto();
 
             $category = $paliSuttaData->category;
@@ -85,13 +83,13 @@ class ImportSuttasFromFilesCommand extends Command
 
             //if($order!=="1") continue;
 
-            $pathFileEn = $pathFolderEn.$paliSuttaData->category.$paliSuttaData->order.$paliSuttaData->suborder."_translation-en-sujato.json";
-            try{
+            $pathFileEn = $pathFolderEn.$paliSuttaData->category.$paliSuttaData->order.$paliSuttaData->suborder.'_translation-en-sujato.json';
+            try {
                 $textSuttaEn = $disk->read($pathFileEn);
-                $enSuttaService = new ImportSuttaFromFileService($paliSuttaData->name()."_translation-en-sujato.json", $textSuttaEn);
+                $enSuttaService = new ImportSuttaFromFileService($paliSuttaData->name().'_translation-en-sujato.json', $textSuttaEn);
                 $enSuttaData = $enSuttaService->getDto();
-            }catch(\Exception $e){
-                $this->error("EN Sujato translation not found !");
+            } catch(\Exception $e) {
+                $this->error('EN Sujato translation not found !');
                 $missingEnSuttas[] = $paliSuttaData->name();
                 exit();
             }
@@ -117,8 +115,10 @@ class ImportSuttasFromFilesCommand extends Command
             $sutta->category = $category;
             $sutta->order = $order;
             $sutta->suborder = $suborder;
-            $name = strtoupper($category)."".$order;
-            if($suborder) $name .= ".".$suborder;
+            $name = strtoupper($category).''.$order;
+            if ($suborder) {
+                $name .= '.'.$suborder;
+            }
             $sutta->name = $name;
             $sutta->save();
 
@@ -126,10 +126,10 @@ class ImportSuttasFromFilesCommand extends Command
             $paliContent = $sutta->contents()->make();
             $paliContent->title = $title;
             $paliContent->subtitle = $subtitle;
-            $paliContent->lang = "pali";
+            $paliContent->lang = 'pali';
             $paliContent->is_original = 1;
-            $paliContent->is_synced = "1";
-            $paliContent->description = "Mahāsaṅgīti edition of the Pali Tipiṭaka";
+            $paliContent->is_synced = '1';
+            $paliContent->description = 'Mahāsaṅgīti edition of the Pali Tipiṭaka';
             $paliContent->save();
 
             $sutta->title_pali = $paliContent->title;
@@ -137,7 +137,7 @@ class ImportSuttasFromFilesCommand extends Command
 
             $service = new ContentService($paliContent);
             $contentOrder = 10;
-            foreach($paliSuttaData->contentWithMarks as $mark=>$chunk){
+            foreach ($paliSuttaData->contentWithMarks as $mark => $chunk) {
                 $service->addChunk($chunk, $contentOrder, $mark);
                 $contentOrder += 10;
             }
@@ -148,16 +148,16 @@ class ImportSuttasFromFilesCommand extends Command
             $enContent = $sutta->contents()->make();
             $enContent->title = $title;
             $enContent->subtitle = $enSuttaData->title;
-            $enContent->lang = "en";
+            $enContent->lang = 'en';
             $enContent->is_original = 0;
-            $enContent->is_synced = "1";
-            $enContent->description = "Translated from the Pali during 2016–2018, with reference to several English translations, especially those of Bhikkhu Bodhi";
+            $enContent->is_synced = '1';
+            $enContent->description = 'Translated from the Pali during 2016–2018, with reference to several English translations, especially those of Bhikkhu Bodhi';
             $enContent->translator_id = $peopleSujato->id;
             $enContent->save();
 
             $service = new ContentService($enContent);
             $contentOrder = 10;
-            foreach($enSuttaData->contentWithMarks as $mark=>$chunk){
+            foreach ($enSuttaData->contentWithMarks as $mark => $chunk) {
                 $service->addChunk($chunk, $contentOrder, $mark);
                 $contentOrder += 10;
             }
@@ -167,6 +167,7 @@ class ImportSuttasFromFilesCommand extends Command
             DB::commit();
             //exit();
         }
+
         return 0;
     }
 
@@ -260,5 +261,4 @@ class ImportSuttasFromFilesCommand extends Command
 //        }
 //        return $service->getContent();
 //    }
-
 }

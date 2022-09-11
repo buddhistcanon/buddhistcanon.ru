@@ -12,10 +12,10 @@ class CanonPage extends Component
 
     public function mount()
     {
-    	$this->suttas = Sutta::query()
-            ->with("contents")
-            ->with("contents.translator")
-            ->orderBy("order", "asc")
+        $this->suttas = Sutta::query()
+            ->with('contents')
+            ->with('contents.translator')
+            ->orderBy('order', 'asc')
             ->get();
     }
 

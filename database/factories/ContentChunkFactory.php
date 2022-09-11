@@ -24,7 +24,7 @@ class ContentChunkFactory extends Factory
         return [
             'content_id' => 0,
             'order' => 0,
-            'text' => $this->faker->paragraph
+            'text' => $this->faker->paragraph,
         ];
     }
 }

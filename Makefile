@@ -16,6 +16,8 @@ up: ## Run sail docker-compose with detach
 down: ## Terminate sail docker-compose
 	./vendor/bin/sail down
 
+restart: down up ## Restart sail docker-compose
+
 vite-dev: ## npm run dev
 	./vendor/bin/sail npm run dev
 
@@ -57,3 +59,6 @@ clear: ## Clear config and route cache
 	./vendor/bin/sail artisan cache:clear
 	./vendor/bin/sail artisan config:clear
 	./vendor/bin/sail artisan route:clear
+
+pint: ## Run php linter
+	./vendor/bin/pint --config ./pint.json

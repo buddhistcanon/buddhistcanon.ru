@@ -9,8 +9,11 @@ use function view;
 class SuttaChunk extends Component
 {
     public $content;
+
     public $html;
+
     public $numColumns;
+
     public $mark;
 
     public function mount($text, $numColumns, $mark)
@@ -21,10 +24,10 @@ class SuttaChunk extends Component
         $this->mark = $mark;
     }
 
-    public function clickTerm($termTitle = "Термин не найден")
+    public function clickTerm($termTitle = 'Термин не найден')
     {
         //$this->clickedTermTitle = $termTitle;
-        $this->emit("showTerm", $termTitle);
+        $this->emit('showTerm', $termTitle);
     }
 
     public function render()

@@ -4,18 +4,17 @@ namespace App\Http\Controllers\Admin\Suttas;
 
 use App\Http\Controllers\Controller;
 use App\Models\Sutta;
-use Illuminate\Http\Request;
 
 class AdminSuttasGet extends Controller
 {
     public function __invoke()
     {
         $suttas = Sutta::query()
-            ->with("contents")
-            ->with("contents.translator")
-            ->orderBy("order", "asc")
+            ->with('contents')
+            ->with('contents.translator')
+            ->orderBy('order', 'asc')
             ->get();
 
-        return inertia("Admin/Suttas/AdminSuttasPage", ['suttas'=>$suttas]);
+        return inertia('Admin/Suttas/AdminSuttasPage', ['suttas' => $suttas]);
     }
 }
