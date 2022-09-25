@@ -95,6 +95,11 @@ class User extends Authenticatable
         return $this->hasMany(UserBookAccess::class);
     }
 
+    public function roles()
+    {
+        return $this->hasMany(Role::class);
+    }
+
     public function gravatarUrl()
     {
         return 'https://www.gravatar.com/avatar/'.md5(strtolower(trim($this->email)));

@@ -20,6 +20,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/profile', \App\Http\Controllers\ProfileController::class.'@index')->name('profile');
 });
 
+Route::group(['middleware' => ['admin']], function () {
+    Route::get('/profile', \App\Http\Controllers\ProfileController::class.'@index')->name('profile');
+});
+
 Route::get('/', \App\Http\Controllers\WelcomeController::class.'@index')->name('welcome');
 
 Route::get('/dn', \App\Http\Controllers\Canon\CanonController::class.'@dn')->name('dn');

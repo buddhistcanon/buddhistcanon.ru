@@ -28,23 +28,6 @@ class CreateUsersTable extends Migration
             $table->timestamps();
         });
 
-//        Schema::create('roles', function (Blueprint $table) {
-//            $table->id();
-//            $table->string('name')->unique();
-//        });
-//
-//        Schema::create('user_roles', function (Blueprint $table) {
-//            $table->bigInteger('user_id')->unsigned();
-//            $table->bigInteger('role_id')->unsigned()->default(2);
-//            $table->foreign('user_id')
-//                ->references('id')->on('users')
-//                ->onDelete('cascade')
-//                ->onUpdate('cascade');
-//            $table->foreign('role_id')
-//                ->references('id')->on('roles')
-//                ->onUpdate('cascade');
-//        });
-
         Schema::create('invites', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('invite_symbols')->index();
