@@ -1,5 +1,23 @@
 ## Фонд Канона Буддизма
 
+### Установка
+
+Скопировать .env.example в .env 
+
+Отредактировать .env 
+
+```bash
+make up
+sail artisan key:generate
+sail npm install
+make migrate-seed
+```
+### Разработка
+
+```bash
+make vite-dev
+```
+Открыть http://localhost:7480
 
 ### Установка на сервере
 
@@ -33,6 +51,13 @@ php artisan lb:import_theravadaru_suttas --rebuild
 make vite-build && make ssr-server
 ```
 
+### Импорт сутт
+
+```bash
+make import-file-suttas
+make import-theravadaru-suttas
+```
+ 
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
