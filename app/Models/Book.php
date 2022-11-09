@@ -33,7 +33,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \App\Models\People|null $author
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Content[] $contents
  * @property-read int|null $contents_count
- *
  * @method static \Database\Factories\BookFactory factory(...$parameters)
  * @method static Builder|Book newModelQuery()
  * @method static Builder|Book newQuery()

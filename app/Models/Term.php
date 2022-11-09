@@ -25,7 +25,6 @@ use Str;
  * @property-read \App\Models\TermVariant|null $term
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\TermVariant[] $variants
  * @property-read int|null $variants_count
- *
  * @method static \Database\Factories\TermFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Term newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Term newQuery()

@@ -19,7 +19,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $crawled_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CrawlerPage[] $pages
  * @property-read int|null $pages_count
- *
  * @method static \Illuminate\Database\Eloquent\Builder|CrawlerProject newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CrawlerProject newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CrawlerProject query()

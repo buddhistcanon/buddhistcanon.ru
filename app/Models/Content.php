@@ -30,7 +30,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ExternalSource[] $external_sources
  * @property-read int|null $external_sources_count
  * @property-read \App\Models\People|null $translator
- *
  * @method static \Database\Factories\ContentFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Content newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Content newQuery()
