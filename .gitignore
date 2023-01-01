@@ -15,4 +15,5 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
-./docker_data
+/docker_data
+Makefile
