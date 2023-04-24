@@ -15,7 +15,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $description
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- *
  * @method static \Illuminate\Database\Eloquent\Builder|Translator newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Translator newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Translator query()

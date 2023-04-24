@@ -21,7 +21,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string|null $old_content
  * @property int $session
  * @property \Illuminate\Support\Carbon|null $checked_at
- *
  * @method static \Illuminate\Database\Eloquent\Builder|CrawlerPage newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CrawlerPage newQuery()
  * @method static \Illuminate\Database\Query\Builder|CrawlerPage onlyTrashed()

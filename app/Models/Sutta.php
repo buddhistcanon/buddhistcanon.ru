@@ -21,7 +21,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Content[] $contents
  * @property-read int|null $contents_count
- *
  * @method static \Illuminate\Database\Eloquent\Builder|Sutta byIndexName($indexName)
  * @method static \Illuminate\Database\Eloquent\Builder|Sutta bySuttaName(\App\Data\SuttaNameData $suttaNameData)
  * @method static \Illuminate\Database\Eloquent\Builder|Sutta newModelQuery()

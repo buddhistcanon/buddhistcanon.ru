@@ -19,7 +19,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $need_attention
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- *
  * @method static \Illuminate\Database\Eloquent\Builder|TheravadaruSutta byIndexName($indexName)
  * @method static \Illuminate\Database\Eloquent\Builder|TheravadaruSutta newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|TheravadaruSutta newQuery()

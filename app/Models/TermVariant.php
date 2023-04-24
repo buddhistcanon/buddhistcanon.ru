@@ -16,7 +16,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Term|null $description
  * @property-read \App\Models\Term|null $term
- *
  * @method static \Database\Factories\TermVariantFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|TermVariant newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|TermVariant newQuery()

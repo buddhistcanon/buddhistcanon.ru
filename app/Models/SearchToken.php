@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $description
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- *
  * @method static \Illuminate\Database\Eloquent\Builder|SearchToken newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|SearchToken newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|SearchToken query()

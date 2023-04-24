@@ -20,7 +20,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Book[] $books
  * @property-read int|null $books_count
- *
  * @method static \Database\Factories\AuthorFactory factory(...$parameters)
  * @method static Builder|Author monk()
  * @method static Builder|Author newModelQuery()

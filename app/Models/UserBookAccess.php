@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $is_allow
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- *
  * @method static \Illuminate\Database\Eloquent\Builder|UserBookAccess newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserBookAccess newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserBookAccess query()
