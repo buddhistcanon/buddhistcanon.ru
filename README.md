@@ -25,6 +25,18 @@ php artisan lb:import_file_suttas --rebuild
 php artisan lb:import_theravadaru_suttas --rebuild
 ```
 
+### Разработка
+
+Запустить веб-сервер: 
+```bash 
+php artisan serve --port=7480
+```
+Запустить vite-сервер:
+```bash
+npm run dev
+```
+
+
 ### SSR
 
 Запуск ssr-сервера:

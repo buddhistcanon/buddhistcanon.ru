@@ -20,6 +20,7 @@ class PeopleSeeder extends Seeder
         $people->nickname = 'SV';
         $people->slug = 'sv';
         $people->description = 'Сергей Тюлин (SV) - ведущий переводчик сутт на русский язык, создатель сайта [theravada.ru](http://theravada.ru).';
+        $people->signature = "Сергей SV";
         $people->save();
 
         $people = new People();
@@ -27,6 +28,7 @@ class PeopleSeeder extends Seeder
         $people->nickname = 'khantibalo';
         $people->slug = 'khantibalo';
         $people->description = 'Упасака московской общины Тхеравады, создатель сайта [theravada.su](http://theravada.su).';
+        $people->signature = "Павел Khantibalo";
         $people->save();
 
         $people = new People();
@@ -37,6 +39,7 @@ class PeopleSeeder extends Seeder
         $people->slug = 'sujato';
         $people->is_monk = 1;
         $people->description = 'Anthony Best, создатель сайта [suttacentral.net](https://suttacentral.net).';
+        $people->signature = "Бханте Суджато";
         $people->save();
 
         $people = new People();
@@ -54,6 +57,7 @@ class PeopleSeeder extends Seeder
 В 1984, совместно с дост. Ньянапоникой Тхерой, дост. Бодхи был назначен редактором английского языка в Буддийском Издательском Обществе (Buddhist Publication Society) и в 1988 становится его президентом. В 2002 он уходит в отставку с должности редактора, но всё ещё остаётся президентом.
 
 В 2002 возвращается в США и в данный момент обучает Дхамме в монастыре Бодхи (Лафайет, Нью Джерси) и в монастыре Чуан Йен (Кармел, Нью Йорк). Также является председателем Фонда Йин Шун.';
+        $people->signature("Бханте Бодхи");
         $people->save();
 
         $people = new People();
@@ -74,6 +78,7 @@ class PeopleSeeder extends Seeder
 С момента основания монастыря Суан Мок он изучил все школы буддизма и все мировые религиозные традиции. Этот интерес был скорее практического плана, нежели схоластического. Он стремился объединить всех по-настоящему религиозных людей, чтобы работать вместе с целью избавить человечество от эгоизма. Такой широкий подход принёс ему друзей и учеников со всего мира, включая христиан, мусульман, индуистов и сикхов.
 
 Его последним проектом стало основание международного центра для практики медитации "Dhamma Hermitage" при монастыре Суан Мок.';
+        $people->signature = "Аджан Буддадаса";
         $people->save();
     }
 }

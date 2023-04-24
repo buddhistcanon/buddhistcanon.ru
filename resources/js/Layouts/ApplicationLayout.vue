@@ -16,6 +16,7 @@ const navigation = [
     { name: 'Саньютта-никая', href: '/sn', current: false },
 ]
 const userNavigation = [
+    { name: 'Admin area', href: '/admin', method: "get" },
     { name: 'Профиль', href: '/profile', method: "get" },
     { name: 'Настройки', href: '/settings', method: "get" },
     { name: 'Выход', href: '/logout', method: "post" },

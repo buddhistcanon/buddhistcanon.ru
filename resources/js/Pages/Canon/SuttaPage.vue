@@ -1,6 +1,6 @@
 <script setup>
 import ApplicationLayout from "@/Layouts/ApplicationLayout.vue";
-import { textParser } from "@/helpers.js";
+import { textToHtml } from "@/helpers.js";
 import {Link} from "@inertiajs/inertia-vue3";
 
 defineProps({
