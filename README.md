@@ -2,7 +2,7 @@
 
 ### Установка
 
-Скопировать .env.example в .env 
+Скопировать .env.example.select в .env 
 
 Отредактировать .env 
 
@@ -23,10 +23,19 @@ make vite-dev
 
 meilisearch
 ```bash
-sudo echo "deb [trusted=yes] https://apt.fury.io/meilisearch/ /" > /etc/apt/sources.list.d/fury.list
-sudo apt update && sudo apt install meilisearch-http
-nohup meilisearch & 
+# https://www.meilisearch.com/docs/learn/getting_started/installation
+
+# Add Meilisearch package
+echo "deb [trusted=yes] https://apt.fury.io/meilisearch/ /" | sudo tee /etc/apt/sources.list.d/fury.list
+
+# Update APT and install Meilisearch
+sudo apt update && sudo apt install meilisearch
+
+# Launch Meilisearch
+nohup meilisearch &
 ```
+
+Альтернатива - запуск в докере https://www.meilisearch.com/docs/learn/cookbooks/docker
 
 ```bash
 cp .env.example .env
@@ -60,8 +69,9 @@ npm run dev
 Запуск ssr-сервера:
 
 ```bash
-make vite-build && make ssr-server
+npm run build && node bootstrap/ssr/ssr.mjs npm run ssr-server
 ```
+На сервере должен стоять node.js 14+ (https://github.com/nodesource/distributions#debinstall)
 
 ### Импорт сутт
 
