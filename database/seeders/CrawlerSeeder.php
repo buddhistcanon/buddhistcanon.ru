@@ -15,8 +15,8 @@ class CrawlerSeeder extends Seeder
     {
         $crawlerProject = new \App\Models\CrawlerProject();
         $crawlerProject->name = 'theravada.ru';
-        $crawlerProject->root_url = 'http://theravada.ru';
-        $crawlerProject->start_url = '/index.htm';
+        $crawlerProject->root_url = 'https://theravada.ru';
+        $crawlerProject->start_url = '/Teaching/Canon/Suttanta/all-suttas-list.htm';
         $crawlerProject->save();
 
         $crawlerProject = new \App\Models\CrawlerProject();
