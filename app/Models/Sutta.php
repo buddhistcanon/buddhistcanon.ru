@@ -56,17 +56,6 @@ class Sutta extends Model
         });
     }
 
-    public function scopeByIndexName($query, $indexName)
-    {
-        $array = explode('.', $indexName);
-        $builder = $query->where('category', $array[0])->where('order', $array[1]);
-        if (isset($array[2])) {
-            $builder = $builder->where('suborder', $array[2]);
-        }
-
-        return $builder;
-    }
-
     public function scopeBySuttaName($query, SuttaNameData $suttaNameData)
     {
         $builder = $query

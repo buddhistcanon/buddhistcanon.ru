@@ -11,6 +11,7 @@ import Checkbox from "@/Components/Checkbox.vue";
 import Contenteditable from "vue-contenteditable";
 import {textToHtml} from "@/helpers.js";
 import { usePage } from '@inertiajs/inertia-vue3';
+import { toValue } from '@vueuse/core'
 
 const props = defineProps({
     sutta: Object,
@@ -41,6 +42,8 @@ let editedChunkTextChanged = ref(""); // контент отредактиров
 let loadingStoreChunks = ref(false); // лоадер на кнопке сохранения контентов
 
 let successMessage = ref(null);
+
+let chunksToDelete = ref([]); // id чанков, которые нужно удалить
 
 
 
@@ -81,7 +84,8 @@ onMounted(() => {
 const handleStoreSutta = () => {
     Inertia.post("/admin/store_sutta",{
             sutta: suttaForm.data(),
-            rows: contentRows.value
+            rows: contentRows.value,
+            chunksToDelete: chunksToDelete.value
         },
         {
             preserveScroll: true,
@@ -90,6 +94,7 @@ const handleStoreSutta = () => {
                 setTimeout(()=>{
                     successMessage.value = "";
                 }, 3000);
+                chunksToDelete.value = [];
             }
         });
 }
@@ -124,6 +129,121 @@ const saveChunks = ()=>{
 
 }
 
+const toContentInRows = (contentInColumns)=>{
+    let contentInRows = [];
+    // создание повёрнутого массива
+    contentInColumns[0].forEach((cell, j)=> {
+        contentInRows[j] = [];
+    });
+    contentInColumns.forEach((row, i)=> {
+        row.forEach((cell, j)=>{
+            contentInRows[j].push(cell);
+        });
+    });
+    return contentInRows;
+}
+
+const toContentInColumns = (contentInRows) => {
+    let contentInColumns = [];
+    // определение длины самого длинного контента
+    let maxLength = 0;
+    contentInRows.forEach((content, i)=> {
+        if(content.length > maxLength) maxLength = content.length;
+    });
+    let lengthContent = maxLength;
+    let numContents = contentInRows.length;
+
+    // разворачивание массива обратно
+    // console.log("lengthContent", lengthContent);
+    for(let i = 0; i < lengthContent; i++){
+        contentInColumns[i] = [];
+    }
+    // console.log("contentInColumns", contentInColumns);
+    for(let i = 0; i < numContents; i++){
+        for(let j = 0; j < lengthContent; j++){
+            contentInColumns[j][i] = contentInRows[i][j];
+        }
+    }
+    return contentInColumns;
+}
+
+const setOrderInContentInRow = (contentRow)=>{
+    let order = 10;
+    return contentRow.map((cell, i)=>{
+        if(cell){
+            cell.order = order;
+            order += 10;
+        }
+        return cell;
+    });
+}
+
+const deleteCell = (contentId, chunkId)=>{
+
+    let contentInRows = toContentInRows(contentRows.value);
+    contentInRows = contentInRows.map((row)=> row.filter((cell)=> cell && cell.id !== chunkId));
+    contentRows.value = toContentInColumns(contentInRows);
+
+    chunksToDelete.value.push(chunkId);
+}
+
+const insertCell = (contentId, chunkId)=>{
+
+    let contentInRows = toContentInRows(contentRows.value);
+    contentInRows = contentInRows.map((row)=> {
+        if(row[0].content_id === contentId){
+            let index = null;
+            let cell = null
+            row.forEach((cell, i)=>{
+                if(cell && cell.id === chunkId){
+                    index = i;
+                }
+            });
+            cell = JSON.parse(JSON.stringify(row[index]));
+            cell.id = "new"+Math.round(Math.random()*100000);
+            cell.mark = null;
+            cell.order = cell.order - 1;
+            cell.text = "";
+            row.splice(index, 0, cell);
+            row = setOrderInContentInRow(row);
+            return row;
+        }
+        return row;
+    });
+
+    contentRows.value = toContentInColumns(contentInRows);
+}
+
+const addContentToPrevChunk = (contentId, chunkId)=>{
+    let contentInRows = toContentInRows(contentRows.value);
+
+    contentInRows = contentInRows.map((row)=> {
+        if (row[0].content_id === contentId) {
+            let index = null;
+            let prevIndex = null;
+            let cell = null;
+            let prevCell = null;
+            row.forEach((cell, i)=>{
+                if(cell && cell.id === chunkId){
+                    index = i;
+                }
+            });
+            if(index === 0) return row;
+            prevIndex = index - 1;
+            cell = JSON.parse(JSON.stringify(row[index]));
+            prevCell = JSON.parse(JSON.stringify(row[prevIndex]));
+            prevCell.text += "\n\n"+cell.text;
+            cell.text = "";
+            row.splice(index, 1, cell);
+            row.splice(prevIndex, 1, prevCell);
+            return row;
+        }else{
+            return row;
+        }
+    });
+    console.log("contentInRows after", contentInRows);
+    contentRows.value = toContentInColumns(contentInRows);
+}
 
 </script>
 
@@ -136,7 +256,7 @@ const saveChunks = ()=>{
 
 <!--        <div class="mb-2"><Breadcrumbs :pages="[{label:'Сутты', url: '/admin/suttas'}]" /></div>-->
 
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="mx-auto w-full px-4 sm:px-6 lg:px-8">
 
         <div class="text-2xl font-semibold leading-6 text-gray-700 mb-8">
             <h1 v-if="sutta.id">Редактирование {{sutta.name}}</h1>
@@ -145,7 +265,7 @@ const saveChunks = ()=>{
 
 
 
-            <Card>
+            <Card class="max-w-5xl">
 
                 <div class="col-span-full mb-4">
                     <label for="title_pali" class="block text-sm font-medium leading-6 text-gray-900">Название на пали</label>
@@ -232,20 +352,29 @@ const saveChunks = ()=>{
                         <div class="flex flex-row">
                             <template v-for="chunk in row">
                                 <template v-if="chunk && showContent[chunk.content_id]">
-                                    <div class="flex-1 mr-2 mb-4">
+                                    <div class="flex-1 mr-2 pb-2 mb-2 border-b">
                                         <div class="text-gray-500 flex flex-row justify-content-between mb-1">
                                             <template v-if="isContentLinked[chunk.content_id] === '0'">
-<!--                                                <a class="mr-2 text-gray-500 cursor-pointer">вставить ячейку</a>-->
-<!--                                                <a class="mr-2 text-gray-500 cursor-pointer">вставить ряд</a>-->
-<!--                                                <a class="mr-2 text-gray-500 cursor-pointer">удалить</a>-->
+                                                <a class="mr-3 text-gray-300">c{{chunk.id}} o{{chunk.order}}</a>
+                                                <a class="mr-3 text-gray-500 cursor-pointer" @click="insertCell(chunk.content_id, chunk.id)">вставить ячейку</a>
+                                                <a class="mr-3 text-gray-500 cursor-pointer" @click="addContentToPrevChunk(chunk.content_id, chunk.id)">перенести выше</a>
+                                                <a class="mr-3 text-gray-500 cursor-pointer" @click="deleteCell(chunk.content_id, chunk.id)">удалить ячейку</a>
                                             </template>
                                             <template v-else>
-<!--                                                <a class="mr-1 text-gray-500 cursor-pointer">вставить ряд</a>-->
+                                                <a class="mr-3 text-gray-300">c{{chunk.id}} o{{chunk.order}}</a>
+<!--                                                <a class="mr-1 text-gray-500 cursor-pointer" @click="insertRow(chunk.content_id)">вставить ряд</a>-->
 
                                             </template>
 
                                         </div>
-                                        <Contenteditable class="outline-0" tag="div" :contenteditable="true" v-model="chunk.text"></Contenteditable>
+                                        <template v-if="isContentLinked[chunk.content_id] === '0'">
+<!--                                        <template v-if="1">-->
+                                            <Contenteditable class="outline-0" tag="div" :contenteditable="true" v-model="chunk.text"></Contenteditable>
+                                        </template>
+                                        <template v-else>
+                                            <div v-html="chunk.text.replaceAll('\n','<br>')"></div>
+                                        </template>
+
                                     </div>
                                 </template>
                                 <template v-else>

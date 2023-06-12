@@ -56,7 +56,7 @@ defineProps({
                                             </div>
                                         </td>
                                         <td class="relative whitespace-nowrap py-5 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-                                            <div class="mr-4"><a :href="'/admin/edit_sutta/'+sutta.id" class="text-blue-500 hover:text-blue-600"
+                                            <div class="mr-4"><a :href="'/admin/edit_sutta/'+sutta.name" class="text-blue-500 hover:text-blue-600"
                                             >Edit<span class="sr-only">, {{ sutta.name }}</span></a
                                             ></div>
                                         </td>
