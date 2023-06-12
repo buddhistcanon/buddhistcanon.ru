@@ -7,7 +7,7 @@ import BreezeLabel from '@/Components/Label.vue';
 import { Head, Link, useForm } from '@inertiajs/inertia-vue3';
 
 const form = useForm({
-    name: '',
+    nickname: '',
     email: '',
     password: '',
     password_confirmation: '',
@@ -27,9 +27,9 @@ const submit = () => {
 
         <form @submit.prevent="submit">
             <div>
-                <BreezeLabel for="name" value="Name" />
-                <BreezeInput id="name" type="text" class="mt-1 block w-full" v-model="form.name" required autofocus autocomplete="name" />
-                <BreezeInputError class="mt-2" :message="form.errors.name" />
+                <BreezeLabel for="nickname" value="Nickname" />
+                <BreezeInput id="nickname" type="text" class="mt-1 block w-full" v-model="form.nickname" required autofocus autocomplete="nickname" />
+                <BreezeInputError class="mt-2" :message="form.errors.nickname" />
             </div>
 
             <div class="mt-4">
