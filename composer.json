@@ -23,6 +23,7 @@
         "laravel/sanctum": "^2.8",
         "laravel/scout": "^9.4",
         "laravel/tinker": "^2.7",
+        "league/flysystem-aws-s3-v3": "^3.0",
         "lorisleiva/laravel-actions": "^2.4",
         "meilisearch/meilisearch-php": "^0.21.0",
         "rmccue/requests": "^2.0",
