@@ -20,7 +20,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/profile', \App\Http\Controllers\ProfileController::class.'@index');
 });
 
-Route::group(['middleware' => ['admin']], function () {
+Route::group(['middleware' => ['admin_area']], function () {
     Route::get('/admin', \App\Http\Controllers\Admin\AdminController::class.'@index');
     Route::get('/admin/suttas/{category}', \App\Http\Controllers\Admin\AdminController::class.'@suttas');
     Route::get("/admin/edit_sutta/{id}", \App\Http\Controllers\Admin\Suttas\AdminSuttaController::class.'@edit');
