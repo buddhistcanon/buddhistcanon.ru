@@ -3,7 +3,6 @@ import ApplicationLayout from "@/Layouts/ApplicationLayout.vue";
 
 defineProps({
     suttas: { type: Array, required: true },
-    content: { type: Object, required: true },
 })
 
 const suttaUrl = (sutta) => {

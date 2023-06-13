@@ -251,7 +251,7 @@ const addContentToPrevChunk = (contentId, chunkId)=>{
             return row;
         }
     });
-    console.log("contentInRows after", contentInRows);
+    // console.log("contentInRows after", contentInRows);
     contentRows.value = toContentInColumns(contentInRows);
 }
 
