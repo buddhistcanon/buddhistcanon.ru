@@ -67,7 +67,7 @@ class Content extends Model
 
     public function chunks(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(ContentChunk::class);
+        return $this->hasMany(ContentChunk::class)->orderBy("order");
     }
 
     public function translator(): \Illuminate\Database\Eloquent\Relations\BelongsTo

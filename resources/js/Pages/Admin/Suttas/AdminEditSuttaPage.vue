@@ -181,10 +181,20 @@ const setOrderInContentInRow = (contentRow)=>{
 const deleteCell = (contentId, chunkId)=>{
 
     let contentInRows = toContentInRows(contentRows.value);
-    contentInRows = contentInRows.map((row)=> row.filter((cell)=> cell && cell.id !== chunkId));
-    contentRows.value = toContentInColumns(contentInRows);
+    let chunk = contentInRows.filter((row)=> row[0].content_id === contentId)[0]
+        .filter((cell)=> cell && cell.id === chunkId)[0];
+    //console.log("chunk", chunk);
+    let ask = true;
+    if(chunk && chunk.text !== ""){
+        ask = confirm("Эта ячейка не пуста. Удалить эту ячейку вместе с содержимым ?");
+    }
+    //console.log("ask", ask);
+    if(ask === true){
+        contentInRows = contentInRows.map((row)=> row.filter((cell)=> cell && cell.id !== chunkId));
+        contentRows.value = toContentInColumns(contentInRows);
 
-    chunksToDelete.value.push(chunkId);
+        chunksToDelete.value.push(chunkId);
+    }
 }
 
 const insertCell = (contentId, chunkId)=>{
@@ -232,7 +242,7 @@ const addContentToPrevChunk = (contentId, chunkId)=>{
             prevIndex = index - 1;
             cell = JSON.parse(JSON.stringify(row[index]));
             prevCell = JSON.parse(JSON.stringify(row[prevIndex]));
-            prevCell.text += "\n\n"+cell.text;
+            prevCell.text += "\n"+cell.text;
             cell.text = "";
             row.splice(index, 1, cell);
             row.splice(prevIndex, 1, prevCell);
@@ -372,7 +382,8 @@ const addContentToPrevChunk = (contentId, chunkId)=>{
                                             <Contenteditable class="outline-0" tag="div" :contenteditable="true" v-model="chunk.text"></Contenteditable>
                                         </template>
                                         <template v-else>
-                                            <div v-html="chunk.text.replaceAll('\n','<br>')"></div>
+                                            <div v-if="chunk.text" v-html="chunk.text.replaceAll('\n','<br>')"></div>
+                                            <div v-else></div>
                                         </template>
 
                                     </div>

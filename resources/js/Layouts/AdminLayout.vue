@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { defineProps } from '@vue/runtime-core'
-import { Head } from "@inertiajs/inertia-vue3";
+import { Head, Link } from "@inertiajs/inertia-vue3";
 import {
     Bars3Icon,
     CalendarIcon,
@@ -14,6 +14,7 @@ import {
     XMarkIcon,
     BookOpenIcon,
     LifebuoyIcon,
+    ArrowRightOnRectangleIcon
 } from '@heroicons/vue/24/outline'
 import ApplicationLogo from "@/Components/ApplicationLogo.vue";
 
@@ -22,13 +23,14 @@ defineProps({
 })
 
 const navigation = [
-    { name: 'Home', href: '/admin', icon: HomeIcon, current: false },
-    { name: 'MN', href: '/admin/suttas/mn', icon: FolderIcon, current: false },
-    { name: 'AN', href: '/admin/suttas/an', icon: FolderIcon, current: false },
-    { name: 'SN', href: '/admin/suttas/sn', icon: FolderIcon, current: false },
-    { name: 'DN', href: '/admin/suttas/dn', icon: FolderIcon, current: false },
-    { name: 'Термины', href: '/admin/terms', icon: BookOpenIcon, current: false },
-    { name: 'Помощь', href: '/admin/help', icon: LifebuoyIcon, current: false },
+    { name: 'На сайт', href: '/', icon: HomeIcon, current: false, method: "get" },
+    { name: 'MN', href: '/admin/suttas/mn', icon: FolderIcon, current: false, method: "get" },
+    { name: 'AN', href: '/admin/suttas/an', icon: FolderIcon, current: false, method: "get" },
+    { name: 'SN', href: '/admin/suttas/sn', icon: FolderIcon, current: false, method: "get" },
+    { name: 'DN', href: '/admin/suttas/dn', icon: FolderIcon, current: false, method: "get" },
+    { name: 'Термины', href: '/admin/terms', icon: BookOpenIcon, current: false, method: "get" },
+    { name: 'Помощь', href: '/admin/help', icon: LifebuoyIcon, current: false, method: "get" },
+    { name: 'Выход', href: '/logout', icon: ArrowRightOnRectangleIcon, current: false, method: "post" },
 ]
 
 const sidebarOpen = ref(false)
@@ -64,10 +66,11 @@ const sidebarOpen = ref(false)
                                     <ApplicationLogo></ApplicationLogo>
                                 </div>
                                 <nav class="mt-5 space-y-1 px-2">
-                                    <a v-for="item in navigation" :key="item.name" :href="item.href" :class="[item.current ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900', 'group flex items-center rounded-md px-2 py-2 text-base font-medium']">
+                                    <Link v-for="item in navigation" :key="item.name" :href="item.href" :method="item.method" :class="[item.current ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900', 'group flex items-center rounded-md px-2 py-2 text-base font-medium']">
                                         <component :is="item.icon" :class="[item.current ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500', 'mr-4 h-6 w-6 flex-shrink-0']" aria-hidden="true" />
                                         {{ item.name }}
-                                    </a>
+                                    </Link>
+
                                 </nav>
                             </div>
                             <div class="flex flex-shrink-0 border-t border-gray-200 p-4">
@@ -102,10 +105,10 @@ const sidebarOpen = ref(false)
                         Logo
                     </div>
                     <nav class="mt-5 flex-1 space-y-1 bg-white px-2">
-                        <a v-for="item in navigation" :key="item.name" :href="item.href" :class="[item.current ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900', 'group flex items-center rounded-md px-2 py-2 text-sm font-medium']">
+                        <Link v-for="item in navigation" :method="item.method" :key="item.name" :href="item.href" :class="[item.current ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900', 'group flex items-center rounded-md px-2 py-2 text-sm font-medium']">
                             <component :is="item.icon" :class="[item.current ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500', 'mr-3 h-6 w-6 flex-shrink-0']" aria-hidden="true" />
                             {{ item.name }}
-                        </a>
+                        </Link>
                     </nav>
                 </div>
                 <div class="flex flex-shrink-0 border-t border-gray-200 p-4">
