@@ -13,6 +13,12 @@ ARGS = $(filter-out $@,$(MAKECMDGOALS))
 up: ## Run sail docker-compose with detach
 	./vendor/bin/sail up -d
 
+prepare:
+	./vendor/bin/sail composer install
+	./vendor/bin/sail npm install
+	./vendor/bin/sail artisan migrate --seed
+	./vendor/bin/sail artisan ide-helper:models -W -R
+
 down: ## Terminate sail docker-compose
 	./vendor/bin/sail down
 
