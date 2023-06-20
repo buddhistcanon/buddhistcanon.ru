@@ -19,6 +19,7 @@
         "http-interop/http-factory-guzzle": "^1.2",
         "imangazaliev/didom": "^1.16",
         "inertiajs/inertia-laravel": "^0.6.3",
+        "inspector-apm/inspector-laravel": "^4.7",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^2.8",
         "laravel/scout": "^9.4",
