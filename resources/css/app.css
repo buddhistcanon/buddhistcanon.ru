@@ -24,9 +24,59 @@ h2 {
     @apply text-gray-700 bg-gray-50 hover:bg-gray-200 hover:text-gray-900 border border-gray-200 px-3 py-2 rounded-xl text-sm font-medium cursor-pointer;
 }
 
+/** Дизайн из figma **/
+.text-indigo-bc{
+    color: #5B0769;
+}
+.ring-indigo-bc {
+    --tw-ring-opacity: 1;
+    --tw-ring-color: rgb(91 7 105 / var(--tw-ring-opacity)) ;
+}
+.bc-button{
+    border-radius: 10px;
+    background-color: #FBFBFB;
+    border: 1px solid #E6E6E6;
+    color: #272B2D;
+    /*@apply text-gray-700;*/
+    @apply text-sm font-medium;
+}
+.bc-button-disabled{
+    border-radius: 10px;
+    background-color: #FBFBFB;
+    border: 1px solid #E6E6E6;
+    /*color: #272B2D;*/
+    cursor: default !important;
+    @apply text-gray-400;
+    @apply text-sm font-medium;
+}
+.bc-button:hover{
+    background-color: #F9F9F9;
+    /*@apply shadow-sm;*/
+}
+.bc-button-background{
+    background-color: #FBFBFB;
+}
+.bc-background{
+    background-color: #F6F6F6;
+}
+.rounded-bc{
+    border-radius: 10px;
+}
+.text-gray-bc{
+    color: #272B2D;
+}
+.border-bc{
+    border: 1px solid #E6E6E6;
+}
+.ring-gray-bc {
+    --tw-ring-opacity: 1;
+    --tw-ring-color: rgb(230 230 230 / var(--tw-ring-opacity));
+}
+
 /** Контент книги, сутты и т.п. */
 .content-text .footnote{
-    @apply  text-sm ml-1 text-orange-600 font-mono
+    color: #ba0cee;
+    @apply  text-sm ml-1  font-mono
 }
 
 /* текст примечания */

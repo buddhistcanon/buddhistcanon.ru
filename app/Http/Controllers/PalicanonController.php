@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-class WelcomeController extends Controller
+class PalicanonController extends Controller
 {
     public function index()
     {
-        return inertia('Welcome', [
+        return inertia('Palicanon', [
 
         ]);
     }

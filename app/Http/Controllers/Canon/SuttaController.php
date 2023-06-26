@@ -28,33 +28,51 @@ class SuttaController extends Controller
 
         $sutta = Sutta::query()
             ->bySuttaName($suttaNameData)
+            ->with("contents.chunks")
             ->first();
 
-        $content = $sutta->contents();
+        // определение selectedContentId
+        $content = $sutta->contents;
         if ($lang) {
-            $content = $content->where('lang', $lang);
+            $content = $content->filter(fn($content) => $content->lang == $lang);
         }
         if ($translatorSlug) {
             $translator = People::where('slug', $translatorSlug)->firstOrFail();
-            $content = $content->where('translator_id', $translator->id);
+//            $content = $content->where('translator_id', $translator->id);
+            $content = $content->filter(fn($content) => $content->translator_id == $translator->id);
         }
-        $content = $content->with('chunks')->first();
+        $content = $content->first();
+        $selectedContentId = $content->id;
 
+        // определение названия сутты вместе с названием никаи
         $nikayaTitle = displayNikayaTitleByCategory($sutta->category).' '.$sutta->name;
-        //  if($sutta->suborder) $nikayaTitle .= ".".$sutta->suborder;
 
+        // контент в чанках
         $textParser = new TextParser();
-        $contentChunks = $content->chunks->map(function ($chunk) use ($textParser) {
-            return $textParser->parse($chunk->text);
-        })->toArray();
+        $chunksByContentId = [];
+        foreach($sutta->contents as &$content){
+            $contentChunks = $content->chunks->map(function ($chunk) use ($textParser) {
+                return $textParser->parse($chunk->text);
+            })->toArray();
+            $chunksByContentId[$content->id] = $contentChunks;
+            unset($content->chunks);
+        }
+
+        $breadcrumbs = [
+            ["title" => "Палийский канон", "url" => "/palicanon"],
+            ["title" => displayNikayaTitleByCategory($sutta->category), "url" => "/".$sutta->category],
+        ];
 
         return inertia('Canon/SuttaPage', [
             'sutta' => $sutta,
-            'content' => $content,
+            'contents' => $sutta->contents,
+            'selectedContentId' => $selectedContentId,
+            'chunksByContentId' => $chunksByContentId,
             'nikayaTitle' => $nikayaTitle,
             'lang' => $lang,
-            'contentChunks' => $contentChunks,
             'suttaSlug' => $sutta->displaySlug(),
+            'breadcrumbs' => $breadcrumbs,
+
         ]);
     }
 }

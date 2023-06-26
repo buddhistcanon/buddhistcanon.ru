@@ -1,24 +1,46 @@
 <script setup>
 import { Head, Link } from '@inertiajs/inertia-vue3';
 import ApplicationLayout from '@/Layouts/ApplicationLayout.vue';
-
-defineProps({
-    canLogin: Boolean,
-    canRegister: Boolean,
-    laravelVersion: String,
-    phpVersion: String,
-})
+import LogoTitle from "@/Common/LogoTitle.vue";
+import Sidebar from "@/Common/Sidebar.vue";
 </script>
 
 <template>
-    <Head title="Фонд канона Буддизма" />
+    <Head title="Главная страница" />
 
     <ApplicationLayout>
 
-        <div class="rounded-lg bg-white p-4">
-            <h1 class="text-2xl mb-4">Палийский канон</h1>
-            <p><Link href="/mn" class="link">Мадджхима никая</Link></p>
+        <div class="flex">
+            <div class="flex flex-col lg:flex-row w-full">
+                <div class="bg-white p-4 w-full">
+                    <div class="mt-36 flex flex-col items-center mb-36">
+                        <Link class="bc-button-background border-bc mb-8 py-6 w-1/2 text-center rounded-bc" href="/palicanon">
+                            Читать Палийский канон
+                        </Link>
+
+                        <div class="mt-4 text-gray-400 bc-button-background border-bc mb-8 py-6 w-1/2 text-center rounded-bc" >
+                            Читать Тибетский канон
+                        </div>
+
+                        <div class="mt-4 text-gray-400 bc-button-background border-bc mb-8 py-6 w-1/2 text-center rounded-bc" >
+                            Читать Китайский канон
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+
+            <div class="lg:ml-4 lg:w-96">
+                <Sidebar />
+            </div>
+
         </div>
+
+
+
+
 
     </ApplicationLayout>
 </template>

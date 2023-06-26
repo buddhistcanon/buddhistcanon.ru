@@ -34,6 +34,7 @@ Route::group(['middleware' => ['admin_area']], function () {
 });
 
 Route::get('/', \App\Http\Controllers\WelcomeController::class.'@index')->name('welcome');
+Route::get('/palicanon', \App\Http\Controllers\PalicanonController::class.'@index')->name('palicanon');
 
 Route::get('/dn', \App\Http\Controllers\Canon\CanonController::class.'@dn');
 Route::get('/mn', \App\Http\Controllers\Canon\CanonController::class.'@mn');

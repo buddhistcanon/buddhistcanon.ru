@@ -70,13 +70,13 @@ function displayNikayaTitleByCategory($suttaCategory)
 {
     switch (strtolower($suttaCategory)) {
         case 'dn':
-            return 'Дигха Никая';
+            return 'Дигха-никая';
         case 'mn':
-            return 'Мадджима Никая';
+            return 'Мадджима-никая';
         case 'an':
-            return 'Ангуттара Никая';
+            return 'Ангуттара-никая';
         case 'sn':
-            return 'Саньютта Никая';
+            return 'Саньютта-никая';
         default:
             return 'неизвестно';
     }

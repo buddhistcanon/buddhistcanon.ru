@@ -13,6 +13,7 @@ module.exports = {
         extend: {
             fontFamily: {
                 sans: ['Open Sans', ...defaultTheme.fontFamily.sans],
+                serif: ['Alice', ...defaultTheme.fontFamily.serif],
             },
         },
     },

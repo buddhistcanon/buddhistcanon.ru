@@ -133,7 +133,6 @@ class TextParser
             );
             $text = str_replace($match[0], "<b>$title</b>", $text);
         }
-        //dd($text);
         return $text;
     }
 

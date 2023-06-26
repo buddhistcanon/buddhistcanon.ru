@@ -1,5 +1,8 @@
 <script setup>
 import ApplicationLayout from "@/Layouts/ApplicationLayout.vue";
+import {Head, Link} from "@inertiajs/inertia-vue3";
+import Sidebar from "@/Common/Sidebar.vue";
+import Breadcrumbs from "@/Components/Breadcrumbs.vue";
 
 defineProps({
     suttas: { type: Array, required: true },
@@ -16,14 +19,38 @@ const suttaUrl = (sutta) => {
 </script>
 
 <template>
+    <Head title="Мадджхима-никая" />
+
     <ApplicationLayout>
-        <h1 class="text-xl mb-4">Маддхжима никая</h1>
-        <div class="">
-            <div v-for="sutta in suttas" :key="sutta.id" class="mb-2">
-                <a :href="suttaUrl(sutta)" class="link">
-                    {{sutta.name}} - {{sutta.title_transcribe_ru}}
-                </a>
+
+        <div class="flex">
+            <div class="flex flex-col lg:flex-row w-full">
+                <div class="bg-white p-4 w-full">
+
+                    <Breadcrumbs :items="[
+                        {title: 'Палийский канон', url: '/palicanon'},
+                    ]" class="mb-1"/>
+
+                    <div class="font-serif text-2xl mb-6">Мадджхима-никая</div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <Link v-for="sutta in suttas" :key="sutta.id" class="bc-button px-4 py-4 mb-2" :href="suttaUrl(sutta)">
+                            <div class="text-xl mb-2">{{sutta.name}}</div>
+                            <div>{{sutta.title_transcribe_ru}}</div>
+                        </Link>
+                    </div>
+
+
+                </div>
             </div>
+
+            <div class="lg:ml-4 lg:w-96">
+                <Sidebar />
+            </div>
+
         </div>
+
+        <h1 class="text-xl mb-4">Маддхжима никая</h1>
+
     </ApplicationLayout>
 </template>
