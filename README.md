@@ -15,14 +15,14 @@ make up
 ```bash
 make prepare
 ```
-#### Разработка
+#### Запуск
 
 Компиляция фронтенда:
 
 ```bash
 make vite-dev
 ```
-Сайт открывается по адресу http://localhost:7480
+Сайт открывается по адресу http://localhost:7400
 
 
 
@@ -31,7 +31,7 @@ make vite-dev
 
 Установить PHP 8.1, MySQL 5.7+, NodeJS 14+ тем способом, который принят в вашей системе.
 
-Установить Meilisearch (https://www.meilisearch.com/docs/learn/getting_started/installation)
+Установить и запустить Meilisearch (https://www.meilisearch.com/docs/learn/getting_started/installation)
 
 Скопировать `.env.native` в `.env` , отредактировать если нужно.
 
@@ -45,29 +45,25 @@ php artisan migrate --seed
 php artisan ide-helper:models -W -R
 ```
 
-#### Разработка
+#### Запуск
 
 Запустить веб-сервер:
 ```bash 
-php artisan serve --port=7480
+php artisan serve --port=7400
 ```
 Запустить vite-сервер:
 ```bash
 npm run dev
 ```
+Сайт открывается по адресу http://localhost:7400
 
-Сайт открывается по адресу http://localhost:7480
 
-## SSR
 
-Запуск ssr-сервера на сервере:
 
-```bash
-npm run build && node bootstrap/ssr/ssr.mjs npm run ssr-server
-```
-На сервере должен стоять node.js 14+ 
 
-## Консольные команды
+## Разработка
+
+### Консольные команды
 
 Импорт сутт из файлов (оригинал на пали и перевод на английский от Бханте Суджато):
 
@@ -83,6 +79,17 @@ make import-theravadaru-suttas
 или
 php artisan lb:import_theravadaru_suttas --rebuild
 ``` 
+
+
+## SSR
+
+Запуск ssr-сервера на сервере:
+
+```bash
+npm run build && node bootstrap/ssr/ssr.mjs npm run ssr-server
+```
+На сервере должен стоять node.js 14+
+
 
 ## License
 
