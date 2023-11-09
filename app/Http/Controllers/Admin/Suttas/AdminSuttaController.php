@@ -31,9 +31,21 @@ class AdminSuttaController extends Controller
                 ->firstOrFail();
         }
         //dd($sutta->contents->filter(fn($c)=>$c->lang=='ru')->first()->chunks->toArray());
+        $nextSutta = Sutta::query()
+            ->where("category", $sutta->category)
+            ->where("order", ">", $sutta->order)
+            ->orderBy("order")
+            ->first();
+        $prevSutta = Sutta::query()
+            ->where("category", $sutta->category)
+            ->where("order", "<", $sutta->order)
+            ->orderByDesc("order")
+            ->first();
 
         return inertia("Admin/Suttas/AdminEditSuttaPage", [
-            'sutta'=>$sutta
+            'sutta'=>$sutta,
+            'nextSutta' => $nextSutta,
+            'prevSutta' => $prevSutta
         ]);
     }
 

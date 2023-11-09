@@ -16,6 +16,8 @@ import { toValue } from '@vueuse/core'
 const props = defineProps({
     sutta: Object,
     errors: Object,
+    prevSutta: Object,
+    nextSutta: Object,
 });
 
 const suttaForm = useForm({
@@ -264,16 +266,19 @@ const addContentToPrevChunk = (contentId, chunkId)=>{
             <title v-else>Создание сутты</title>
         </Head>
 
-<!--        <div class="mb-2"><Breadcrumbs :pages="[{label:'Сутты', url: '/admin/suttas'}]" /></div>-->
+        <div class="mb-2"><Breadcrumbs :pages="[{label:'Сутты', url: '/admin/suttas'}]" /></div>
 
         <div class="mx-auto w-full px-4 sm:px-6 lg:px-8">
 
-        <div class="text-2xl font-semibold leading-6 text-gray-700 mb-8">
+        <div class="text-2xl font-semibold leading-6 text-gray-700 mb-4">
             <h1 v-if="sutta.id">Редактирование {{sutta.name}}</h1>
             <h1 v-else>Создание сутты</h1>
         </div>
 
-
+            <div class="mb-6 text-sm">
+                <Link class="mr-8 link" v-if="prevSutta" :href="'/admin/edit_sutta/'+prevSutta.name">Предыдущая сутта</Link>
+                <Link class="link" v-if="nextSutta" :href="'/admin/edit_sutta/'+nextSutta.name">Следующая сутта</Link>
+            </div>
 
             <Card class="max-w-5xl">
 
@@ -303,7 +308,7 @@ const addContentToPrevChunk = (contentId, chunkId)=>{
                     <div class="mt-2">
                         <textarea id="description" v-model="suttaForm.description" name="description" rows="4" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-300 sm:text-sm sm:leading-6" />
                     </div>
-                    <p class="mt-3 text-sm leading-6 text-gray-600">Краткое содержание сутты или темы, в ней затронутые.</p>
+                    <p class="mt-1 text-sm leading-6 text-gray-500">Краткое содержание сутты или темы, в ней затронутые.</p>
                 </div>
 
                 <form @submit.prevent="handleStoreSutta">
@@ -332,6 +337,8 @@ const addContentToPrevChunk = (contentId, chunkId)=>{
                     <div class=""> Язык: {{content.lang}} <span v-if="content.lang !== 'pali'">Переводчик: {{content.translator.slug}}</span>
                         <span v-if="content.is_synced === '1'" class="ml-2 text-green-600 text-sm">связанный поабзацно</span>
                         <span v-else class="ml-2 text-red-600 text-sm">не связанный</span>
+                        <span class="ml-2 text-gray-400 text-sm">content_id #{{content.id}}</span>
+                        <span class="ml-2 text-sm" v-if="content.link_url"><a class="link" target="_blank" :href="content.link_url">источник</a></span>
                     </div>
                 </div>
 
@@ -396,6 +403,16 @@ const addContentToPrevChunk = (contentId, chunkId)=>{
                         </div>
                     </template>
                 </div>
+
+                <form @submit.prevent="handleStoreSutta" class="mt-4">
+                    <input v-if="sutta.id" type="hidden" name="id" :value="suttaForm.id" />
+                    <div class="flex flex-row items-center">
+                        <Button>Сохранить</Button>
+                        <div v-if="successMessage" class="ml-4 text-green-600">
+                            {{successMessage}}
+                        </div>
+                    </div>
+                </form>
             </Card>
         </div>
     </Layout>
