@@ -64,7 +64,7 @@ class TheravadaruCrawlObserver extends CrawlObserver
             $crawlerPage->checked_at = now();
         } else {
             // Страница обновлена
-            if ($crawlerPage and $crawlerPage->content_hash != $hash) {
+            if ($status < 300 AND $crawlerPage and $crawlerPage->content_hash != $hash) {
                 if ($this->isVerbose) {
                     echo ' | PAGE UPDATED';
                 }
