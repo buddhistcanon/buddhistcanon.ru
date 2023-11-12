@@ -31,7 +31,7 @@ vite-build: ## npm run build
 	./vendor/bin/sail npm run build
 
 ssr-server: ## Launch SSR server
-	node bootstrap/ssr/ssr.mjs npm run ssr-server
+	npm run build && node bootstrap/ssr/ssr.mjs npm run ssr-server
 
 migrate: ## Run migrate with ide-helper
 	./vendor/bin/sail artisan migrate
