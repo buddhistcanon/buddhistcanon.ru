@@ -7,7 +7,6 @@ use App\Logger\LogData;
 use App\Logger\Logger;
 use App\Models\ContentChunk;
 use App\Models\Sutta;
-use App\Services\ContentService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -15,37 +14,37 @@ class AdminSuttaController extends Controller
 {
     public function edit(string $id)
     {
-        if(is_numeric($id)){
+        if (is_numeric($id)) {
             $sutta = Sutta::query()
-                ->where("id", $id)
+                ->where('id', $id)
 //                ->with(["contents.chunks"=>fn($q)=>$q->orderBy("order")])
-                ->with("contents.chunks")
-                ->with("contents.translator")
+                ->with('contents.chunks')
+                ->with('contents.translator')
                 ->firstOrFail();
-        }else{
+        } else {
             $sutta = Sutta::query()
-                ->where("name", strtoupper($id))
+                ->where('name', strtoupper($id))
 //                ->with(["contents.chunks"=>fn($q)=>$q->orderBy("order")])
-                ->with("contents.chunks")
-                ->with("contents.translator")
+                ->with('contents.chunks')
+                ->with('contents.translator')
                 ->firstOrFail();
         }
         //dd($sutta->contents->filter(fn($c)=>$c->lang=='ru')->first()->chunks->toArray());
         $nextSutta = Sutta::query()
-            ->where("category", $sutta->category)
-            ->where("order", ">", $sutta->order)
-            ->orderBy("order")
+            ->where('category', $sutta->category)
+            ->where('order', '>', $sutta->order)
+            ->orderBy('order')
             ->first();
         $prevSutta = Sutta::query()
-            ->where("category", $sutta->category)
-            ->where("order", "<", $sutta->order)
-            ->orderByDesc("order")
+            ->where('category', $sutta->category)
+            ->where('order', '<', $sutta->order)
+            ->orderByDesc('order')
             ->first();
 
-        return inertia("Admin/Suttas/AdminEditSuttaPage", [
-            'sutta'=>$sutta,
+        return inertia('Admin/Suttas/AdminEditSuttaPage', [
+            'sutta' => $sutta,
             'nextSutta' => $nextSutta,
-            'prevSutta' => $prevSutta
+            'prevSutta' => $prevSutta,
         ]);
     }
 
@@ -61,9 +60,9 @@ class AdminSuttaController extends Controller
         $sutta->title_transcribe_ru = $suttaData['title_transcribe_ru'];
         $sutta->title_translate_ru = $suttaData['title_translate_ru'];
         $sutta->description = $suttaData['description'];
-        if($sutta->isDirty()){
+        if ($sutta->isDirty()) {
             Logger::log(new LogData(
-                action: "update_sutta",
+                action: 'update_sutta',
                 userId: auth()->id(),
                 suttaId: $sutta->id,
                 before: $sutta->getOriginal(),
@@ -72,7 +71,7 @@ class AdminSuttaController extends Controller
         }
         $sutta->save();
 
-        $originalContents = $sutta->load("contents.chunks")->contents;
+        $originalContents = $sutta->load('contents.chunks')->contents;
 
         $rows = $request->json('rows');
         $chunksIdsToDelete = $request->json('chunksToDelete');
@@ -84,15 +83,15 @@ class AdminSuttaController extends Controller
                 if (is_null($chunkRow)) {
                     continue;
                 }
-                if ($chunkRow['id'] AND ! str_contains($chunkRow['id'], 'new')) {
+                if ($chunkRow['id'] and ! str_contains($chunkRow['id'], 'new')) {
                     $chunk = ContentChunk::query()
                         ->where('id', $chunkRow['id'])
                         ->first();
                     $chunk->text = $chunkRow['text'];
                     $chunk->order = $chunkRow['order'];
-                    if($chunk->getOriginal()['text']!=$chunk->text){
+                    if ($chunk->getOriginal()['text'] != $chunk->text) {
                         Logger::log(new LogData(
-                            action: "update_chunk",
+                            action: 'update_chunk',
                             userId: auth()->id(),
                             suttaId: $sutta->id,
                             contentId: $chunk->content_id,
@@ -105,7 +104,7 @@ class AdminSuttaController extends Controller
                     $chunk->save();
                 } else {
                     $chunk = new ContentChunk();
-                    $chunk->chunkable_type = "sutta";
+                    $chunk->chunkable_type = 'sutta';
                     $chunk->chunkable_id = $chunkRow['chunkable_id'];
                     $chunk->content_id = $chunkRow['content_id'];
                     $chunk->order = $chunkRow['order'];
@@ -113,7 +112,7 @@ class AdminSuttaController extends Controller
                     $chunk->text = $chunkRow['text'];
                     $chunk->save();
                     Logger::log(new LogData(
-                        action: "create_chunk",
+                        action: 'create_chunk',
                         userId: auth()->id(),
                         suttaId: $sutta->id,
                         contentId: $chunk->content_id,
@@ -128,10 +127,10 @@ class AdminSuttaController extends Controller
         $chunksToDelete = ContentChunk::query()
             ->whereIn('id', $chunksIdsToDelete)
             ->get();
-//        dd($chunksToDelete->toArray());
+        //        dd($chunksToDelete->toArray());
         foreach ($chunksToDelete as $chunk) {
             Logger::log(new LogData(
-                action: "delete_chunk",
+                action: 'delete_chunk',
                 userId: auth()->id(),
                 suttaId: $sutta->id,
                 contentId: $chunk->content_id,
@@ -144,14 +143,14 @@ class AdminSuttaController extends Controller
         // логирование изменённого контента целиком
         $sutta = Sutta::query()
             ->where('id', $suttaId)
-            ->with("contents.chunks")
+            ->with('contents.chunks')
             ->firstOrFail();
         $editedContentIds = array_unique($editedContentIds);
-        foreach($editedContentIds as $contentId){
-            $originalContent = $originalContents->filter(fn($content)=>$content->id === $contentId)->first();
-            $content = $sutta->contents->filter(fn($content)=>$content->id === $contentId)->first();
+        foreach ($editedContentIds as $contentId) {
+            $originalContent = $originalContents->filter(fn ($content) => $content->id === $contentId)->first();
+            $content = $sutta->contents->filter(fn ($content) => $content->id === $contentId)->first();
             Logger::log(new LogData(
-                action: "update_content",
+                action: 'update_content',
                 userId: auth()->id(),
                 suttaId: $sutta->id,
                 contentId: $contentId,
@@ -165,16 +164,18 @@ class AdminSuttaController extends Controller
 
     public function storeSuttaChunks(Request $request)
     {
-        $rows = $request->json("rows");
-        foreach($rows as $chunks){
-            foreach($chunks as $chunkRow){
-                if(is_null($chunkRow)) continue;
-                if($chunkRow['id']){
+        $rows = $request->json('rows');
+        foreach ($rows as $chunks) {
+            foreach ($chunks as $chunkRow) {
+                if (is_null($chunkRow)) {
+                    continue;
+                }
+                if ($chunkRow['id']) {
                     $chunk = ContentChunk::query()
-                        ->where("id", $chunkRow['id'])
+                        ->where('id', $chunkRow['id'])
                         ->first();
                     $chunk->text = $chunkRow['text'];
-                }else{
+                } else {
                     $chunk = new ContentChunk();
                     $chunk->chunkable_type = Sutta::class;
                     $chunk->chunkable_id = $chunkRow['chunkable_id'];
@@ -187,6 +188,7 @@ class AdminSuttaController extends Controller
                 $chunk->save();
             }
         }
+
         return [
             'status' => 'success',
         ];

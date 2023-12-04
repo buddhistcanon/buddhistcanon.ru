@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $new_content
  * @property string|null $processed_at
  * @property-read \App\Models\ExternalSource|null $source
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|ExternalSourceLog newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ExternalSourceLog newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ExternalSourceLog query()
@@ -21,6 +22,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|ExternalSourceLog whereNewContent($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExternalSourceLog whereOldContent($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExternalSourceLog whereProcessedAt($value)
+ *
  * @mixin \Eloquent
  */
 class ExternalSourceLog extends Model

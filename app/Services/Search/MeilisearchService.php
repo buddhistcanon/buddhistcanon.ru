@@ -39,7 +39,7 @@ class MeilisearchService
     {
         try {
             $this->client->index($indexUid)->stats();
-        } catch(\MeiliSearch\Exceptions\ApiException $exception) {
+        } catch (\MeiliSearch\Exceptions\ApiException $exception) {
             $this->client->createIndex($indexUid, ['primaryKey' => 'id']);
 
             return true;

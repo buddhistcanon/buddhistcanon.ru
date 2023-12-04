@@ -21,14 +21,14 @@ class SearchApiRequest extends FormRequest
         return true;
     }
 
-//    public static function withValidator(Validator $validator): void
-//    {
-//        $validator->after(function ($validator) {
-//            $tokenActive = SearchToken::query()
-//                ->where("token", $this->token)
-//                ->where("is_active", 1)
-//                ->first();
-//            if(!$tokenActive) $validator->errors()->add('token', "Token is not valid");
-//        });
-//    }
+    //    public static function withValidator(Validator $validator): void
+    //    {
+    //        $validator->after(function ($validator) {
+    //            $tokenActive = SearchToken::query()
+    //                ->where("token", $this->token)
+    //                ->where("is_active", 1)
+    //                ->first();
+    //            if(!$tokenActive) $validator->errors()->add('token', "Token is not valid");
+    //        });
+    //    }
 }

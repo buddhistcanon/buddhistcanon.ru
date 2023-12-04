@@ -15,8 +15,8 @@ class SearchResultsData extends Data
     ) {
     }
 
-//    public static function fromArray(array $suttasMeiliHits, array $booksMeiliHits)
-//    {
-//
-//    }
+    //    public static function fromArray(array $suttasMeiliHits, array $booksMeiliHits)
+    //    {
+    //
+    //    }
 }

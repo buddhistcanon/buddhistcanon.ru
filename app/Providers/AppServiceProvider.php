@@ -26,8 +26,8 @@ class AppServiceProvider extends ServiceProvider
         }
 
         // Laravel Scout не умеет делать фильтры, ставим их вручную
-//        $client = new Client(config("scout.meilisearch.host"), config("scout.meilisearch.key"));
-//        $client->index("content_chunks")->updateFilterableAttributes(['content_type']);
+        //        $client = new Client(config("scout.meilisearch.host"), config("scout.meilisearch.key"));
+        //        $client->index("content_chunks")->updateFilterableAttributes(['content_type']);
 
         // All future morphs *must* be mapped!
         Relation::enforceMorphMap([

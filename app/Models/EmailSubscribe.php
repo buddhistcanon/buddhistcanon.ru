@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $confirmed_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|EmailSubscribe newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|EmailSubscribe newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|EmailSubscribe query()
@@ -20,6 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|EmailSubscribe whereEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EmailSubscribe whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EmailSubscribe whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class EmailSubscribe extends Model

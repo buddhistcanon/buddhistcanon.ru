@@ -27,6 +27,9 @@ class ImportSuttaFromTheravadaRuService
     public function fetchHtml($url)
     {
         $html = Http::get($url);
+        if ($this->isDebug) {
+            $this->dump('downloaded content size: '.mb_strlen($html));
+        }
         $html = iconv('windows-1251', 'UTF-8', $html);
         $html = str_replace("\r", '', $html);
         $this->document = new Document($html);
@@ -189,17 +192,17 @@ class ImportSuttaFromTheravadaRuService
         return $content;
     }
 
-//    public function find_note($html)
-//    {
-//        preg_match("/<sup>.*<a href=\".*#link\d*\">(\d*)<\/a><\/sup>/m", $html, $match);
-//        //$this->dump($match);
-//        $addNote = $match[1];
-//        $replaceString = $match[0];
-//        $this->dump("Note found: ".$addNote);
-//        //$html = preg_replace("/<sup>.*<a href=\".*#link(\d*)\">\d*<\/a><\/sup>/", " [примечание$1]", $paragraph->innerHtml());
-//        $html = str_replace($replaceString, "[примечание".$addNote."]", $html);
-//        return
-//    }
+    //    public function find_note($html)
+    //    {
+    //        preg_match("/<sup>.*<a href=\".*#link\d*\">(\d*)<\/a><\/sup>/m", $html, $match);
+    //        //$this->dump($match);
+    //        $addNote = $match[1];
+    //        $replaceString = $match[0];
+    //        $this->dump("Note found: ".$addNote);
+    //        //$html = preg_replace("/<sup>.*<a href=\".*#link(\d*)\">\d*<\/a><\/sup>/", " [примечание$1]", $paragraph->innerHtml());
+    //        $html = str_replace($replaceString, "[примечание".$addNote."]", $html);
+    //        return
+    //    }
 
     public function array_notes()
     {
@@ -276,9 +279,9 @@ class ImportSuttaFromTheravadaRuService
         foreach ($links as $link) {
             $url = $link->href;
             if (! \Str::startsWith($url, ['http', '//', '#', '..'])) {
-//    	        if( ! starts_with($url, "/")) {
-//    	            $url = "/".$url;
-//                }
+                //    	        if( ! starts_with($url, "/")) {
+                //    	            $url = "/".$url;
+                //                }
                 $urls->push($url);
             }
         }

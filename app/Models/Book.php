@@ -31,9 +31,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\People|null $author
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Content[] $contents
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Content> $contents
  * @property-read int|null $contents_count
- * @method static \Database\Factories\BookFactory factory(...$parameters)
+ *
+ * @method static \Database\Factories\BookFactory factory($count = null, $state = [])
  * @method static Builder|Book newModelQuery()
  * @method static Builder|Book newQuery()
  * @method static Builder|Book published()
@@ -59,6 +60,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|Book whereTotalParts($value)
  * @method static Builder|Book whereUpdatedAt($value)
  * @method static Builder|Book whereYear($value)
+ *
  * @mixin \Eloquent
  */
 class Book extends Model

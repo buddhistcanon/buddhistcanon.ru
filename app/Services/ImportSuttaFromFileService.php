@@ -16,7 +16,7 @@ class ImportSuttaFromFileService
         $this->arrayContent = json_decode($fileContent, true);
     }
 
-    public function getFullCategory(): string|null
+    public function getFullCategory(): ?string
     {
         //preg_match("/n\/(.*?)_root/", $this->filename, $match);
         preg_match('/^(.*?)_/m', $this->filename, $match);
@@ -24,7 +24,7 @@ class ImportSuttaFromFileService
         return $match[1] ?? null;
     }
 
-    public function determineCategory(): string|null
+    public function determineCategory(): ?string
     {
         $category = $this->getFullCategory();
         preg_match("/([^\d]*)\d*/", $category, $match);
@@ -32,7 +32,7 @@ class ImportSuttaFromFileService
         return $match[1] ?? null;
     }
 
-    public function determineOrder(): string|null
+    public function determineOrder(): ?string
     {
         $category = $this->getFullCategory();
         preg_match("/[^\d]*(\d*)/", $category, $match);
@@ -40,18 +40,18 @@ class ImportSuttaFromFileService
         return $match[1] ?? null;
     }
 
-    public function determineSuborder(): string|null
+    public function determineSuborder(): ?string
     {
         $category = $this->getFullCategory();
-        if (! str_contains('.', $category)) {
+        if (! str_contains($category, '.')) {
             return null;
         }
         $array = explode('.', $category);
 
-        return $match[1] ?? null;
+        return $array[1] ?? null;
     }
 
-    public function determineMark($key): string|null
+    public function determineMark($key): ?string
     {
         preg_match("/:(.*)\./", $key, $match);
 
@@ -90,8 +90,15 @@ class ImportSuttaFromFileService
         $mark = '';
         $contentWithMarks = [];
         if (count($this->arrayContent) > 0) {
+            $currentMark = 0;
+            $prevSubKey = '';
             foreach ($this->arrayContent as $key => $value) {
-                $currentMark = $this->determineMark($key);
+                preg_match("/.*\./", $key, $match);
+                $subKey = $match[0];
+                if ($subKey !== $prevSubKey) {
+                    $currentMark++;
+                    $prevSubKey = $subKey;
+                }
                 if ($currentMark === '0') {
                     continue;
                 }

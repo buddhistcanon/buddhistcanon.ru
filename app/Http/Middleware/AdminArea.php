@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\Role;
 use Auth;
 use Closure;
 
@@ -12,7 +11,6 @@ class AdminArea
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
      * @return mixed
      */
     public function handle($request, Closure $next)
@@ -21,13 +19,13 @@ class AdminArea
             return redirect(route('login'));
         }
 
-        if(Auth::user()->is_superadmin){
+        if (Auth::user()->is_superadmin) {
             return $next($request);
         }
 
         $allowedRoles = ['admin', 'editor_russian', 'editor_english', 'editor_pali'];
         $userRoles = Auth::user()->roles;
-        $userRoles = $userRoles->pluck("name")->toArray();
+        $userRoles = $userRoles->pluck('name')->toArray();
         $intersect = array_intersect($userRoles, $allowedRoles);
         if (count($intersect) !== 0) {
             return $next($request);

@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $translator_name
  * @property int|null $translator_id
  * @property string|null $link_url
+ * @property string|null $short_description
  * @property string|null $description
  * @property string|null $table_of_contents
  * @property string $contentable_type
@@ -24,13 +25,14 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $is_synced
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ContentChunk[] $chunks
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ContentChunk> $chunks
  * @property-read int|null $chunks_count
  * @property-read Model|\Eloquent $contentable
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ExternalSource[] $external_sources
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ExternalSource> $external_sources
  * @property-read int|null $external_sources_count
  * @property-read \App\Models\People|null $translator
- * @method static \Database\Factories\ContentFactory factory(...$parameters)
+ *
+ * @method static \Database\Factories\ContentFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Content newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Content newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Content query()
@@ -44,12 +46,14 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Content whereIsSynced($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Content whereLang($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Content whereLinkUrl($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Content whereShortDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Content whereSubtitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Content whereTableOfContents($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Content whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Content whereTranslatorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Content whereTranslatorName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Content whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class Content extends Model
@@ -67,7 +71,7 @@ class Content extends Model
 
     public function chunks(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(ContentChunk::class)->orderBy("order");
+        return $this->hasMany(ContentChunk::class)->orderBy('order');
     }
 
     public function translator(): \Illuminate\Database\Eloquent\Relations\BelongsTo

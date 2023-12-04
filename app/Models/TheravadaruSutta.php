@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $need_attention
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|TheravadaruSutta byIndexName($indexName)
  * @method static \Illuminate\Database\Eloquent\Builder|TheravadaruSutta newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|TheravadaruSutta newQuery()
@@ -35,6 +36,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|TheravadaruSutta whereSuborder($value)
  * @method static \Illuminate\Database\Eloquent\Builder|TheravadaruSutta whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|TheravadaruSutta whereUrl($value)
+ *
  * @mixin \Eloquent
  */
 class TheravadaruSutta extends Model

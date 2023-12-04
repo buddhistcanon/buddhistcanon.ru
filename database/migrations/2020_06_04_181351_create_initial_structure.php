@@ -93,7 +93,7 @@ class CreateInitialStructure extends Migration
         Schema::create('content_chunks', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('content_id')->index();
-//            $table->tinyInteger("content_type"); // ContentChunk::TYPE_BOOK или ContentChunk::TYPE_SUTTA
+            //            $table->tinyInteger("content_type"); // ContentChunk::TYPE_BOOK или ContentChunk::TYPE_SUTTA
             $table->morphs('chunkable');
             $table->bigInteger('order'); // порядок следования чанков
             $table->longText('text')->nullable();

@@ -12,9 +12,6 @@ use Spatie\Crawler\CrawlObserver;
 
 class TheravadaruCrawlObserver extends CrawlObserver
 {
-    /**
-     * @var CrawlerProject
-     */
     private CrawlerProject $project;
 
     private bool $isVerbose;
@@ -27,8 +24,6 @@ class TheravadaruCrawlObserver extends CrawlObserver
 
     /**
      * Called when the crawler will crawl the url.
-     *
-     * @param  \Psr\Http\Message\UriInterface  $url
      */
     public function willCrawl(UriInterface $url)
     {
@@ -38,7 +33,7 @@ class TheravadaruCrawlObserver extends CrawlObserver
         }
     }
 
-    public function crawled(UriInterface $url, ResponseInterface $response, ?UriInterface $foundOnUrl = null)
+    public function crawled(UriInterface $url, ResponseInterface $response, UriInterface $foundOnUrl = null)
     {
         $html = $response->getBody();
         $html = iconv('windows-1251', 'utf-8', $html);
@@ -64,7 +59,7 @@ class TheravadaruCrawlObserver extends CrawlObserver
             $crawlerPage->checked_at = now();
         } else {
             // Страница обновлена
-            if ($status < 300 AND $crawlerPage and $crawlerPage->content_hash != $hash) {
+            if ($status < 300 and $crawlerPage and $crawlerPage->content_hash != $hash) {
                 if ($this->isVerbose) {
                     echo ' | PAGE UPDATED';
                 }
@@ -103,7 +98,7 @@ class TheravadaruCrawlObserver extends CrawlObserver
         }
     }
 
-    public function crawlFailed(UriInterface $url, RequestException $requestException, ?UriInterface $foundOnUrl = null)
+    public function crawlFailed(UriInterface $url, RequestException $requestException, UriInterface $foundOnUrl = null)
     {
         $fetchedUrl = $url->getPath().'?'.$url->getQuery();
         echo "\nFetch error $fetchedUrl : ".$requestException->getMessage()."\n";

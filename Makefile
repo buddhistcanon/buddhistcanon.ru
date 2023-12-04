@@ -17,6 +17,7 @@ prepare:
 	./vendor/bin/sail composer install
 	./vendor/bin/sail npm install
 	./vendor/bin/sail artisan migrate --seed
+	./vendor/bin/sail artisan scout:import "App\Models\ContentChunk"
 	./vendor/bin/sail artisan ide-helper:models -W -R
 
 down: ## Terminate sail docker-compose
@@ -37,14 +38,14 @@ migrate: ## Run migrate with ide-helper
 	./vendor/bin/sail artisan migrate
 	./vendor/bin/sail artisan ide-helper:models -W -R
 
+migrate-rollback: ## Run migrate:rollback
+	./vendor/bin/sail artisan migrate:rollback
+
 migrate-seed: ## Run migrate with ide-helper and seed
 	./vendor/bin/sail artisan migrate --seed
 	./vendor/bin/sail artisan ide-helper:models -W -R
 
-migrate-refresh: ## DELETE ALL DATABASE and scout search cache, then run migrate with ide-helper
-	./vendor/bin/sail artisan scout:flush "App\Models\ContentChunk"
-	./vendor/bin/sail artisan migrate:refresh
-	./vendor/bin/sail artisan ide-helper:models -W -R
+migrate-refresh: migrate-rollback migrate-seed reindex ## DELETE ALL DATABASE, then run migrate with ide-helper and seed
 
 migrate-refresh-seed: ## DELETE ALL DATABASE, then run migrate with ide-helper and seed
 	# ./vendor/bin/sail artisan scout:flush "App\Models\ContentChunk"
@@ -68,3 +69,7 @@ clear: ## Clear config and route cache
 
 pint: ## Run php linter
 	./vendor/bin/pint --config ./pint.json
+
+reindex: ## Reindex scout search
+	./vendor/bin/sail artisan scout:flush "App\Models\ContentChunk"
+	./vendor/bin/sail artisan scout:import "App\Models\ContentChunk"

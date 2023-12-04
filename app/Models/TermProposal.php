@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $term_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|TermProposal newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|TermProposal newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|TermProposal query()
@@ -22,6 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|TermProposal whereTermId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|TermProposal whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|TermProposal whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class TermProposal extends Model

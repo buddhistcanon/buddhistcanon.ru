@@ -23,7 +23,7 @@ const suttaUrl = (sutta) => {
 
     <ApplicationLayout>
 
-        <div class="flex">
+        <div class="flex flex-col md:flex-row">
             <div class="flex flex-col lg:flex-row w-full">
                 <div class="bg-white p-4 w-full">
 
@@ -44,13 +44,11 @@ const suttaUrl = (sutta) => {
                 </div>
             </div>
 
-            <div class="lg:ml-4 lg:w-96">
+            <div class="md:ml-4 md:w-96">
                 <Sidebar />
             </div>
 
         </div>
-
-        <h1 class="text-xl mb-4">Маддхжима никая</h1>
 
     </ApplicationLayout>
 </template>

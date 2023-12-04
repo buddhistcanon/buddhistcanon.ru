@@ -21,8 +21,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string|null $description
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Book[] $books
+ * @property string $signature
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Book> $books
  * @property-read int|null $books_count
+ *
  * @method static Builder|People monk()
  * @method static Builder|People newModelQuery()
  * @method static Builder|People newQuery()
@@ -37,8 +39,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static Builder|People whereMonknameRu($value)
  * @method static Builder|People whereNickname($value)
  * @method static Builder|People wherePriority($value)
+ * @method static Builder|People whereSignature($value)
  * @method static Builder|People whereSlug($value)
  * @method static Builder|People whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class People extends Model

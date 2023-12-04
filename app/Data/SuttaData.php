@@ -24,9 +24,10 @@ class SuttaData extends Data
     {
         $this->category = $category; // an
         $this->order = $order; // 1
-        $this->suborder = $suborder; // 15
+        $this->suborder = $suborder; // 15 или 1-10
         $this->title = $title;
         $this->contentWithMarks = $contentWithMarks;
+        $this->description = '';
     }
 
     public function name(): string // an2.15

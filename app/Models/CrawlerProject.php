@@ -17,8 +17,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $session
  * @property int $deep
  * @property string|null $crawled_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CrawlerPage[] $pages
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\CrawlerPage> $pages
  * @property-read int|null $pages_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|CrawlerProject newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CrawlerProject newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CrawlerProject query()
@@ -32,6 +33,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|CrawlerProject whereSession($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CrawlerProject whereStartUrl($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CrawlerProject whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class CrawlerProject extends Model

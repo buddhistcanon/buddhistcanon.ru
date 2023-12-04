@@ -19,7 +19,8 @@ use Laravel\Scout\Searchable;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Content|null $content
- * @method static \Database\Factories\ContentChunkFactory factory(...$parameters)
+ *
+ * @method static \Database\Factories\ContentChunkFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|ContentChunk newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ContentChunk newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ContentChunk query()
@@ -32,6 +33,7 @@ use Laravel\Scout\Searchable;
  * @method static \Illuminate\Database\Eloquent\Builder|ContentChunk whereOrder($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ContentChunk whereText($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ContentChunk whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class ContentChunk extends Model

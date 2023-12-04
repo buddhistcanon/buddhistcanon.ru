@@ -22,7 +22,7 @@ class AdminTermsController
 
         return inertia('Admin/Terms/AdminTermsPage', [
             'terms' => $terms,
-            'termProposals' => $termProposals
+            'termProposals' => $termProposals,
         ]);
     }
 

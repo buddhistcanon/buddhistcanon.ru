@@ -41,8 +41,8 @@ class ImportVisuddhiFromSuCommand extends Command
             $response = Http::get($url);
             $this->content = $response->body();
 
-//            $this->cutContent( "<p class=\"subsubhead\">", true);
-//            dump(Str::substr($this->content, 0, 20));
+            //            $this->cutContent( "<p class=\"subsubhead\">", true);
+            //            dump(Str::substr($this->content, 0, 20));
 
             //$crawler = new Crawler($this->content);
             $document = new Document($this->content);
@@ -75,12 +75,12 @@ class ImportVisuddhiFromSuCommand extends Command
                     $chunkEnglish = '';
                     $chunkRussian = '### '.$subtitle;
                 } elseif ($numColumns == 3) {
-//                    $chunkPali = $tr->filterXPath("/td[1]")->text();
-//                    $chunkEnglish = $tr->filterXPath("/td[2]")->text();
-//                    $chunkRussian = "";
-//                    if(trim($tr->filterXPath("/td[3]")->text()) != "") {
-//                        $chunkEnglish .= "[^*]\n\n[^*]:".$tr->filterXPath("/td[3]")->text();
-//                    }
+                    //                    $chunkPali = $tr->filterXPath("/td[1]")->text();
+                    //                    $chunkEnglish = $tr->filterXPath("/td[2]")->text();
+                    //                    $chunkRussian = "";
+                    //                    if(trim($tr->filterXPath("/td[3]")->text()) != "") {
+                    //                        $chunkEnglish .= "[^*]\n\n[^*]:".$tr->filterXPath("/td[3]")->text();
+                    //                    }
                 } elseif ($numColumns == 4) {
                     //ray($tr->text());
                     $chunkPali = $this->trim($tr->find('td')[0]->text());

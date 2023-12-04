@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $old_content
  * @property string $new_content
  * @property string|null $processed_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|CrawlerLog newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CrawlerLog newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CrawlerLog query()
@@ -26,6 +27,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|CrawlerLog whereProjectId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CrawlerLog whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CrawlerLog whereUrl($value)
+ *
  * @mixin \Eloquent
  */
 class CrawlerLog extends Model

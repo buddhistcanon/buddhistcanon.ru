@@ -18,8 +18,6 @@ class TermFactory extends Factory
 
     /**
      * Define the model's default state.
-     *
-     * @return array
      */
     #[ArrayShape(['title' => 'string', 'slug' => 'string', 'short_text' => 'array|string', 'text' => 'array|string'])]
     public function definition(): array

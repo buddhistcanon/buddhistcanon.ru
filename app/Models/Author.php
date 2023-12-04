@@ -18,9 +18,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $priority
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Book[] $books
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Book> $books
  * @property-read int|null $books_count
- * @method static \Database\Factories\AuthorFactory factory(...$parameters)
+ *
+ * @method static \Database\Factories\AuthorFactory factory($count = null, $state = [])
  * @method static Builder|Author monk()
  * @method static Builder|Author newModelQuery()
  * @method static Builder|Author newQuery()
@@ -34,6 +35,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|Author whereShortName($value)
  * @method static Builder|Author whereSlug($value)
  * @method static Builder|Author whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class Author extends Model

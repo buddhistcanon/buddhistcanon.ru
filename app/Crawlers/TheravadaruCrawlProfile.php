@@ -13,15 +13,13 @@ class TheravadaruCrawlProfile extends CrawlProfile
 
     /**
      * Determine if the given url should be crawled.
-     *
-     * @param  \Psr\Http\Message\UriInterface  $url
-     * @return bool
      */
     public function shouldCrawl(UriInterface $url): bool
     {
-        if(str_contains($url->getPath(), "Canon") AND str_contains($url->getPath(), ".htm")){
+        if (str_contains($url->getPath(), 'Canon') and str_contains($url->getPath(), '.htm')) {
             return true;
         }
+
         return false;
     }
 }

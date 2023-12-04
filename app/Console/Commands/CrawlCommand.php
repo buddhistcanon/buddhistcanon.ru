@@ -21,7 +21,9 @@ class CrawlCommand extends Command
     public function handle()
     {
         $projectName = $this->argument('project_name');
-        if(!$projectName) $projectName = 'theravada.ru';
+        if (! $projectName) {
+            $projectName = 'theravada.ru';
+        }
         $project = CrawlerProject::query()->where('name', $projectName)->firstOrFail();
         $project->increment('session');
         $this->info("Start crawl project $project->name with session $project->session");
@@ -33,7 +35,7 @@ class CrawlCommand extends Command
             ->setUserAgent('Mozilla/5.0 (X11; Linux x86_64; rv:100.0) Gecko/20100101 Firefox/100.0')
             ->setParseableMimeTypes(['text/html', 'text/plain']);
 
-        switch($projectName) {
+        switch ($projectName) {
             case 'theravada.ru':
                 $crawler
                     ->setConcurrency(1)
@@ -59,6 +61,6 @@ class CrawlCommand extends Command
             default:
         }
 
-        $this->line("Crawl done.");
+        $this->line('Crawl done.');
     }
 }

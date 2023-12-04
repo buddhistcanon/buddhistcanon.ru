@@ -16,7 +16,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Term|null $description
  * @property-read \App\Models\Term|null $term
- * @method static \Database\Factories\TermVariantFactory factory(...$parameters)
+ *
+ * @method static \Database\Factories\TermVariantFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|TermVariant newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|TermVariant newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|TermVariant query()
@@ -26,6 +27,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|TermVariant whereTermId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|TermVariant whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|TermVariant whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class TermVariant extends Model

@@ -12,9 +12,6 @@ use Spatie\Crawler\CrawlObserver;
 
 class TipitakaCrawlObserver extends CrawlObserver
 {
-    /**
-     * @var CrawlerProject
-     */
     private CrawlerProject $project;
 
     private bool $isVerbose;
@@ -27,8 +24,6 @@ class TipitakaCrawlObserver extends CrawlObserver
 
     /**
      * Called when the crawler will crawl the url.
-     *
-     * @param  \Psr\Http\Message\UriInterface  $url
      */
     public function willCrawl(UriInterface $url)
     {
@@ -38,7 +33,7 @@ class TipitakaCrawlObserver extends CrawlObserver
         }
     }
 
-    public function crawled(UriInterface $url, ResponseInterface $response, ?UriInterface $foundOnUrl = null)
+    public function crawled(UriInterface $url, ResponseInterface $response, UriInterface $foundOnUrl = null)
     {
         $html = $response->getBody();
         $html = preg_replace("/<input.*?type=\"hidden\".*?\/>/", '', $html);
@@ -107,7 +102,7 @@ class TipitakaCrawlObserver extends CrawlObserver
         }
     }
 
-    public function crawlFailed(UriInterface $url, RequestException $requestException, ?UriInterface $foundOnUrl = null)
+    public function crawlFailed(UriInterface $url, RequestException $requestException, UriInterface $foundOnUrl = null)
     {
         $fetchedUrl = $url->getPath().'?'.$url->getQuery();
         echo "Fetch error $fetchedUrl : ".$requestException->getMessage();

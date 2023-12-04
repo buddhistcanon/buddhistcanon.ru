@@ -12,7 +12,7 @@ class AdminController extends Controller
 {
     public function index()
     {
-//        return "Admin index";
+        //        return "Admin index";
         return inertia('Admin/AdminIndexPage');
     }
 
@@ -27,21 +27,21 @@ class AdminController extends Controller
 
         return inertia('Admin/Suttas/AdminSuttasPage', [
             'suttas' => $suttas,
-            'category' => $category
+            'category' => $category,
         ]);
     }
 
     public function editSutta($id)
     {
         $sutta = Sutta::query()
-            ->where("id", $id)
-            ->with("contents.chunks")
-            ->with("contents.translator")
+            ->where('id', $id)
+            ->with('contents.chunks')
+            ->with('contents.translator')
             ->firstOrFail();
         //dd($sutta->contents->filter(fn($c)=>$c->lang=='pali')->first()->chunks->toArray());
 
-        return inertia("Admin/Suttas/AdminEditSuttaPage", [
-            'sutta'=>$sutta
+        return inertia('Admin/Suttas/AdminEditSuttaPage', [
+            'sutta' => $sutta,
         ]);
     }
 
@@ -52,16 +52,18 @@ class AdminController extends Controller
 
     public function storeChunks(Request $request)
     {
-        $rows = $request->json("rows");
-        foreach($rows as $chunks){
-            foreach($chunks as $chunkRow){
-                if(is_null($chunkRow)) continue;
-                if($chunkRow['id']){
+        $rows = $request->json('rows');
+        foreach ($rows as $chunks) {
+            foreach ($chunks as $chunkRow) {
+                if (is_null($chunkRow)) {
+                    continue;
+                }
+                if ($chunkRow['id']) {
                     $chunk = ContentChunk::query()
-                        ->where("id", $chunkRow['id'])
+                        ->where('id', $chunkRow['id'])
                         ->first();
                     $chunk->text = $chunkRow['text'];
-                }else{
+                } else {
                     $chunk = new ContentChunk();
                     $chunk->chunkable_type = Sutta::class;
                     $chunk->chunkable_id = $chunkRow['chunkable_id'];
@@ -74,6 +76,7 @@ class AdminController extends Controller
                 $chunk->save();
             }
         }
+
         return [
             'status' => 'success',
         ];

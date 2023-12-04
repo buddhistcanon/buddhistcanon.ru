@@ -28,7 +28,6 @@ class RegisteredUserController extends Controller
     /**
      * Handle an incoming registration request.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      *
      * @throws \Illuminate\Validation\ValidationException
@@ -40,7 +39,7 @@ class RegisteredUserController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'invite' => 'required|starts_with:EDITORRUS',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ], ['starts_with' => "Неправильный инвайт"]);
+        ], ['starts_with' => 'Неправильный инвайт']);
 
         $user = User::create([
             'nickname' => $request->nickname,
@@ -48,16 +47,15 @@ class RegisteredUserController extends Controller
             'last_name' => $request->last_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'is_superadmin' => 0
+            'is_superadmin' => 0,
         ]);
 
-        if(str_contains($request->invite, "EDITORRUS")) {
+        if (str_contains($request->invite, 'EDITORRUS')) {
             $role = Role::query()
-                ->where("name", "editor_russian")
+                ->where('name', 'editor_russian')
                 ->firstOrFail();
             $user->roles()->attach($role);
         }
-
 
         event(new Registered($user));
 

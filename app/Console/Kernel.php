@@ -10,12 +10,11 @@ class Kernel extends ConsoleKernel
     /**
      * Define the application's command schedule.
      *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('lb:crawl theravada.ru')->cron("0 22 * * *");
+        $schedule->command('lb:crawl theravada.ru')->cron('0 22 * * *');
         $schedule->command('backup:run')->daily()->at('01:00')
             ->onFailure(function () {
 

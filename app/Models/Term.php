@@ -23,9 +23,10 @@ use Str;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\TermVariant|null $term
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\TermVariant[] $variants
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\TermVariant> $variants
  * @property-read int|null $variants_count
- * @method static \Database\Factories\TermFactory factory(...$parameters)
+ *
+ * @method static \Database\Factories\TermFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Term newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Term newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Term query()
@@ -39,6 +40,7 @@ use Str;
  * @method static \Illuminate\Database\Eloquent\Builder|Term whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Term whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Term whereUpdatedBy($value)
+ *
  * @mixin \Eloquent
  */
 class Term extends Model

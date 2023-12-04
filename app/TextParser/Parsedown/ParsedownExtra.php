@@ -263,17 +263,17 @@ class ParsedownExtra extends Parsedown
                 $this->DefinitionData['Footnote'][$name]['number'] = ++$this->footnoteCount; // » &
             }
 
-//            $Element = array(
-//                'name' => 'sup',
-//                'attributes' => array('id' => 'fnref'.$this->DefinitionData['Footnote'][$name]['count'].':'.$name),
-//                'handler' => 'element',
-//                'text' => array(
-//                    'name' => 'a',
-//                    'attributes' => array('href' => '#fn:'.$name, 'class' => 'footnote-ref'),
-//                    //'text' => $this->DefinitionData['Footnote'][$name]['number'],
-//                    'text' => $name,
-//                ),
-//            );
+            //            $Element = array(
+            //                'name' => 'sup',
+            //                'attributes' => array('id' => 'fnref'.$this->DefinitionData['Footnote'][$name]['count'].':'.$name),
+            //                'handler' => 'element',
+            //                'text' => array(
+            //                    'name' => 'a',
+            //                    'attributes' => array('href' => '#fn:'.$name, 'class' => 'footnote-ref'),
+            //                    //'text' => $this->DefinitionData['Footnote'][$name]['number'],
+            //                    'text' => $name,
+            //                ),
+            //            );
 
             $Element = [
                 'name' => 'span',

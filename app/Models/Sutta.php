@@ -19,9 +19,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $description
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Content[] $contents
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Content> $contents
  * @property-read int|null $contents_count
- * @method static \Illuminate\Database\Eloquent\Builder|Sutta byIndexName($indexName)
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Sutta bySuttaName(\App\Data\SuttaNameData $suttaNameData)
  * @method static \Illuminate\Database\Eloquent\Builder|Sutta newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Sutta newQuery()
@@ -37,12 +37,13 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Sutta whereTitleTranscribeRu($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Sutta whereTitleTranslateRu($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Sutta whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class Sutta extends Model
 {
     protected $table = 'suttas';
-//    protected $appends = ['name'];
+    //    protected $appends = ['name'];
 
     public function contents()
     {
@@ -103,8 +104,8 @@ class Sutta extends Model
         return $this->pali_content()->title;
     }
 
-//    public function getNameAttribute()
-//    {
-//        return $this->displayName();
-//    }
+    //    public function getNameAttribute()
+    //    {
+    //        return $this->displayName();
+    //    }
 }

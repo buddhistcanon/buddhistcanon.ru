@@ -21,9 +21,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string|null $old_content
  * @property int $session
  * @property \Illuminate\Support\Carbon|null $checked_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|CrawlerPage newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CrawlerPage newQuery()
- * @method static \Illuminate\Database\Query\Builder|CrawlerPage onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|CrawlerPage onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|CrawlerPage query()
  * @method static \Illuminate\Database\Eloquent\Builder|CrawlerPage whereCheckedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CrawlerPage whereContent($value)
@@ -38,8 +39,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|CrawlerPage whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CrawlerPage whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CrawlerPage whereUrl($value)
- * @method static \Illuminate\Database\Query\Builder|CrawlerPage withTrashed()
- * @method static \Illuminate\Database\Query\Builder|CrawlerPage withoutTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|CrawlerPage withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|CrawlerPage withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 class CrawlerPage extends Model

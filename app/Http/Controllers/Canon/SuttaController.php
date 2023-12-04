@@ -28,18 +28,18 @@ class SuttaController extends Controller
 
         $sutta = Sutta::query()
             ->bySuttaName($suttaNameData)
-            ->with("contents.chunks")
+            ->with('contents.chunks')
             ->first();
 
         // определение selectedContentId
         $content = $sutta->contents;
         if ($lang) {
-            $content = $content->filter(fn($content) => $content->lang == $lang);
+            $content = $content->filter(fn ($content) => $content->lang == $lang);
         }
         if ($translatorSlug) {
             $translator = People::where('slug', $translatorSlug)->firstOrFail();
-//            $content = $content->where('translator_id', $translator->id);
-            $content = $content->filter(fn($content) => $content->translator_id == $translator->id);
+            //            $content = $content->where('translator_id', $translator->id);
+            $content = $content->filter(fn ($content) => $content->translator_id == $translator->id);
         }
         $content = $content->first();
         $selectedContentId = $content->id;
@@ -50,7 +50,7 @@ class SuttaController extends Controller
         // контент в чанках
         $textParser = new TextParser();
         $chunksByContentId = [];
-        foreach($sutta->contents as &$content){
+        foreach ($sutta->contents as &$content) {
             $contentChunks = $content->chunks->map(function ($chunk) use ($textParser) {
                 return $textParser->parse($chunk->text);
             })->toArray();
@@ -59,8 +59,8 @@ class SuttaController extends Controller
         }
 
         $breadcrumbs = [
-            ["title" => "Палийский канон", "url" => "/palicanon"],
-            ["title" => displayNikayaTitleByCategory($sutta->category), "url" => "/".$sutta->category],
+            ['title' => 'Палийский канон', 'url' => '/palicanon'],
+            ['title' => displayNikayaTitleByCategory($sutta->category), 'url' => '/'.$sutta->category],
         ];
 
         return inertia('Canon/SuttaPage', [
