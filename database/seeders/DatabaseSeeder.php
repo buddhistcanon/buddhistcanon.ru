@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
         //$this->call(BookSeeder::class);
         $this->call(TermSeeder::class);
         $this->call(CrawlerSeeder::class);
+        $this->call(SuttasSeeder::class);
 
         $token = new SearchToken();
         $token->token = 'bd8-us7-lt2';
