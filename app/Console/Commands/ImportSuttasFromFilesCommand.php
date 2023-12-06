@@ -18,7 +18,7 @@ class ImportSuttasFromFilesCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'lb:import_file_suttas {--rebuild}';
+    protected $signature = 'lb:import_file_suttas {category} {--subfolders=} {--rebuild}';
 
     /**
      * The console command description.
@@ -47,11 +47,13 @@ class ImportSuttasFromFilesCommand extends Command
         $this->info('Import suttas from disk.');
         $disk = Storage::disk('source_suttas');
         $isRebuild = $this->option('rebuild');
+        $category = strtolower($this->argument('category'));
+        $maxSubfolders = $this->option('subfolders') ?? 0;
 
         if ($isRebuild) {
-            $this->line('Delete AN suttas..');
+            $this->line('Delete $category suttas..');
             $suttas = Sutta::query()
-                ->where('category', 'an')
+                ->where('category', $category)
                 ->with('contents')
                 ->get();
             foreach ($suttas as $sutta) {
@@ -63,14 +65,13 @@ class ImportSuttasFromFilesCommand extends Command
             }
         }
 
-        $pathFolderPaliParent = 'pali/sutta/an/';
-        $pathFolderEnParent = 'en/sujato/sutta/an/';
-        $maxSubfolders = 11;
+        $pathFolderPaliParent = "pali/sutta/$category/";
+        $pathFolderEnParent = "en/sujato/sutta/$category/";
         $missingEnSuttas = [];
 
         for ($i = 1; $i <= $maxSubfolders; $i++) {
 
-            $folder = "an$i";
+            $folder = $category.$i;
             $pathFolderEn = $pathFolderEnParent.$folder.'/';
             $pathFolderPali = $pathFolderPaliParent.$folder.'/';
 

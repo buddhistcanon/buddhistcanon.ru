@@ -35,6 +35,12 @@ class ImportSuttaFromTheravadaRuService
         $this->document = new Document($html);
     }
 
+    public function addHtml($html)
+    {
+        $html = str_replace("\r", '', $html);
+        $this->document = new Document($html);
+    }
+
     public function category_name()
     {
         $arr = explode(' ', $this->document->find('font[size=3]')[0]->text());
@@ -126,14 +132,17 @@ class ImportSuttaFromTheravadaRuService
         }
 
         $arrayNotes = $this->array_notes();
-        $paragraphs = $contentArea->find('p|div|ul|font');
+        if($contentArea !== "error"){
+            $paragraphs = $contentArea->find('p|div|ul|font');
+            if (count($paragraphs) == 0) {
+                $paragraphs[0] = $paragraphs;
+            }
+        }else{
+            $paragraphs = [];
+        }
         $this->dump('Paragraphs found: '.count($paragraphs));
         $this->dump('Notes found: '.count($arrayNotes));
         $this->dump($arrayNotes);
-
-        if (count($paragraphs) == 0) {
-            $paragraphs[0] = $paragraphs;
-        }
 
         // обрабатываем выложенные дивы с параграфами
         $mergedParagraphs = [];

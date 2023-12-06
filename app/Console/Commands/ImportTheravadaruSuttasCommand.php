@@ -48,17 +48,18 @@ class ImportTheravadaruSuttasCommand extends Command
         $peopleSV = People::where('nickname', 'SV')->firstOrFail();
 
         if ($isRebuild) {
-            $this->info("Delete RU content from $category suttas");
+            $this->info("Deleteing RU content from $category suttas");
             $suttas = Sutta::query()
                 ->where('category', $category)
                 ->get();
             $numDeleted = 0;
             foreach ($suttas as $sutta) {
-                foreach ($sutta->contents()->where('lang', 'ru') as $content) {
+                $contents = $sutta->contents()->where('lang', 'ru')->get();
+                foreach ($contents as $content) {
                     $content->chunks()->delete();
+                    $content->delete();
+                    $numDeleted++;
                 }
-                $sutta->contents()->delete();
-                $numDeleted++;
             }
             $this->info("Deleted $numDeleted contents");
         }
@@ -83,7 +84,11 @@ class ImportTheravadaruSuttasCommand extends Command
             //if(!str_contains($url, "sn25_1-")) continue;
 
             preg_match("/\/(mn|an|sn|dn|kn)\d/m", $url, $match);
-            $category = $match[1];
+            if(isset($match[1])){
+                $category = $match[1];
+            }else{
+                continue;
+            }
 
             $fullUrl = $baseUrl.$url;
             $theravadaRuUrls[] = $fullUrl;
@@ -111,11 +116,16 @@ class ImportTheravadaruSuttasCommand extends Command
                 $start = $sutta->suborder;
                 $end = $sutta->suborder;
             }
+            $theravadaRuSutta = null;
             for ($i = 0; $i <= $end - $start; $i++) {
                 $name = strtoupper($sutta->category.$sutta->order.'.'.($i + $start));
                 $this->line($name);
                 if (isset($theravadaUrlsBySutta[$name])) {
-                    // скачиваем сутты с theravada.ru
+
+                    // Берём сутту из кэша
+                    //$theravadaRuSutta = TheravadaruSutta::query()->where("name", $name)->first();
+
+                    // скачиваем сутту с theravada.ru
                     $url = $theravadaUrlsBySutta[$name];
                     preg_match("/\/(mn|an|sn|dn|kn)\d/m", $url, $match);
                     $category = $match[1];
@@ -123,6 +133,7 @@ class ImportTheravadaruSuttasCommand extends Command
                     $this->line("download and parse $fullUrl ..");
                     $import = new ImportSuttaFromTheravadaRuService($isDebug);
                     $import->fetchHtml($fullUrl);
+
                     if ($i == 0) {
                         $theravadaRuSutta = new TheravadaruSutta();
                         $theravadaRuSutta->category_name = $category;
@@ -145,14 +156,7 @@ class ImportTheravadaruSuttasCommand extends Command
                         $this->error('need attention');
                     }
                     $this->info($theravadaRuSutta->displayIndexName().' '.$theravadaRuSutta->name);
-
-                    $existsSutta = TheravadaruSutta::byIndexName($theravadaRuSutta->displayIndexName())->first();
-                    if ($existsSutta) {
-                        $this->line('TheravadaruSutta exists. Skip saving downloaded content.');
-                    } else {
-                        $theravadaRuSutta->save();
-                        $this->line('TheravadaruSutta saved.');
-                    }
+                    $theravadaRuSutta->save();
 
                 } else {
                     $this->error("sutta $name not found in theravadaUrlsBySutta");
@@ -160,52 +164,57 @@ class ImportTheravadaruSuttasCommand extends Command
             }
 
             // Сохранение в виде контента к сутте
-            $suttaNameData = new SuttaNameData($theravadaRuSutta->category_name, $theravadaRuSutta->order, $theravadaRuSutta->suborder);
-            $sutta = Sutta::query()
-                ->bySuttaName($suttaNameData)
-                ->first();
-            if (! $sutta) {
-                $this->error("Pali original of {$suttaNameData->name()} missing, adding SV translation is impossible");
-            } else {
-                $titleArray = explode(':', $theravadaRuSutta->name);
-                if (count($titleArray) == 2) {
-                    [$title, $subtitle] = $titleArray;
+            if($theravadaRuSutta){
+                $suttaNameData = new SuttaNameData($theravadaRuSutta->category_name, $theravadaRuSutta->order, $theravadaRuSutta->suborder);
+                $sutta = Sutta::query()
+                    ->bySuttaName($suttaNameData)
+                    ->first();
+                if (! $sutta) {
+                    $this->error("Pali original of {$suttaNameData->name()} missing, adding SV translation is impossible");
                 } else {
-                    $title = $theravadaRuSutta->name;
-                    $subtitle = '';
+                    $titleArray = explode(':', $theravadaRuSutta->name);
+                    if (count($titleArray) == 2) {
+                        [$title, $subtitle] = $titleArray;
+                    } else {
+                        $title = $theravadaRuSutta->name;
+                        $subtitle = '';
+                    }
+
+                    /** @var Content $content */
+                    $content = $sutta->contents()->make();
+                    $content->title = $theravadaRuSutta->name;
+                    $content->lang = 'ru';
+                    $content->is_original = 0;
+                    $content->is_synced = 0;
+                    $content->translator_id = $peopleSV->id;
+                    $content->link_url = $fullUrl;
+                    $content->description = str_replace("\n", '', $import->copyright());
+                    $content->short_description = 'Перевод с английского перевода Бхикку Бодхи на русский, Сергей SV';
+                    $content->save();
+                    $this->line('Content SV saved.');
+
+                    $sutta->title_transcribe_ru = trim($title);
+                    $sutta->title_translate_ru = trim($subtitle);
+                    $sutta->save();
+
+                    $contentService = new ContentService($content);
+                    $arrayContent = explode("\n\n", $theravadaRuSutta->content);
+                    $contentOrder = 10;
+                    $numChunks = 0;
+                    foreach ($arrayContent as $chunk) {
+                        $contentService->addChunk($chunk, $contentOrder, null);
+                        $contentOrder += 10;
+                        $numChunks++;
+                    }
+                    $this->line("Chunks SV added: $numChunks");
+
+                    $contentService->addExternalSource($fullUrl);
+                    $this->line('External source added.');
+                    $contentService->setMain();
+                    $this->line('Marked as main.');
                 }
-
-                /** @var Content $content */
-                $content = $sutta->contents()->make();
-                $content->title = $theravadaRuSutta->name;
-                $content->lang = 'ru';
-                $content->is_original = 0;
-                $content->is_synced = 0;
-                $content->translator_id = $peopleSV->id;
-                $content->link_url = $fullUrl;
-                $content->description = str_replace("\n", '', $import->copyright());
-                $content->short_description = 'Перевод с английского перевода Бхикку Бодхи на русский, Сергей SV';
-                $content->save();
-                $this->line('Content saved.');
-
-                $sutta->title_transcribe_ru = trim($title);
-                $sutta->title_translate_ru = trim($subtitle);
-                $sutta->save();
-
-                $contentService = new ContentService($content);
-                $arrayContent = explode("\n\n", $theravadaRuSutta->content);
-                $contentOrder = 10;
-                foreach ($arrayContent as $chunk) {
-                    $contentService->addChunk($chunk, $contentOrder, null);
-                    $contentOrder += 10;
-                }
-                $this->line('Chunks added.');
-
-                $contentService->addExternalSource($fullUrl);
-                $this->line('External source added.');
-                $contentService->setMain();
-                $this->line('Marked as main.');
             }
+
             if ($isDebug) {
                 return;
             }
