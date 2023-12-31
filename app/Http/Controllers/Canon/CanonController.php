@@ -28,7 +28,29 @@ class CanonController extends Controller
 
     public function an()
     {
-        return redirect('/mn');
+        $suttas = Sutta::query()
+            ->where('category', 'an')
+            ->with('contents')
+            ->with('contents.translator')
+            ->orderBy('order', 'asc')
+            ->get();
+
+        return inertia('Canon/AnPage', [
+            'suttas' => $suttas,
+        ]);
+    }
+
+    public function an1()
+    {
+        $suttas = Sutta::query()
+            ->where('category', 'an')
+            ->where('order', 1)
+            ->get();
+        $suttas = $suttas->map(function($sutta){
+            $sutta->sort = (int)explode('-', $sutta->suborder)[0];
+            return $sutta;
+        })->sortBy("sort");
+        return inertia('Canon/An/An1Page', [ 'suttas' => $suttas ]);
     }
 
     public function sn()

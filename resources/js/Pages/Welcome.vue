@@ -26,9 +26,6 @@ import Sidebar from "@/Common/Sidebar.vue";
                             Читать Китайский канон
                         </div>
                     </div>
-
-
-
                 </div>
             </div>
 

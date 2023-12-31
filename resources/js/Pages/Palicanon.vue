@@ -25,7 +25,7 @@ import { ArrowDownIcon } from '@heroicons/vue/24/outline'
                                 <div class="bc-button-disabled px-4 py-3 w-full my-2">Дигха-никая (DN)</div>
                                 <Link class="bc-button px-4 py-3 w-full my-4" href="/mn">Мадджхима-никая (MN)</Link>
                                 <div class="bc-button-disabled px-4 py-3 w-full my-4">Самьютта-никая (SN)</div>
-                                <div class="bc-button-disabled px-4 py-3 w-full my-4">Ангуттара-никая (AN)</div>
+                                <Link class="bc-button px-4 py-3 w-full my-4" href="/an">Ангуттара-никая (AN)</Link>
                                 <div class="bc-button-disabled px-4 py-3 w-full my-4">Кхудакка-никая (KN)</div>
 
                             </div>

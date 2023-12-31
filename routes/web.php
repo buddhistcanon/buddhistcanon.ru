@@ -39,6 +39,7 @@ Route::get('/palicanon', \App\Http\Controllers\PalicanonController::class.'@inde
 Route::get('/dn', \App\Http\Controllers\Canon\CanonController::class.'@dn');
 Route::get('/mn', \App\Http\Controllers\Canon\CanonController::class.'@mn');
 Route::get('/an', \App\Http\Controllers\Canon\CanonController::class.'@an');
+Route::get('/an1', \App\Http\Controllers\Canon\CanonController::class.'@an1');
 Route::get('/sn', \App\Http\Controllers\Canon\CanonController::class.'@sn');
 
 // Универсальный роут отображения сутты
