@@ -119,7 +119,7 @@ class ImportTheravadaruSuttasCommand extends Command
             $theravadaRuSutta = null;
             for ($i = 0; $i <= $end - $start; $i++) {
                 $name = strtoupper($sutta->category.$sutta->order.'.'.($i + $start));
-                $this->line($name);
+                $this->line($name." (i=$i)");
                 if (isset($theravadaUrlsBySutta[$name])) {
 
                     // Берём сутту из кэша
@@ -149,17 +149,22 @@ class ImportTheravadaruSuttasCommand extends Command
                         $theravadaRuSutta->original_html = '';
                     }
 
-                    $theravadaRuSutta->content .= "\n\n".$import->content();
-                    $theravadaRuSutta->original_html .= "\n\n".$import->original_html();
-                    $theravadaRuSutta->need_attention = $import->is_need_attention();
-                    if ($theravadaRuSutta->need_attention) {
-                        $this->error('need attention');
+                    if($theravadaRuSutta){
+                        $theravadaRuSutta->content .= "\n\n".$import->content();
+                        $theravadaRuSutta->original_html .= "\n\n".$import->original_html();
+                        $theravadaRuSutta->need_attention = $import->is_need_attention();
+                        if ($theravadaRuSutta->need_attention) {
+                            $this->error('need attention');
+                        }
+                        $this->info($theravadaRuSutta->displayIndexName().' '.$theravadaRuSutta->name);
+                        $theravadaRuSutta->save();
+                    }else{
+                        $this->error("Not found first sutta of $name (period $start - $end,  i=$i)");
                     }
-                    $this->info($theravadaRuSutta->displayIndexName().' '.$theravadaRuSutta->name);
-                    $theravadaRuSutta->save();
+
 
                 } else {
-                    $this->error("sutta $name not found in theravadaUrlsBySutta");
+//                    $this->error("sutta $name not found in theravadaUrlsBySutta");
                 }
             }
 
