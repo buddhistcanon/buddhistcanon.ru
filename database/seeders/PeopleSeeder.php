@@ -63,7 +63,6 @@ class PeopleSeeder extends Seeder
         $people = new People();
         $people->id = 5;
         $people->fullname_ru = 'Нгыам Панит';
-        $people->monkname_ru = 'Аджан Буддадаса';
         $people->slug = 'ajahn_budhadasa';
         $people->is_monk = 1;
         $people->priority = 100;
@@ -79,6 +78,14 @@ class PeopleSeeder extends Seeder
 
 Его последним проектом стало основание международного центра для практики медитации "Dhamma Hermitage" при монастыре Суан Мок.';
         $people->signature = 'Аджан Буддадаса';
+        $people->save();
+
+        $people = new People();
+        $people->id = 6;
+        $people->fullname_ru = 'Андрей Парибок';
+        $people->slug = 'paribok';
+        $people->description = '';
+        $people->signature = 'Андрей Парибок';
         $people->save();
     }
 }

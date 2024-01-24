@@ -39,8 +39,9 @@ Route::get('/palicanon', \App\Http\Controllers\PalicanonController::class.'@inde
 Route::get('/dn', \App\Http\Controllers\Canon\CanonController::class.'@dn');
 Route::get('/mn', \App\Http\Controllers\Canon\CanonController::class.'@mn');
 Route::get('/an', \App\Http\Controllers\Canon\CanonController::class.'@an');
-Route::get('/an1', \App\Http\Controllers\Canon\CanonController::class.'@an1');
+Route::get('/an/{x}', \App\Http\Controllers\Canon\CanonController::class.'@an_x');
 Route::get('/sn', \App\Http\Controllers\Canon\CanonController::class.'@sn');
+Route::get('/sn/{x}', \App\Http\Controllers\Canon\CanonController::class.'@sn_x');
 
 // Универсальный роут отображения сутты
 Route::get('/{sutta}/{lang?}/{translator?}', \App\Http\Controllers\Canon\SuttaController::class.'@index')

@@ -1,24 +1,24 @@
 <script setup>
 import ApplicationLayout from "@/Layouts/ApplicationLayout.vue";
-import { textToHtml } from "@/helpers.js";
-import { Link, Head } from "@inertiajs/inertia-vue3";
+import {textToHtml} from "@/helpers.js";
+import {Link, Head} from "@inertiajs/inertia-vue3";
 import LogoTitle from "@/Common/LogoTitle.vue";
 import Breadcrumbs from "@/Components/Breadcrumbs.vue";
-import { useWindowScroll } from '@vueuse/core';
-import { ref, reactive, computed } from "vue";
-import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/vue/24/outline";
-import { onKeyStroke } from '@vueuse/core'
+import {useWindowScroll} from '@vueuse/core';
+import {ref, reactive, computed} from "vue";
+import {ChevronDownIcon, ChevronUpIcon, PencilSquareIcon} from "@heroicons/vue/24/outline";
+import {onKeyStroke} from '@vueuse/core'
 
 
 const props = defineProps({
-    sutta: { type: Object, required: true },
-    contents: { type: Array, required: true },
-    nikayaTitle: { type: String, required: true },
-    suttaSlug: { type: String, required: true },
-    lang: { type: String, required: true },
-    breadcrumbs: { type: Array, required: true },
-    selectedContentId: { type: Number, required: true },
-    chunksByContentId: { type: Object, required: true },
+    sutta: {type: Object, required: true},
+    contents: {type: Array, required: true},
+    nikayaTitle: {type: String, required: true},
+    suttaSlug: {type: String, required: true},
+    lang: {type: String, required: true},
+    breadcrumbs: {type: Array, required: true},
+    selectedContentId: {type: Number, required: true},
+    chunksByContentId: {type: Object, required: true},
 })
 
 const selectedContentId = ref(props.selectedContentId);
@@ -30,7 +30,7 @@ const contentChunks = computed(() => {
 })
 
 // Закрепление меню на сайдбаре при скролле страницы
-const { x, y } = useWindowScroll();
+const {x, y} = useWindowScroll();
 const needSticky = computed(() => {
     return y.value > 267;
 })
@@ -46,8 +46,10 @@ const handleContentSelect = (contentId) => {
 }
 onKeyStroke(['1', '2', '3', '4', '5', '6', '7', '8', '9'], (e) => {
     e.preventDefault();
-    let selectedContent = props.contents.filter((c, index)=>{ return index === parseInt(e.key) - 1});
-    if(selectedContent[0]){
+    let selectedContent = props.contents.filter((c, index) => {
+        return index === parseInt(e.key) - 1
+    });
+    if (selectedContent[0]) {
         handleContentSelect(selectedContent[0].id);
     }
 })
@@ -59,19 +61,36 @@ onKeyStroke(['1', '2', '3', '4', '5', '6', '7', '8', '9'], (e) => {
 
     <ApplicationLayout>
 
-        <Head :title="props.sutta.name" />
+        <Head :title="props.sutta.name"/>
 
         <div class="flex flex-col lg:flex-row w-full">
             <div class="bg-white p-4 w-full">
 
                 <Breadcrumbs :items="props.breadcrumbs" class="mb-1"/>
 
-                <h1 class="text-xl">{{nikayaTitle}}</h1>
-                <h2 class="text-lg">{{sutta.title_transcribe_ru}} "{{sutta.title_translate_ru}}"</h2>
+                <div class="flex flex-row justify-between">
+                    <div class="">
+                        <h1 class="text-xl">{{ nikayaTitle }}</h1>
+                        <h2 class="text-lg">{{ sutta.title_transcribe_ru }} "{{ sutta.title_translate_ru }}"</h2>
+                    </div>
+                    <div class="p-2">
+                        <Link :href="'/admin/edit_sutta/'+sutta.name">
+                            <PencilSquareIcon class="w-6 h-6 text-gray-400"/>
+                        </Link>
+                    </div>
+                </div>
+
+                <div v-if="content.translator_name" class="mt-1 text-sm">
+                    Перевод: {{ content.translator_name }}
+                    <span v-if="content.link_url" class="ml-2">
+                        <a class="link" :href="content.link_url" target="_blank">Источник</a>
+                    </span>
+                </div>
+
                 <div class="mt-4 content-text">
-                    <div class="" v-for="(chunk, index) of contentChunks" >
+                    <div class="" v-for="(chunk, index) of contentChunks">
                         <div v-if="content.is_synced !== '0'">
-                            <div class="text-gray-400 text-xs">{{index+1}}</div>
+                            <div class="text-gray-400 text-xs">{{ index + 1 }}</div>
                             <div class="border-b pb-2" v-html="chunk"></div>
                         </div>
                         <div v-else>
@@ -82,18 +101,22 @@ onKeyStroke(['1', '2', '3', '4', '5', '6', '7', '8', '9'], (e) => {
             </div>
             <div class="lg:ml-4 lg:w-96 flex flex-col items-center ">
                 <div class="mb-8">
-                    <LogoTitle />
+                    <LogoTitle/>
                 </div>
                 <div :class="[needSticky ? 'fixed' : 'relative', '']">
-                    <div class="flex flex-col items-center" >
+                    <div class="flex flex-col items-center">
                         <div class="bc-button w-72 text-sm py-2 px-2 flex flex-col items-center">
-                            <div class="flex flex-row items-center cursor-pointer" @click="handleContentSelectorClick()">
-                                <div class="">{{content.short_description}}</div>
-                                <ChevronDownIcon v-if="!openContentSelector" class="w-4 text-gray-800" />
-                                <ChevronUpIcon v-if="openContentSelector" class="w-4 text-gray-800" />
+                            <div class="flex flex-row items-center cursor-pointer"
+                                 @click="handleContentSelectorClick()">
+                                <div class="">{{ content.short_description }}</div>
+                                <ChevronDownIcon v-if="!openContentSelector" class="w-4 text-gray-800"/>
+                                <ChevronUpIcon v-if="openContentSelector" class="w-4 text-gray-800"/>
                             </div>
                             <div v-if="openContentSelector" class="flex flex-col items-center">
-                                <div v-for="(content, index) of contents" class="mt-4 cursor-pointer" @click="handleContentSelect(content.id)">{{index+1}}. {{content.short_description}}</div>
+                                <div v-for="(content, index) of contents" class="mt-4 cursor-pointer"
+                                     @click="handleContentSelect(content.id)">{{ index + 1 }}.
+                                    {{ content.short_description }}
+                                </div>
                             </div>
                         </div>
 

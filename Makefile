@@ -25,6 +25,11 @@ down: ## Terminate sail docker-compose
 
 restart: down up ## Restart sail docker-compose
 
+front: vite-dev ## Run vite dev server
+
+logs:
+	./vendor/bin/sail logs -f
+
 vite-dev: ## npm run dev
 	./vendor/bin/sail npm run dev
 

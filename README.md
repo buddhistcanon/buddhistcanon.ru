@@ -68,16 +68,16 @@ npm run dev
 Импорт сутт из файлов (оригинал на пали и перевод на английский от Бханте Суджато):
 
 ```bash
-make import-file-suttas
-или 
-php artisan lb:import_file_suttas --rebuild
+sail artisan lb:import_file_suttas MN --rebuild
+sail artisan lb:import_file_suttas AN --subfolders=10 --rebuild
+sail artisan lb:import_file_suttas SN --subfolders=57 --rebuild
 ```
 
 Импорт сутт с сайта theravada.ru
 ```bash
 make import-theravadaru-suttas
 или
-php artisan lb:import_theravadaru_suttas --rebuild
+php artisan lb:import_theravadaru_suttas AN --rebuild
 ``` 
 
 

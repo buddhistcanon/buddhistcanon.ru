@@ -38,6 +38,17 @@ class TheravadaruCrawlObserver extends CrawlObserver
         $html = $response->getBody();
         $html = iconv('windows-1251', 'utf-8', $html);
         $status = $response->getStatusCode();
+        if (str_contains($html, '301 Moved Permanently')) {
+            $status = 301;
+        }
+        if ($status >= 300) {
+            if ($this->isVerbose) {
+                echo "status $status - skip this page\n";
+            }
+
+            return;
+        }
+
         $hash = md5($html);
 
         $fetchedUrl = $this->urlString($url);
@@ -59,7 +70,7 @@ class TheravadaruCrawlObserver extends CrawlObserver
             $crawlerPage->checked_at = now();
         } else {
             // Страница обновлена
-            if ($status < 300 and $crawlerPage and $crawlerPage->content_hash != $hash) {
+            if ($crawlerPage->content_hash != $hash) {
                 if ($this->isVerbose) {
                     echo ' | PAGE UPDATED';
                 }
@@ -80,9 +91,7 @@ class TheravadaruCrawlObserver extends CrawlObserver
                     'new_content' => $crawlerPage->content,
                     'old_content' => $crawlerPage->old_content,
                 ]);
-            }
-
-            // Страница не изменилась
+            } // Страница не изменилась
             elseif ($crawlerPage and $crawlerPage->content_hash == $hash) {
                 if ($this->isVerbose) {
                     echo ' | page was not changed';

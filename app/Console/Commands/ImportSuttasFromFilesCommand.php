@@ -48,7 +48,14 @@ class ImportSuttasFromFilesCommand extends Command
         $disk = Storage::disk('source_suttas');
         $isRebuild = $this->option('rebuild');
         $category = strtolower($this->argument('category'));
-        $maxSubfolders = $this->option('subfolders') ?? 0;
+        $maxSubfolders = 1;
+
+        if ($category === 'an') {
+            $maxSubfolders = 10;
+        }
+        if ($category === 'sn') {
+            $maxSubfolders = 56;
+        }
 
         if ($isRebuild) {
             $this->line('Delete $category suttas..');
@@ -72,6 +79,9 @@ class ImportSuttasFromFilesCommand extends Command
         for ($i = 1; $i <= $maxSubfolders; $i++) {
 
             $folder = $category.$i;
+            if ($category == 'mn') {
+                $folder = '';
+            }
             $pathFolderEn = $pathFolderEnParent.$folder.'/';
             $pathFolderPali = $pathFolderPaliParent.$folder.'/';
 

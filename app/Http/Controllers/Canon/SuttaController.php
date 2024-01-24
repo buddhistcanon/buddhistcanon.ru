@@ -42,6 +42,20 @@ class SuttaController extends Controller
             $content = $content->filter(fn ($content) => $content->translator_id == $translator->id);
         }
         $content = $content->first();
+        if ($content->translator_name or $content->translator_id) {
+            $content->display_translator_name = $content->translator_name ?? $content->translator->displayNameRu();
+        } else {
+            $content->display_translator_name = null;
+        }
+
+        if (! $content) {
+            return redirect()->route('sutta', [
+                'sutta' => $suttaName,
+                'lang' => 'en',
+                'translator' => 'sujato',
+            ]);
+        }
+
         $selectedContentId = $content->id;
 
         // определение названия сутты вместе с названием никаи
@@ -62,6 +76,12 @@ class SuttaController extends Controller
             ['title' => 'Палийский канон', 'url' => '/palicanon'],
             ['title' => displayNikayaTitleByCategory($sutta->category), 'url' => '/'.$sutta->category],
         ];
+        if ($sutta->category === 'an') {
+            $breadcrumbs[] = ['title' => 'Раздел '.strtoupper($sutta->category.$sutta->order), 'url' => '/'.$sutta->category.'/'.$sutta->order];
+        }
+        if ($sutta->category === 'sn') {
+            $breadcrumbs[] = ['title' => 'Раздел '.strtoupper($sutta->category.$sutta->order), 'url' => '/'.$sutta->category.'/'.$sutta->order];
+        }
 
         return inertia('Canon/SuttaPage', [
             'sutta' => $sutta,

@@ -41,34 +41,34 @@ const filteredByOrder = (order) => {
                     <div class="flex flex-col lg:flex-row w-full">
                         <div class="bg-white p-4 w-full">
                             <div class="mt-4 flex flex-col items-center mb-36">
-                                <Link class="bc-button-background border-bc mb-8 py-6 w-1/2 text-center rounded-bc" href="/an1">
+                                <Link class="bc-button-background border-bc mb-8 py-6 w-1/2 text-center rounded-bc" href="/an/1">
                                     AN1 - Книга единиц
                                 </Link>
-                                <Link class="mt-4 bc-button-background border-bc mb-8 py-6 w-1/2 text-center rounded-bc" href="/an2">
+                                <Link class="mt-4 bc-button-background border-bc mb-8 py-6 w-1/2 text-center rounded-bc" href="/an/2">
                                     AN2 - Книга двоек
                                 </Link>
-                                <Link class="mt-4 bc-button-background border-bc mb-8 py-6 w-1/2 text-center rounded-bc" href="/an3">
+                                <Link class="mt-4 bc-button-background border-bc mb-8 py-6 w-1/2 text-center rounded-bc" href="/an/3">
                                     AN3 - Книга троек
                                 </Link>
-                                <Link class="mt-4 bc-button-background border-bc mb-8 py-6 w-1/2 text-center rounded-bc" href="/an4">
+                                <Link class="mt-4 bc-button-background border-bc mb-8 py-6 w-1/2 text-center rounded-bc" href="/an/4">
                                     AN4 - Книга четвёрок
                                 </Link>
-                                <Link class="mt-4 bc-button-background border-bc mb-8 py-6 w-1/2 text-center rounded-bc" href="/an5">
+                                <Link class="mt-4 bc-button-background border-bc mb-8 py-6 w-1/2 text-center rounded-bc" href="/an/5">
                                     AN5 - Книга пятёрок
                                 </Link>
-                                <Link class="mt-4 bc-button-background border-bc mb-8 py-6 w-1/2 text-center rounded-bc" href="/an6">
+                                <Link class="mt-4 bc-button-background border-bc mb-8 py-6 w-1/2 text-center rounded-bc" href="/an/6">
                                     AN6 - Книга шестёрок
                                 </Link>
-                                <Link class="mt-4 bc-button-background border-bc mb-8 py-6 w-1/2 text-center rounded-bc" href="/an7">
+                                <Link class="mt-4 bc-button-background border-bc mb-8 py-6 w-1/2 text-center rounded-bc" href="/an/7">
                                     AN7 - Книга семёрок
                                 </Link>
-                                <Link class="mt-4 bc-button-background border-bc mb-8 py-6 w-1/2 text-center rounded-bc" href="/an8">
+                                <Link class="mt-4 bc-button-background border-bc mb-8 py-6 w-1/2 text-center rounded-bc" href="/an/8">
                                     AN8 - Книга восьмёрок
                                 </Link>
-                                <Link class="mt-4 bc-button-background border-bc mb-8 py-6 w-1/2 text-center rounded-bc" href="/an9">
+                                <Link class="mt-4 bc-button-background border-bc mb-8 py-6 w-1/2 text-center rounded-bc" href="/an/9">
                                     AN9 - Книга девяток
                                 </Link>
-                                <Link class="mt-4 bc-button-background border-bc mb-8 py-6 w-1/2 text-center rounded-bc" href="/an10">
+                                <Link class="mt-4 bc-button-background border-bc mb-8 py-6 w-1/2 text-center rounded-bc" href="/an/10">
                                     AN10 - Книга десяток
                                 </Link>
                             </div>

@@ -48,13 +48,16 @@ class ImportTheravadaruSuttasCommand extends Command
         $peopleSV = People::where('nickname', 'SV')->firstOrFail();
 
         if ($isRebuild) {
-            $this->info("Deleteing RU content from $category suttas");
+            $this->info("Deleting RU content from $category suttas");
             $suttas = Sutta::query()
                 ->where('category', $category)
                 ->get();
             $numDeleted = 0;
             foreach ($suttas as $sutta) {
-                $contents = $sutta->contents()->where('lang', 'ru')->get();
+                $contents = $sutta->contents()
+                    ->where('lang', 'ru')
+                    ->where('translator_id', $peopleSV->id)
+                    ->get();
                 foreach ($contents as $content) {
                     $content->chunks()->delete();
                     $content->delete();
@@ -68,7 +71,7 @@ class ImportTheravadaruSuttasCommand extends Command
         $suttasPath = '/Teaching/Canon/Suttanta';
         $baseUrl = $domainUrl.$suttasPath;
         $document = new Document($baseUrl.'/all-suttas-list.htm', true);
-        $area = $document->find('i > a');
+        $area = $document->find('a');
         $theravadaRuUrls = [];
         foreach ($area as $node) {
             $url = $node->getAttribute('href');
@@ -84,9 +87,9 @@ class ImportTheravadaruSuttasCommand extends Command
             //if(!str_contains($url, "sn25_1-")) continue;
 
             preg_match("/\/(mn|an|sn|dn|kn)\d/m", $url, $match);
-            if(isset($match[1])){
+            if (isset($match[1])) {
                 $category = $match[1];
-            }else{
+            } else {
                 continue;
             }
 
@@ -95,20 +98,31 @@ class ImportTheravadaruSuttasCommand extends Command
         }
         //        dd($theravadaRuUrls);
 
+        $this->line('Parsed urls from theravada.ru: '.count($theravadaRuUrls));
         $theravadaUrlsBySutta = [];
         foreach ($theravadaRuUrls as $url) {
             $lowerCategory = strtolower($category);
             preg_match("/Texts\/$lowerCategory(\d+)_(.*?)-[a-z]/m", $url, $match);
             $order = $match[1];
             $suborder = $match[2];
-            echo "$url : $order $suborder"."\n";
             $theravadaUrlsBySutta[strtoupper($category)."$order.$suborder"] = $url;
         }
+        $this->line('Urls after filter: '.count($theravadaUrlsBySutta));
+        dump($theravadaUrlsBySutta);
+        //        exit();
 
+        $errorDownloads = [];
         $suttas = Sutta::query()
             ->where('category', $category)
             ->get();
         foreach ($suttas as $sutta) {
+
+            $isExist = $sutta->contents()->where('lang', 'ru')->where('translator_id', $peopleSV->id)->count();
+            if ($isExist) {
+                $this->line("RU content of {$sutta->displayIndexName()} already exists. Skip.");
+
+                continue;
+            }
 
             if (str_contains($sutta->suborder, '-')) {
                 [$start, $end] = explode('-', $sutta->suborder);
@@ -132,7 +146,14 @@ class ImportTheravadaruSuttasCommand extends Command
                     $fullUrl = $url;
                     $this->line("download and parse $fullUrl ..");
                     $import = new ImportSuttaFromTheravadaRuService($isDebug);
-                    $import->fetchHtml($fullUrl);
+                    try {
+                        $import->fetchHtml($fullUrl);
+                    } catch (\Exception $e) {
+                        $errorDownloads[] = $fullUrl;
+                        $this->error("Error download $fullUrl");
+
+                        continue;
+                    }
 
                     if ($i == 0) {
                         $theravadaRuSutta = new TheravadaruSutta();
@@ -149,7 +170,7 @@ class ImportTheravadaruSuttasCommand extends Command
                         $theravadaRuSutta->original_html = '';
                     }
 
-                    if($theravadaRuSutta){
+                    if ($theravadaRuSutta) {
                         $theravadaRuSutta->content .= "\n\n".$import->content();
                         $theravadaRuSutta->original_html .= "\n\n".$import->original_html();
                         $theravadaRuSutta->need_attention = $import->is_need_attention();
@@ -158,18 +179,17 @@ class ImportTheravadaruSuttasCommand extends Command
                         }
                         $this->info($theravadaRuSutta->displayIndexName().' '.$theravadaRuSutta->name);
                         $theravadaRuSutta->save();
-                    }else{
+                    } else {
                         $this->error("Not found first sutta of $name (period $start - $end,  i=$i)");
                     }
 
-
                 } else {
-//                    $this->error("sutta $name not found in theravadaUrlsBySutta");
+                    $this->error("sutta $name not found in theravadaUrlsBySutta");
                 }
             }
 
             // Сохранение в виде контента к сутте
-            if($theravadaRuSutta){
+            if ($theravadaRuSutta) {
                 $suttaNameData = new SuttaNameData($theravadaRuSutta->category_name, $theravadaRuSutta->order, $theravadaRuSutta->suborder);
                 $sutta = Sutta::query()
                     ->bySuttaName($suttaNameData)
@@ -192,6 +212,7 @@ class ImportTheravadaruSuttasCommand extends Command
                     $content->is_original = 0;
                     $content->is_synced = 0;
                     $content->translator_id = $peopleSV->id;
+                    $content->translator_name = $peopleSV->displayNameRu();
                     $content->link_url = $fullUrl;
                     $content->description = str_replace("\n", '', $import->copyright());
                     $content->short_description = 'Перевод с английского перевода Бхикку Бодхи на русский, Сергей SV';
@@ -224,6 +245,8 @@ class ImportTheravadaruSuttasCommand extends Command
                 return;
             }
         }
+        $this->line('done. Error downloads:');
+        dump($errorDownloads);
 
     }
 

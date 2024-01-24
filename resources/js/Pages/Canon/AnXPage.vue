@@ -6,8 +6,10 @@ import Breadcrumbs from "@/Components/Breadcrumbs.vue";
 
 const props = defineProps({
     suttas: { type: Array, required: true },
+    title: { type: String, required: true },
+    subtitle: { type: String, required: true },
 })
-console.log(props.suttas);
+
 const suttaUrl = (sutta) => {
     if(sutta.suborder) {
         return `/${sutta.category}${sutta.order}.${sutta.suborder}`;
@@ -34,13 +36,20 @@ const filteredByOrder = (order) => {
                     <Breadcrumbs :items="[
                         {title: 'Палийский канон', url: '/palicanon'},
                         {title: 'Ангуттара-никая', url: '/an'},
-                    ]" class="mb-1"/>
+                    ]" class="mb-3"/>
 
-                    <div class="font-serif text-2xl mb-6">AN1 - Екака нипата</div>
+                    <div class="font-serif text-2xl mb-2">{{props.title}}</div>
+
+                    <div class="font-serif text-xl mb-6">{{props.subtitle}}</div>
 
                     <div class="grid grid-cols-2 gap-4">
-                        <Link v-for="sutta in filteredByOrder(1)" :key="sutta.id" class="bc-button px-4 py-4 mb-2" :href="suttaUrl(sutta)">
-                            <div class="text-xl mb-2">{{sutta.name}}</div>
+                        <Link v-for="sutta in props.suttas" :key="sutta.id" class="bc-button px-4 py-4 mb-2" :href="suttaUrl(sutta)">
+                            <div class="flex flex-row justify-between mb-2">
+                                <div class="text-xl">{{sutta.name}}</div>
+                                <div class="text-sm text-gray-700">
+                                    <span class="mr-1" v-for="content in sutta.contents" :key="content.id">{{content.lang}}</span>
+                                </div>
+                            </div>
                             <div>{{sutta.title_transcribe_ru}}</div>
                         </Link>
                     </div>
