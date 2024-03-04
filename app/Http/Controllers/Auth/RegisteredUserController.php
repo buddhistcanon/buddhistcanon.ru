@@ -47,8 +47,8 @@ class RegisteredUserController extends Controller
             'last_name' => $request->last_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'is_superadmin' => 0,
         ]);
+        $user->is_superadmin = 0;
 
         if (str_contains($request->invite, 'EDITORRUS')) {
             $role = Role::query()
