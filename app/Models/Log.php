@@ -45,4 +45,19 @@ use Illuminate\Database\Eloquent\Model;
 class Log extends Model
 {
     protected $table = 'logs';
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function sutta()
+    {
+        return $this->belongsTo(Sutta::class);
+    }
+
+    public function content()
+    {
+        return $this->belongsTo(Content::class);
+    }
 }

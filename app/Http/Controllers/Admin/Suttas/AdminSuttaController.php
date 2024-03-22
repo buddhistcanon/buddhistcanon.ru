@@ -147,15 +147,15 @@ class AdminSuttaController extends Controller
             ->firstOrFail();
         $editedContentIds = array_unique($editedContentIds);
         foreach ($editedContentIds as $contentId) {
-            $originalContent = $originalContents->filter(fn ($content) => $content->id === $contentId)->first();
-            $content = $sutta->contents->filter(fn ($content) => $content->id === $contentId)->first();
+            $prevContent = $originalContents->filter(fn ($content) => $content->id === $contentId)->first();
+            $newContent = $sutta->contents->filter(fn ($content) => $content->id === $contentId)->first();
             Logger::log(new LogData(
                 action: 'update_content',
                 userId: auth()->id(),
                 suttaId: $sutta->id,
                 contentId: $contentId,
-                before: $originalContent->toArray(),
-                after: $content->toArray()
+                before: $prevContent->toArray(),
+                after: $newContent->toArray()
             ));
         }
 

@@ -26,6 +26,7 @@
         "@headlessui/vue": "^1.6.7",
         "@heroicons/vue": "^2.0.10",
         "@vueuse/core": "^10.1.2",
+        "date-fns": "^3.6.0",
         "vue-contenteditable": "^4.1.0",
         "vue-sticky-element": "^1.6.0"
     }

@@ -31,6 +31,8 @@ Route::group(['middleware' => ['admin_area']], function () {
     Route::post('/admin/store_term', \App\Http\Controllers\Admin\Terms\AdminTermsController::class.'@store');
 
     Route::get('/admin/help', \App\Http\Controllers\Admin\AdminHelpController::class.'@index');
+
+    Route::get('/admin/logs', \App\Http\Controllers\Admin\AdminLogsController::class.'@index');
 });
 
 Route::get('/', \App\Http\Controllers\WelcomeController::class.'@index')->name('welcome');
