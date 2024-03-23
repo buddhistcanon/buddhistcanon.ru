@@ -15,13 +15,6 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('lb:crawl theravada.ru')->cron('0 22 * * *');
-        $schedule->command('backup:run')->daily()->at('01:00')
-            ->onFailure(function () {
-
-            })
-            ->onSuccess(function () {
-
-            });
     }
 
     /**
