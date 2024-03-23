@@ -10,7 +10,7 @@ class AdminLogsController extends Controller
     public function index()
     {
         $logs = Log::query()
-            ->where('action', 'update_content')
+            ->whereIn('action', ['update_content', 'make_synced', 'make_unsynced'])
             ->with(['user', 'sutta', 'content.translator'])
             ->orderByDesc('created_at')
             ->paginate(20);

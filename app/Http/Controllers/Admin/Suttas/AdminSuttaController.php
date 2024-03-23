@@ -52,6 +52,7 @@ class AdminSuttaController extends Controller
     {
         $suttaData = $request->json('sutta');
         $suttaId = $suttaData['id'];
+        $isContentSynced = $request->json('isContentSynced') ?? [];
 
         $sutta = Sutta::query()
             ->where('id', $suttaId)
@@ -138,6 +139,23 @@ class AdminSuttaController extends Controller
                 before: $chunk->toArray()
             ));
             $chunk->delete();
+        }
+
+        // проставление is_synced для контента
+        foreach ($isContentSynced as $contentId => $isSynced) {
+            $content = $sutta->contents->filter(fn ($content) => $content->id === $contentId)->first();
+            if ($content->is_synced == $isSynced) {
+                continue;
+            }
+            $content->is_synced = $isSynced;
+            $content->save();
+            $action = $isSynced ? 'make_synced' : 'make_unsynced';
+            Logger::log(new LogData(
+                action: $action,
+                userId: auth()->id(),
+                suttaId: $sutta->id,
+                contentId: $contentId,
+            ));
         }
 
         // логирование изменённого контента целиком
