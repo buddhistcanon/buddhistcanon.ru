@@ -2,7 +2,8 @@
 
 ## Установка с использованием Docker
 
-Скопировать `.env.docker` в `.env` , отредактировать если нужно (последний блок со списком портов, открытых в систему - если вдруг некоторые из них у вас используются, но скорее всего нет)
+Скопировать `.env.docker` в `.env` , отредактировать если нужно (последний блок со списком портов, открытых в систему -
+если вдруг некоторые из них у вас используются, но скорее всего нет)
 
 Запуск докер-контейнеров:
 
@@ -15,6 +16,7 @@ make up
 ```bash
 make prepare
 ```
+
 #### Запуск
 
 Компиляция фронтенда:
@@ -22,10 +24,8 @@ make prepare
 ```bash
 make vite-dev
 ```
+
 Сайт открывается по адресу http://localhost:7400
-
-
-
 
 ## Установка без использования Docker
 
@@ -48,18 +48,18 @@ php artisan ide-helper:models -W -R
 #### Запуск
 
 Запустить веб-сервер:
+
 ```bash 
 php artisan serve --port=7400
 ```
+
 Запустить vite-сервер:
+
 ```bash
 npm run dev
 ```
+
 Сайт открывается по адресу http://localhost:7400
-
-
-
-
 
 ## Разработка
 
@@ -74,22 +74,28 @@ sail artisan lb:import_file_suttas SN --subfolders=57 --rebuild
 ```
 
 Импорт сутт с сайта theravada.ru
+
 ```bash
 make import-theravadaru-suttas
 или
 php artisan lb:import_theravadaru_suttas AN --rebuild
 ``` 
 
-
 ## SSR
 
 Запуск ssr-сервера на сервере:
 
 ```bash
-npm run build && node bootstrap/ssr/ssr.mjs npm run ssr-server
+make server-ssr
 ```
+
 На сервере должен стоять node.js 14+
 
+Запуск поискового движка meilisearch:
+
+```bash
+make server-meilisearch
+```
 
 ## License
 
