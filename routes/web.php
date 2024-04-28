@@ -45,6 +45,13 @@ Route::get('/an/{x}', \App\Http\Controllers\Canon\CanonController::class.'@an_x'
 Route::get('/sn', \App\Http\Controllers\Canon\CanonController::class.'@sn');
 Route::get('/sn/{x}', \App\Http\Controllers\Canon\CanonController::class.'@sn_x');
 
+Route::any('/search', \App\Http\Controllers\SearchController::class.'@index')->name('search');
+
+Route::get('/news', \App\Http\Controllers\PublicPagesController::class.'@news')->name('news');
+Route::get('/about', \App\Http\Controllers\PublicPagesController::class.'@about')->name('about');
+Route::get('/policy', \App\Http\Controllers\PublicPagesController::class.'@policy')->name('policy');
+Route::get('/user_agreement', \App\Http\Controllers\PublicPagesController::class.'@user_agreement')->name('user_agreement');
+
 // Универсальный роут отображения сутты
 Route::get('/{sutta}/{lang?}/{translator?}', \App\Http\Controllers\Canon\SuttaController::class.'@index')
     ->name('sutta')

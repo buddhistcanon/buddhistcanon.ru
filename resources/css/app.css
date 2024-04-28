@@ -7,7 +7,7 @@ html {
     font-size: 15px;
 }
 
-.link{
+.link {
     color: #5B0769;
     @apply underline;
 }
@@ -20,19 +20,21 @@ h2 {
     @apply text-2xl font-semibold leading-6 text-gray-700;
 }
 
-.button{
+.button {
     @apply text-gray-700 bg-gray-50 hover:bg-gray-200 hover:text-gray-900 border border-gray-200 px-3 py-2 rounded-xl text-sm font-medium cursor-pointer;
 }
 
 /** Дизайн из figma **/
-.text-indigo-bc{
+.text-indigo-bc {
     color: #5B0769;
 }
+
 .ring-indigo-bc {
     --tw-ring-opacity: 1;
-    --tw-ring-color: rgb(91 7 105 / var(--tw-ring-opacity)) ;
+    --tw-ring-color: rgb(91 7 105 / var(--tw-ring-opacity));
 }
-.bc-button{
+
+.bc-button {
     border-radius: 10px;
     background-color: #FBFBFB;
     border: 1px solid #E6E6E6;
@@ -40,7 +42,8 @@ h2 {
     /*@apply text-gray-700;*/
     @apply text-sm font-medium;
 }
-.bc-button-disabled{
+
+.bc-button-disabled {
     border-radius: 10px;
     background-color: #FBFBFB;
     border: 1px solid #E6E6E6;
@@ -49,43 +52,56 @@ h2 {
     @apply text-gray-400;
     @apply text-sm font-medium;
 }
-.bc-button:hover{
+
+.bc-button:hover {
     background-color: #F9F9F9;
     /*@apply shadow-sm;*/
 }
-.bc-button-background{
+
+.bc-button-background {
     background-color: #FBFBFB;
 }
-.bc-background{
+
+.bc-background {
     background-color: #F6F6F6;
 }
-.rounded-bc{
+
+.rounded-bc {
     border-radius: 10px;
 }
-.text-gray-bc{
+
+.text-gray-bc {
     color: #272B2D;
 }
-.border-bc{
+
+.border-bc {
     border: 1px solid #E6E6E6;
 }
+
 .ring-gray-bc {
     --tw-ring-opacity: 1;
     --tw-ring-color: rgb(230 230 230 / var(--tw-ring-opacity));
 }
 
 /** Контент книги, сутты и т.п. */
-.content-text .footnote{
+.content-text .footnote {
     color: #ba0cee;
-    @apply  text-sm ml-1  font-mono
+    @apply text-sm ml-1  font-mono
+}
+
+.content-text h2 {
+    @apply mb-4
 }
 
 /* текст примечания */
 .content-text .footnotes {
     @apply mt-2 px-4 text-sm text-gray-600 border-t border-gray-100
 }
+
 .content-text .footnotes hr {
     @apply border-gray-100
 }
-.content-text .footnotes ol li p{
+
+.content-text .footnotes ol li p {
     @apply my-2
 }
