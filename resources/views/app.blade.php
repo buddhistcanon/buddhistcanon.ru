@@ -4,20 +4,21 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title inertia>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=alice:400|open-sans:400,600,700" rel="stylesheet"/>
 
     <!-- Scripts -->
-    @routes
+    {{--    @routes--}}
     @vite('resources/js/app.js')
     @inertiaHead
 </head>
 <body class="font-sans antialiased h-full">
+
 @inertia
 
-@include('yandex-metric')
+{{--@include('yandex-metric')--}}
 </body>
 </html>

@@ -2,10 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+
 class SearchController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return inertia('search');
+        $search = $request->input('search');
+        $result = null;
+        if ($search) {
+
+        }
+
+        return inertia('Search', [
+            'search' => $search,
+            'result' => $result,
+        ]);
     }
 }

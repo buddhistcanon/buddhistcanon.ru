@@ -2,7 +2,7 @@
 import {ref} from 'vue'
 import {Dialog, DialogPanel, TransitionChild, TransitionRoot} from '@headlessui/vue'
 import {defineProps} from '@vue/runtime-core'
-import {Head, Link} from "@inertiajs/inertia-vue3";
+import {Head, Link} from "@inertiajs/vue3";
 import {
     Bars3Icon,
     CalendarIcon,

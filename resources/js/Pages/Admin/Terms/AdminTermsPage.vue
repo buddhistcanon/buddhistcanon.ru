@@ -1,6 +1,6 @@
 <script setup>
-import {defineProps, onMounted, reactive, ref} from "vue";
-import { useForm } from '@inertiajs/inertia-vue3'
+import {onMounted, reactive, ref} from "vue";
+import {useForm} from '@inertiajs/vue3'
 import Layout from "@/Layouts/AdminLayout.vue";
 
 const props = defineProps({
@@ -19,12 +19,12 @@ let formAddVariant = useForm({
     term_id: null
 });
 
-onMounted(()=>{
+onMounted(() => {
     formAddVariant.term_proposal_ids = [];
     formAddVariant.term_id = null;
 });
 
-const handleJoinTermProposal = ()=>{
+const handleJoinTermProposal = () => {
     formAddVariant.clearErrors();
 
     if (!selectedTermForAddVariant) formAddVariant.term_id = null;
@@ -34,11 +34,10 @@ const handleJoinTermProposal = ()=>{
     else formAddVariant.term_proposal_ids = selectedTermProposals.map(item => item.id);
 
     formAddVariant
-        .post("/admin/terms/add_variant", { preserveScroll: true });
+        .post("/admin/terms/add_variant", {preserveScroll: true});
 }
 
 </script>
-
 
 
 <template>
@@ -53,7 +52,10 @@ const handleJoinTermProposal = ()=>{
                             <p class="mt-2 text-sm text-gray-700">Термины, найденные в текстах и требующие пояснения</p>
                         </div>
                         <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-                            <button type="button" class="block rounded-md bg-blue-500 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500">Создать</button>
+                            <button type="button"
+                                    class="block rounded-md bg-blue-500 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500">
+                                Создать
+                            </button>
                         </div>
                     </div>
                     <div class="mt-8 flow-root">
@@ -63,8 +65,14 @@ const handleJoinTermProposal = ()=>{
                                     <table class="min-w-full divide-y divide-gray-300">
                                         <thead class="bg-gray-50">
                                         <tr>
-                                            <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Термин</th>
-                                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Синонимы</th>
+                                            <th scope="col"
+                                                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
+                                                Термин
+                                            </th>
+                                            <th scope="col"
+                                                class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                                                Синонимы
+                                            </th>
                                             <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
                                                 <span class="sr-only">Edit</span>
                                             </th>
@@ -79,11 +87,12 @@ const handleJoinTermProposal = ()=>{
                                             </td>
                                             <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
                                                 <span v-for="variant in term.variants" :key="variant.id" class="mr-4">
-                                                    {{variant.title}}
+                                                    {{ variant.title }}
                                                 </span>
                                             </td>
                                             <td class="relative whitespace-nowrap py-5 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-                                                <div class="mr-4"><a :href="'/admin/edit_term/'+term.id" class="text-blue-500 hover:text-blue-700"
+                                                <div class="mr-4"><a :href="'/admin/edit_term/'+term.id"
+                                                                     class="text-blue-500 hover:text-blue-700"
                                                 >Edit<span class="sr-only">, {{ term.title }}</span></a
                                                 ></div>
                                             </td>
@@ -100,93 +109,91 @@ const handleJoinTermProposal = ()=>{
             </div>
         </Layout>
 
-<!--        <h1>Термины</h1>-->
+        <!--        <h1>Термины</h1>-->
 
 
+        <!--        <div class="mt-2">-->
+        <!--            <Link href="/admin/create_term" class="p-button" >Создать термин</Link>-->
+        <!--        </div>-->
 
-<!--        <div class="mt-2">-->
-<!--            <Link href="/admin/create_term" class="p-button" >Создать термин</Link>-->
-<!--        </div>-->
+        <!--        <div class="flex mt-4">-->
+        <!--            <div class="w-8 pr-4">-->
+        <!--                <Card>-->
+        <!--                    <template #title>Термины</template>-->
+        <!--                    <template #content>-->
+        <!--                    <DataTable :value="terms" :selection.sync="selectedTermForAddVariant" :rows="10" :filters="filtersTerms" :paginator="true" class="p-datatable-sm">-->
+        <!--                        <template #header>-->
+        <!--                            <div class="flex justify-content-between">-->
+        <!--                                <span class="p-input-icon-left">-->
+        <!--                                    <i class="pi pi-search" />-->
+        <!--                                    <InputText v-model="filtersTerms['global']" placeholder="Фильтр.." />-->
+        <!--                                </span>-->
+        <!--                            </div>-->
+        <!--                        </template>-->
+        <!--                        <template #empty>-->
+        <!--                            No items found.-->
+        <!--                        </template>-->
+        <!--                        <template #loading>-->
+        <!--                            Loading data. Please wait.-->
+        <!--                        </template>-->
+        <!--                        <Column selectionMode="single" headerStyle="width: 3em"></Column>-->
+        <!--                        <Column header="Термин" field="title" headerStyle="width: 20em" ></Column>-->
+        <!--                        <Column header="Синонимы">-->
+        <!--                            <template #body="slotProps">-->
+        <!--                                <template v-for="variant of slotProps.data.variants">{{variant.title}}, </template>-->
+        <!--                            </template>-->
+        <!--                        </Column>-->
+        <!--                        <Column headerStyle="width: 5em">-->
+        <!--                            <template #body="slotProps">-->
+        <!--                                <Link :href="'/admin/edit_term/'+slotProps.data.id" class="p-button p-button-secondary p-button-sm">Edit</Link>-->
+        <!--                            </template>-->
+        <!--                        </Column>-->
+        <!--                    </DataTable>-->
+        <!--                    </template>-->
+        <!--                </Card>-->
+        <!--            </div>-->
+        <!--            <div class="w-4">-->
+        <!--                <Card>-->
+        <!--                    <template #title>Заявки на термины</template>-->
+        <!--                    <template #content>-->
+        <!--                        <DataTable :value="termProposals" :selection.sync="selectedTermProposals" :rows="10" :filters="filtersTermProposals" :paginator="true" class="p-datatable-sm">-->
+        <!--                            <template #header>-->
+        <!--                                <div class="flex justify-content-between">-->
+        <!--                                    <span class="p-input-icon-left">-->
+        <!--                                        <i class="pi pi-search" />-->
+        <!--                                        <InputText v-model="filtersTermProposals['global']" placeholder="Фильтр.." />-->
+        <!--                                    </span>-->
+        <!--                                </div>-->
+        <!--                            </template>-->
+        <!--                            <template #empty>-->
+        <!--                                No items found.-->
+        <!--                            </template>-->
+        <!--                            <template #loading>-->
+        <!--                                Loading data. Please wait.-->
+        <!--                            </template>-->
+        <!--                            <Column selectionMode="multiple" headerStyle="width: 3em"></Column>-->
+        <!--                            <Column header="Термин" field="title" ></Column>-->
+        <!--                        </DataTable>-->
 
-<!--        <div class="flex mt-4">-->
-<!--            <div class="w-8 pr-4">-->
-<!--                <Card>-->
-<!--                    <template #title>Термины</template>-->
-<!--                    <template #content>-->
-<!--                    <DataTable :value="terms" :selection.sync="selectedTermForAddVariant" :rows="10" :filters="filtersTerms" :paginator="true" class="p-datatable-sm">-->
-<!--                        <template #header>-->
-<!--                            <div class="flex justify-content-between">-->
-<!--                                <span class="p-input-icon-left">-->
-<!--                                    <i class="pi pi-search" />-->
-<!--                                    <InputText v-model="filtersTerms['global']" placeholder="Фильтр.." />-->
-<!--                                </span>-->
-<!--                            </div>-->
-<!--                        </template>-->
-<!--                        <template #empty>-->
-<!--                            No items found.-->
-<!--                        </template>-->
-<!--                        <template #loading>-->
-<!--                            Loading data. Please wait.-->
-<!--                        </template>-->
-<!--                        <Column selectionMode="single" headerStyle="width: 3em"></Column>-->
-<!--                        <Column header="Термин" field="title" headerStyle="width: 20em" ></Column>-->
-<!--                        <Column header="Синонимы">-->
-<!--                            <template #body="slotProps">-->
-<!--                                <template v-for="variant of slotProps.data.variants">{{variant.title}}, </template>-->
-<!--                            </template>-->
-<!--                        </Column>-->
-<!--                        <Column headerStyle="width: 5em">-->
-<!--                            <template #body="slotProps">-->
-<!--                                <Link :href="'/admin/edit_term/'+slotProps.data.id" class="p-button p-button-secondary p-button-sm">Edit</Link>-->
-<!--                            </template>-->
-<!--                        </Column>-->
-<!--                    </DataTable>-->
-<!--                    </template>-->
-<!--                </Card>-->
-<!--            </div>-->
-<!--            <div class="w-4">-->
-<!--                <Card>-->
-<!--                    <template #title>Заявки на термины</template>-->
-<!--                    <template #content>-->
-<!--                        <DataTable :value="termProposals" :selection.sync="selectedTermProposals" :rows="10" :filters="filtersTermProposals" :paginator="true" class="p-datatable-sm">-->
-<!--                            <template #header>-->
-<!--                                <div class="flex justify-content-between">-->
-<!--                                    <span class="p-input-icon-left">-->
-<!--                                        <i class="pi pi-search" />-->
-<!--                                        <InputText v-model="filtersTermProposals['global']" placeholder="Фильтр.." />-->
-<!--                                    </span>-->
-<!--                                </div>-->
-<!--                            </template>-->
-<!--                            <template #empty>-->
-<!--                                No items found.-->
-<!--                            </template>-->
-<!--                            <template #loading>-->
-<!--                                Loading data. Please wait.-->
-<!--                            </template>-->
-<!--                            <Column selectionMode="multiple" headerStyle="width: 3em"></Column>-->
-<!--                            <Column header="Термин" field="title" ></Column>-->
-<!--                        </DataTable>-->
+        <!--                        <p class="mt-4 mb-2">Присоединить выделенные синонимы к выбранному термину:</p>-->
 
-<!--                        <p class="mt-4 mb-2">Присоединить выделенные синонимы к выбранному термину:</p>-->
+        <!--                        <form @submit.prevent="handleJoinTermProposal">-->
+        <!--                            <Button type="submit" >-->
+        <!--                                <i class="pi pi-spin pi-slack mr-3" v-if="loadingJoinTermProposal"></i>-->
+        <!--                                Присоединить-->
+        <!--                            </Button>-->
+        <!--                        </form>-->
 
-<!--                        <form @submit.prevent="handleJoinTermProposal">-->
-<!--                            <Button type="submit" >-->
-<!--                                <i class="pi pi-spin pi-slack mr-3" v-if="loadingJoinTermProposal"></i>-->
-<!--                                Присоединить-->
-<!--                            </Button>-->
-<!--                        </form>-->
+        <!--                        <div v-if="$page.props.flash.success_add_term_variant" class="mt-2">-->
+        <!--                            <Message severity="success">{{$page.props.flash.success_add_term_variant}}</Message>-->
+        <!--                        </div>-->
+        <!--                        <div v-if="errors.term_id" class="mt-2"><InlineMessage severity="error">{{ errors.term_id }}</InlineMessage></div>-->
+        <!--                        <div v-if="errors.term_proposal_ids" class="mt-2"><InlineMessage severity="error">{{ errors.term_proposal_ids }}</InlineMessage></div>-->
 
-<!--                        <div v-if="$page.props.flash.success_add_term_variant" class="mt-2">-->
-<!--                            <Message severity="success">{{$page.props.flash.success_add_term_variant}}</Message>-->
-<!--                        </div>-->
-<!--                        <div v-if="errors.term_id" class="mt-2"><InlineMessage severity="error">{{ errors.term_id }}</InlineMessage></div>-->
-<!--                        <div v-if="errors.term_proposal_ids" class="mt-2"><InlineMessage severity="error">{{ errors.term_proposal_ids }}</InlineMessage></div>-->
-
-<!--                    </template>-->
-<!--                </Card>-->
-<!--            </div>-->
-<!--        </div>-->
-
+        <!--                    </template>-->
+        <!--                </Card>-->
+        <!--            </div>-->
+        <!--        </div>-->
 
 
     </div>

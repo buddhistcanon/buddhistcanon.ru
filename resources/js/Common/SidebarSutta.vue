@@ -1,16 +1,22 @@
 <script setup>
-import {Link} from "@inertiajs/inertia-vue3";
+import {Link} from "@inertiajs/vue3";
 import LogoTitle from "@/Common/LogoTitle.vue";
 </script>
 
 <template>
     <div class="flex flex-col items-center">
         <div class="py-8">
-            <LogoTitle />
+            <LogoTitle/>
         </div>
-        <Link v-if="lang !== 'en'" :href="suttaSlug+'/en/sujato'" class="button w-80 text-center my-4">Эта сутта на английском языке</Link>
-        <Link v-if="lang !== 'ru'" :href="suttaSlug+'/ru/sv'" class="button w-80 text-center my-4">Эта сутта на русском языке</Link>
-        <Link v-if="lang !== 'pali'" :href="suttaSlug+'/pali'" class="button w-80 text-center my-4">Эта сутта на языке пали </Link>
+        <Link v-if="lang !== 'en'" :href="suttaSlug+'/en/sujato'" class="button w-80 text-center my-4">Эта сутта на
+            английском языке
+        </Link>
+        <Link v-if="lang !== 'ru'" :href="suttaSlug+'/ru/sv'" class="button w-80 text-center my-4">Эта сутта на русском
+            языке
+        </Link>
+        <Link v-if="lang !== 'pali'" :href="suttaSlug+'/pali'" class="button w-80 text-center my-4">Эта сутта на языке
+            пали
+        </Link>
         <div class="button w-80 text-center my-4">Поделиться суттой</div>
         <div class="button w-80 text-center my-4">Добавить в закладки</div>
 

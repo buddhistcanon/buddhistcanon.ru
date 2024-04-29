@@ -1,17 +1,17 @@
 <script setup>
 import ApplicationLayout from "@/Layouts/ApplicationLayout.vue";
-import {Head, Link} from "@inertiajs/inertia-vue3";
+import {Head, Link} from "@inertiajs/vue3";
 import Sidebar from "@/Common/Sidebar.vue";
 import Breadcrumbs from "@/Components/Breadcrumbs.vue";
 
 const props = defineProps({
-    suttas: { type: Array, required: true },
-    title: { type: String, required: true },
-    subtitle: { type: String, required: true },
+    suttas: {type: Array, required: true},
+    title: {type: String, required: true},
+    subtitle: {type: String, required: true},
 })
 
 const suttaUrl = (sutta) => {
-    if(sutta.suborder) {
+    if (sutta.suborder) {
         return `/${sutta.category}${sutta.order}.${sutta.suborder}`;
     } else {
         return `/${sutta.category}${sutta.order}`;
@@ -25,7 +25,7 @@ const filteredByOrder = (order) => {
 </script>
 
 <template>
-    <Head title="Ангуттара-никая" />
+    <Head title="Ангуттара-никая"/>
 
     <ApplicationLayout>
 
@@ -43,7 +43,8 @@ const filteredByOrder = (order) => {
                     <div class="font-serif text-xl mb-6">{{props.subtitle}}</div>
 
                     <div class="grid grid-cols-2 gap-4">
-                        <Link v-for="sutta in props.suttas" :key="sutta.id" class="bc-button px-4 py-4 mb-2" :href="suttaUrl(sutta)">
+                        <Link v-for="sutta in props.suttas" :key="sutta.id" class="bc-button px-4 py-4 mb-2"
+                              :href="suttaUrl(sutta)">
                             <div class="flex flex-row justify-between mb-2">
                                 <div class="text-xl">{{sutta.name}}</div>
                                 <div class="text-sm text-gray-700">
@@ -55,12 +56,11 @@ const filteredByOrder = (order) => {
                     </div>
 
 
-
                 </div>
             </div>
 
             <div class="md:ml-4 md:w-96">
-                <Sidebar />
+                <Sidebar/>
             </div>
 
         </div>

@@ -9,9 +9,11 @@ import {
     ChevronDownIcon,
     MagnifyingGlassIcon
 } from '@heroicons/vue/24/outline'
-import {Link} from '@inertiajs/inertia-vue3';
+import {Link} from '@inertiajs/vue3';
 import Sidebar from "@/Common/Sidebar.vue";
 import Footer from "@/Common/Footer.vue";
+import {router} from '@inertiajs/vue3'
+import {ref} from 'vue'
 
 const user = {
     name: 'Имя Фамилия',
@@ -31,6 +33,16 @@ const userNavigation = [
     {name: 'Настройки', href: '/settings', method: "get"},
     {name: 'Выход', href: '/logout', method: "post"},
 ]
+
+const searchString = ref('');
+
+const submitSearch = () => {
+    console.log('searchString', searchString.value)
+    if (searchString.value) {
+        router.post('/search', {search: searchString.value})
+    }
+}
+
 </script>
 
 
@@ -53,6 +65,8 @@ const userNavigation = [
                             </div>
                             <input type="text" name="search" id="search"
                                    class="block w-full rounded-bc bc-button-background border-0 py-2 pl-10 text-gray-900 ring-0 ring-inset ring-gray-bc placeholder:text-gray-400 focus:ring-2 focus:ring-offset-0 focus:ring-gray-200 text-sm"
+                                   v-model="searchString"
+                                   @keyup.enter="submitSearch"
                                    placeholder="Поиск"/>
                         </div>
 

@@ -5,7 +5,7 @@ import BreezeGuestLayout from '@/Layouts/AuthLayout.vue';
 import BreezeInput from '@/Components/Input.vue';
 import BreezeInputError from '@/Components/InputError.vue';
 import BreezeLabel from '@/Components/Label.vue';
-import {Head, Link, useForm} from '@inertiajs/inertia-vue3';
+import {Head, Link, useForm} from '@inertiajs/vue3';
 
 defineProps({
     canResetPassword: Boolean,
@@ -19,7 +19,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post(route('login'), {
+    form.post('/login', {
         onFinish: () => form.reset('password'),
     });
 };
@@ -56,7 +56,7 @@ const submit = () => {
             </div>
 
             <div class="flex items-center justify-end mt-4">
-                <Link v-if="canResetPassword" :href="route('register')"
+                <Link v-if="canResetPassword" href="/register"
                       class="underline text-sm text-gray-600 hover:text-gray-900">
                     Регистрация
                 </Link>

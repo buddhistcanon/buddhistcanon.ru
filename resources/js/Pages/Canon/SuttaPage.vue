@@ -1,7 +1,7 @@
 <script setup>
 import ApplicationLayout from "@/Layouts/ApplicationLayout.vue";
 import {textToHtml} from "@/helpers.js";
-import {Link, Head} from "@inertiajs/inertia-vue3";
+import {Link, Head} from "@inertiajs/vue3";
 import LogoTitle from "@/Common/LogoTitle.vue";
 import Breadcrumbs from "@/Components/Breadcrumbs.vue";
 import {useWindowScroll} from '@vueuse/core';

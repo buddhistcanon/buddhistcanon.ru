@@ -1,5 +1,5 @@
 <script setup>
-import {Head, Link} from '@inertiajs/inertia-vue3';
+import {Head, Link} from '@inertiajs/vue3';
 import ApplicationLayout from '@/Layouts/ApplicationLayout.vue';
 import LogoTitle from "@/Common/LogoTitle.vue";
 import Sidebar from "@/Common/Sidebar.vue";

@@ -1,5 +1,5 @@
 <script setup>
-import { Link} from '@inertiajs/inertia-vue3';
+import {Link} from '@inertiajs/vue3';
 
 defineProps({
     label: String,
@@ -9,5 +9,5 @@ defineProps({
 </script>
 
 <template>
-    <Link :href="href" >{{label}}</Link>
+    <Link :href="href">{{label}}</Link>
 </template>

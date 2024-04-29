@@ -1,5 +1,5 @@
 <script setup>
-import {Head, Link, useForm} from '@inertiajs/inertia-vue3';
+import {Head, Link, useForm} from '@inertiajs/vue3';
 import Layout from '@/Layouts/AdminLayout.vue';
 import Breadcrumbs from "@/Components/Breadcrumbs.vue";
 

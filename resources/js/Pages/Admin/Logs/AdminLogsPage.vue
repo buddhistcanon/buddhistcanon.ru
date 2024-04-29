@@ -1,6 +1,6 @@
 <script setup>
 import Layout from "@/Layouts/AdminLayout.vue";
-import {Head} from "@inertiajs/inertia-vue3";
+import {Head} from "@inertiajs/vue3";
 import Breadcrumbs from "@/Components/Breadcrumbs.vue";
 import Pagination from "@/Components/Pagination.vue";
 import {format} from 'date-fns';

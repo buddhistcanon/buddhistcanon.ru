@@ -1,7 +1,7 @@
 <script setup>
 //import ApplicationLayout from '@/Layouts/ApplicationBreeze.vue';
 import ApplicationLayout from '@/Layouts/ApplicationLayout.vue';
-import {Head} from '@inertiajs/inertia-vue3';
+import {Head} from '@inertiajs/vue3';
 
 const props = defineProps({
     user: Object

@@ -1,7 +1,6 @@
 <script setup>
 import {onMounted, ref, reactive, watch, computed} from "vue";
-import {Head, Link, useForm} from '@inertiajs/inertia-vue3';
-import {Inertia} from '@inertiajs/inertia';
+import {Head, Link, useForm, router} from '@inertiajs/vue3';
 import Layout from '@/Layouts/AdminLayout.vue';
 import Breadcrumbs from "@/Components/Breadcrumbs.vue";
 import Card from "@/Components/Card.vue";
@@ -11,8 +10,6 @@ import SmallButton from "@/Components/SmallButton.vue";
 import Checkbox from "@/Components/Checkbox.vue";
 import Contenteditable from "vue-contenteditable";
 import {textToHtml} from "@/helpers.js";
-import {usePage} from '@inertiajs/inertia-vue3';
-import {toValue} from '@vueuse/core'
 
 const props = defineProps({
     sutta: Object,
@@ -84,7 +81,7 @@ onMounted(() => {
 });
 
 const handleStoreSutta = () => {
-    Inertia.post("/admin/store_sutta", {
+    router.post("/admin/store_sutta", {
             sutta: suttaForm.data(),
             rows: contentRows.value,
             chunksToDelete: chunksToDelete.value
@@ -265,7 +262,7 @@ const makeLinked = (contentId) => {
     isContentSynced.value[contentId] = "1";
     console.log("after", isContentSynced.value);
 
-    Inertia.post("/admin/store_sutta", {
+    router.post("/admin/store_sutta", {
             sutta: suttaForm.data(),
             rows: contentRows.value,
             chunksToDelete: chunksToDelete.value,
@@ -289,7 +286,7 @@ const makeUnlinked = (contentId) => {
     isContentSynced.value[contentId] = "0";
     console.log("after", isContentSynced.value);
 
-    Inertia.post("/admin/store_sutta", {
+    router.post("/admin/store_sutta", {
             sutta: suttaForm.data(),
             rows: contentRows.value,
             chunksToDelete: chunksToDelete.value,

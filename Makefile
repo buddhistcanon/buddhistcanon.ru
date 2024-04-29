@@ -37,7 +37,7 @@ vite-build: ## npm run build
 	./vendor/bin/sail npm run build
 
 server-ssr: ## Launch SSR server
-	npm run build && node bootstrap/ssr/ssr.mjs npm run ssr-server
+	npm run build && php artisan inertia:start-ssr
 
 server-meilisearch: ## Launch Meilisearch server
 	docker run -it --rm -p 7700:7700 -e MEILI_ENV='development' -e MEILI_MASTER_KEY='8yy_tNVZJ8_MdNa5RQiThfnC-MNZDD0F79xUS49tTq0' -v $(pwd)/meili_data:/meili_data getmeili/meilisearch:v1.7

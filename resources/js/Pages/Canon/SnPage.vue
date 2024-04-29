@@ -1,6 +1,6 @@
 <script setup>
 import ApplicationLayout from "@/Layouts/ApplicationLayout.vue";
-import {Head, Link} from "@inertiajs/inertia-vue3";
+import {Head, Link} from "@inertiajs/vue3";
 import Sidebar from "@/Common/Sidebar.vue";
 import Breadcrumbs from "@/Components/Breadcrumbs.vue";
 
