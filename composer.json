@@ -29,7 +29,7 @@
         "laravel/tinker": "^2.7",
         "league/flysystem-aws-s3-v3": "^3.0",
         "lorisleiva/laravel-actions": "^2.4",
-        "meilisearch/meilisearch-php": "^0.21.0",
+        "meilisearch/meilisearch-php": "^1.7.0",
         "rmccue/requests": "^2.0",
         "spatie/crawler": "^4.7.6",
         "spatie/laravel-data": "^2.0",

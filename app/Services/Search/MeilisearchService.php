@@ -16,7 +16,7 @@ class MeilisearchService
     public function searchInSuttas(string $searchTerm, int $limit = 100): array
     {
         $meiliResults = $this->client->index('content_chunks')->search($searchTerm, [
-            'filter' => 'chunkable_type = sutta',
+            'filter' => ['chunkable_type = sutta'],
             'attributesToHighlight' => ['text'],
             'limit' => $limit,
         ]);
@@ -24,16 +24,26 @@ class MeilisearchService
         return $meiliResults->getHits();
     }
 
-    public function searchInBooks(string $searchTerm, int $limit = 100): array
+    public function searchGlobal(string $searchTerm, int $limit = 100): array
     {
         $meiliResults = $this->client->index('content_chunks')->search($searchTerm, [
-            'filter' => 'chunkable_type = book',
             'attributesToHighlight' => ['text'],
             'limit' => $limit,
         ]);
 
         return $meiliResults->getHits();
     }
+
+    //    public function searchInBooks(string $searchTerm, int $limit = 100): array
+    //    {
+    //        $meiliResults = $this->client->index('content_chunks')->search($searchTerm, [
+    //            'filter' => 'chunkable_type = book',
+    //            'attributesToHighlight' => ['text'],
+    //            'limit' => $limit,
+    //        ]);
+    //
+    //        return $meiliResults->getHits();
+    //    }
 
     public function createIndexIfNeeded($indexUid = 'content_chunks'): bool
     {

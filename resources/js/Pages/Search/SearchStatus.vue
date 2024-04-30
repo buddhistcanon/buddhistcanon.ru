@@ -6,7 +6,9 @@ import {ref} from 'vue';
 
 const props = defineProps({
     search: String,
-    result: Object
+    result: Object,
+    numDocumentsInIndex: Number,
+    isIndexing: Boolean,
 });
 
 const search = ref(props.search);
@@ -23,11 +25,17 @@ const search = ref(props.search);
             <div class="flex flex-col lg:flex-row w-full">
                 <div class="bg-white p-4 w-full">
 
-                    <div class="mt-4 mb-4 font-serif text-4xl">Поиск</div>
+                    <div class="flex flex-row justify-between">
 
+                        <div class="mt-4 mb-4 font-serif text-4xl">Статус поискового индекса</div>
+
+                        <div>
+
+                        </div>
+
+                    </div>
                     <div class="mb-8">
-                        <input type="text" class="w-full p-2 border border-gray-300 rounded" v-model="search"
-                               placeholder="Поиск...">
+                        
                     </div>
 
 

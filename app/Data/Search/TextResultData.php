@@ -9,8 +9,8 @@ class TextResultData extends Data
     public function __construct(
         public ?int $contentChunkId,
         public string $html,
-        public ?string $urlWithMark = null, // урл абзаца (вместе с mark)
-        public ?string $translatorName = null // Сергей SV,
+        public ?string $url = null, // урл абзаца (вместе с mark)
+        public ?string $translation = null // Сергей SV,
     ) {
     }
 }

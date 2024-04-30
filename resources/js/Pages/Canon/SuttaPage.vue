@@ -88,13 +88,13 @@ onKeyStroke(['1', '2', '3', '4', '5', '6', '7', '8', '9'], (e) => {
                 </div>
 
                 <div class="mt-4 content-text">
-                    <div class="" v-for="(chunk, index) of contentChunks">
+                    <div v-for="(chunk, index) of contentChunks">
                         <div v-if="content.is_synced !== '0'">
                             <div class="text-gray-400 text-xs">{{ index + 1 }}</div>
-                            <div class="border-b pb-2" v-html="chunk"></div>
+                            <div :id="chunk.mark" class="border-b pb-2" v-html="chunk"></div>
                         </div>
                         <div v-else>
-                            <div class="my-4" v-html="chunk"></div>
+                            <div :id="chunk.mark" class="my-4" v-html="chunk"></div>
                         </div>
                     </div>
                 </div>

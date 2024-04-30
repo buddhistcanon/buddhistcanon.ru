@@ -47,10 +47,6 @@ class ContentChunk extends Model
 
     protected $fillable = ['order', 'mark', 'text'];
 
-    public const TYPE_BOOK = 1;
-
-    public const TYPE_SUTTA = 2;
-
     public function content()
     {
         return $this->belongsTo(Content::class);

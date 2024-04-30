@@ -105,3 +105,8 @@ h2 {
 .content-text .footnotes ol li p {
     @apply my-2
 }
+
+/* страница поиска */
+.search-page em {
+    @apply bg-yellow-200 font-normal
+}
