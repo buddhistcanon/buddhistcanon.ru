@@ -37,7 +37,6 @@ const userNavigation = [
 const searchString = ref('');
 
 const submitSearch = () => {
-    console.log('searchString', searchString.value)
     if (searchString.value) {
         router.post('/search', {search: searchString.value})
     }

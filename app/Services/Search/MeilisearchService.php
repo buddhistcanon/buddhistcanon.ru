@@ -13,7 +13,7 @@ class MeilisearchService
         $this->client = new Client($meiliHost, $meiliKey);
     }
 
-    public function searchInSuttas(string $searchTerm, int $limit = 100): array
+    public function searchInSuttas(string $searchTerm, int $limit = 1000): array
     {
         $meiliResults = $this->client->index('content_chunks')->search($searchTerm, [
             'filter' => ['chunkable_type = sutta'],

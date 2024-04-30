@@ -1,5 +1,5 @@
 <script setup>
-import {Head, Link, router} from '@inertiajs/vue3';
+import {Head, Link, router, usePage} from '@inertiajs/vue3';
 import ApplicationLayout from '@/Layouts/ApplicationLayout.vue';
 import Sidebar from "@/Common/Sidebar.vue";
 import {ref} from 'vue';
@@ -11,6 +11,7 @@ const props = defineProps({
     numDocumentsInIndex: Number,
     isIndexing: Boolean,
 });
+const page = usePage();
 
 const search = ref(props.search);
 
@@ -44,16 +45,16 @@ const handleSearch = () => {
                         </div>
 
                     </div>
-                    <div class="flex flex-row mb-8">
+                    <div class="flex flex-row">
                         <input type="text"
                                class="w-full flex-1 p-2 border border-gray-300 rounded focus:border-gray-300 focus:outline-none focus:ring-1 focus:ring-gray-300"
                                v-model="search"
                                placeholder="Поиск...">
                         <Button class="ml-2" @click="handleSearch">Искать</Button>
-
                     </div>
+                    <div v-if="page.props.errors.search" class="text-red-600 mt-2">{{ page.props.errors.search }}</div>
 
-                    <div class="search-page">
+                    <div class="search-page mt-8">
 
                         <div v-for="suttaSearchData in result" class="mb-8">
                             <div class="text-xl">{{ suttaSearchData.name }}</div>

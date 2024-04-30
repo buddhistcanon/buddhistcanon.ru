@@ -11,6 +11,12 @@ class SearchController extends Controller
 {
     public function index(Request $request)
     {
+        $this->validate($request, [
+            'search' => 'nullable|string|min:3',
+        ], [
+            'search.min' => 'Минимальный размер поискового запроса - 3 символа.',
+        ]);
+
         $search = $request->input('search');
         $result = null;
         $meilisearchService = new MeilisearchService(config('scout.meilisearch.host'), config('scout.meilisearch.key'));
@@ -26,8 +32,6 @@ class SearchController extends Controller
 
             $result = $searchResultsData->suttasResult;
         }
-
-        //        dd($result->first());
 
         return inertia('Search/SearchPage', [
             'search' => $search,

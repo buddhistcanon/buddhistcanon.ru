@@ -1,7 +1,7 @@
 <script setup>
 import ApplicationLayout from "@/Layouts/ApplicationLayout.vue";
 import {textToHtml} from "@/helpers.js";
-import {Link, Head} from "@inertiajs/vue3";
+import {Link, Head, usePage} from "@inertiajs/vue3";
 import LogoTitle from "@/Common/LogoTitle.vue";
 import Breadcrumbs from "@/Components/Breadcrumbs.vue";
 import {useWindowScroll} from '@vueuse/core';
@@ -9,6 +9,8 @@ import {ref, reactive, computed} from "vue";
 import {ChevronDownIcon, ChevronUpIcon, PencilSquareIcon} from "@heroicons/vue/24/outline";
 import {onKeyStroke} from '@vueuse/core'
 
+const page = usePage();
+const user = computed(() => page.props.auth.user)
 
 const props = defineProps({
     sutta: {type: Object, required: true},
@@ -74,7 +76,7 @@ onKeyStroke(['1', '2', '3', '4', '5', '6', '7', '8', '9'], (e) => {
                         <h2 class="text-lg">{{ sutta.title_transcribe_ru }} "{{ sutta.title_translate_ru }}"</h2>
                     </div>
                     <div class="p-2">
-                        <Link :href="'/admin/edit_sutta/'+sutta.name">
+                        <Link :href="'/admin/edit_sutta/'+sutta.name" v-if="user">
                             <PencilSquareIcon class="w-6 h-6 text-gray-400"/>
                         </Link>
                     </div>
@@ -124,12 +126,12 @@ onKeyStroke(['1', '2', '3', '4', '5', '6', '7', '8', '9'], (e) => {
                             Переключать переводы также можно при помощи нажатия клавиш 1, 2, 3 и т.д.
                         </div>
 
-                        <div class="button w-72 text-center my-4">Поделиться суттой</div>
-                        <div class="button w-72 text-center my-4">Добавить в закладки</div>
+                        <!--                        <div class="button w-72 text-center my-4">Поделиться суттой</div>-->
+                        <!--                        <div class="button w-72 text-center my-4">Добавить в закладки</div>-->
 
-                        <div class="border-b border-gray-200 mt-4 mb-3 w-72"></div>
-                        <div class="text-sm text-gray-800 cursor-pointer">сообщить об ошибке перевода</div>
-                        <div class="border-b border-gray-200 mt-3 mb-4 w-72"></div>
+                        <!--                        <div class="border-b border-gray-200 mt-4 mb-3 w-72"></div>-->
+                        <!--                        <div class="text-sm text-gray-800 cursor-pointer">сообщить об ошибке перевода</div>-->
+                        <!--                        <div class="border-b border-gray-200 mt-3 mb-4 w-72"></div>-->
                     </div>
                 </div>
 
