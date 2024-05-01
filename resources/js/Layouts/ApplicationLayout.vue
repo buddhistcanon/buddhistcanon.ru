@@ -119,6 +119,16 @@ const submitSearch = () => {
                     <div class="flex flex-row">
                         <!--                        <div class="bg-gray-100 px-3 py-1 rounded-xl text-sm font-medium mr-4 flex flex-row items-baseline">A <ArrowUpIcon class="h-3 w-3" /> </div>-->
                         <!--                        <div class="bg-gray-100 px-3 py-1 rounded-xl text-sm font-medium mr-4 flex flex-row items-baseline">A <ArrowDownIcon class="h-3 w-3" /> </div>-->
+                        <div class="relative ml-2 flex-1 border-1 border-bc rounded-bc">
+                            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                <MagnifyingGlassIcon class="h-5 w-5 text-gray-bc" aria-hidden="true"/>
+                            </div>
+                            <input type="text" name="search" id="search"
+                                   class="block w-full rounded-bc bc-button-background border-0 py-2 pl-10 text-gray-900 ring-0 ring-inset ring-gray-bc placeholder:text-gray-400 focus:ring-2 focus:ring-offset-0 focus:ring-gray-200 text-sm"
+                                   v-model="searchString"
+                                   @keyup.enter="submitSearch"
+                                   placeholder="Поиск"/>
+                        </div>
                     </div>
 
                     <div class="-mr-2 flex">

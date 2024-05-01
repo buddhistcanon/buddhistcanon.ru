@@ -70,6 +70,7 @@ class SearchAction
                     contentChunkId: $hit['id'],
                     html: $hit['_formatted']['text'],
                     url: $sutta->displaySlug().$currentContent->displaySlug().'#'.$hit['mark'],
+                    fullUrl: config('app.url').$sutta->displaySlug().$currentContent->displaySlug(),
                     translation: $currentContent->displayTranslatorName()
                 );
                 $textResults->push($textResultData);

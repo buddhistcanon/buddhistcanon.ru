@@ -5,7 +5,7 @@ import {Link, Head, usePage} from "@inertiajs/vue3";
 import LogoTitle from "@/Common/LogoTitle.vue";
 import Breadcrumbs from "@/Components/Breadcrumbs.vue";
 import {useWindowScroll} from '@vueuse/core';
-import {ref, reactive, computed} from "vue";
+import {ref, reactive, computed, onMounted} from "vue";
 import {ChevronDownIcon, ChevronUpIcon, PencilSquareIcon} from "@heroicons/vue/24/outline";
 import {onKeyStroke} from '@vueuse/core'
 
@@ -56,6 +56,16 @@ onKeyStroke(['1', '2', '3', '4', '5', '6', '7', '8', '9'], (e) => {
     }
 })
 
+let anchorMark = "";
+onMounted(() => {
+    console.log(window.location);
+    anchorMark = window.location.href.split('#')[1];
+    if (anchorMark) {
+        document.getElementById(anchorMark).scrollIntoView();
+        console.log(anchorMark);
+    }
+});
+
 </script>
 
 <template>
@@ -93,10 +103,12 @@ onKeyStroke(['1', '2', '3', '4', '5', '6', '7', '8', '9'], (e) => {
                     <div v-for="(chunk, index) of contentChunks">
                         <div v-if="content.is_synced !== '0'">
                             <div class="text-gray-400 text-xs">{{ index + 1 }}</div>
-                            <div :id="chunk.mark" class="border-b pb-2" v-html="chunk"></div>
+                            <div :id="chunk.mark" class="border-b pb-2"
+                                 :class="chunk.mark === anchorMark ? 'bg-yellow-50' : ''" v-html="chunk.html"></div>
                         </div>
                         <div v-else>
-                            <div :id="chunk.mark" class="my-4" v-html="chunk"></div>
+                            <div :id="chunk.mark" class="my-4" :class="chunk.mark === anchorMark ? 'bg-yellow-50' : ''"
+                                 v-html="chunk.html"></div>
                         </div>
                     </div>
                 </div>

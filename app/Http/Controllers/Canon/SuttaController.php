@@ -66,7 +66,10 @@ class SuttaController extends Controller
         $chunksByContentId = [];
         foreach ($sutta->contents as &$content) {
             $contentChunks = $content->chunks->map(function ($chunk) use ($textParser) {
-                return "<span id='".$chunk->mark."'></span>".$textParser->parse($chunk->text);
+                return [
+                    'mark' => $chunk->mark,
+                    'html' => $textParser->parse($chunk->text),
+                ];
             })->toArray();
             $chunksByContentId[$content->id] = $contentChunks;
             unset($content->chunks);

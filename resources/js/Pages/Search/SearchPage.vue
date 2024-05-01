@@ -2,7 +2,7 @@
 import {Head, Link, router, usePage} from '@inertiajs/vue3';
 import ApplicationLayout from '@/Layouts/ApplicationLayout.vue';
 import Sidebar from "@/Common/Sidebar.vue";
-import {ref} from 'vue';
+import {onMounted, ref} from 'vue';
 import Button from "@/Components/Button.vue";
 
 const props = defineProps({
@@ -20,6 +20,12 @@ const handleSearch = () => {
         router.post('/search', {search: search.value})
     }
 }
+
+// onMounted(() => {
+//     if (search.value) {
+//         handleSearch();
+//     }
+// });
 
 </script>
 
@@ -61,6 +67,9 @@ const handleSearch = () => {
                             <div v-for="textResultData in suttaSearchData.textResults" class="ml-4 mt-4">
                                 <Link :href="textResultData.url">
                                     <div v-html="textResultData.html"></div>
+                                </Link>
+                                <Link :href="textResultData.url" class="link text-sm">
+                                    {{ textResultData.fullUrl }}
                                 </Link>
                             </div>
 
