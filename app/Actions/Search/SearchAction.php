@@ -58,7 +58,7 @@ class SearchAction
 
         $suttaResults = collect();
         foreach ($suttas as $i => $sutta) {
-            $hits = $groupedBySutta[$sutta->id];
+            $hits = $groupedBySutta[$sutta->id]->sortBy('order');
             $textResults = collect();
             foreach ($hits as $hit) {
                 /** @var Content */

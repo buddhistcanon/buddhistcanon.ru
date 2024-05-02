@@ -61,6 +61,7 @@ class ContentChunk extends Model
             'chunkable_id' => $this->chunkable_id,
             'text' => $this->text,
             'mark' => $this->mark,
+            'order' => $this->order,
         ];
     }
 }
