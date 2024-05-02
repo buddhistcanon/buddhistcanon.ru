@@ -82,8 +82,10 @@ onMounted(() => {
 
                 <div class="flex flex-row justify-between">
                     <div class="">
-                        <h1 class="text-xl">{{ nikayaTitle }}</h1>
-                        <h2 class="text-lg">{{ sutta.title_transcribe_ru }} "{{ sutta.title_translate_ru }}"</h2>
+                        <h1 class="text-3xl font-normal font-serif">{{ nikayaTitle }}</h1>
+                        <h2 class="text-lg font-normal">{{ sutta.title_transcribe_ru }} "{{
+                                sutta.title_translate_ru
+                            }}"</h2>
                     </div>
                     <div class="p-2">
                         <Link :href="'/admin/edit_sutta/'+sutta.name" v-if="user">
@@ -99,7 +101,7 @@ onMounted(() => {
                     </span>
                 </div>
 
-                <div class="mt-4 content-text">
+                <div class="mt-8 content-text">
                     <div v-for="(chunk, index) of contentChunks">
                         <div v-if="content.is_synced !== '0'">
                             <div class="text-gray-400 text-xs">{{ index + 1 }}</div>

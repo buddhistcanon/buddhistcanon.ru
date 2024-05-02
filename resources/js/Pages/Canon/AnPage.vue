@@ -27,7 +27,7 @@ const filteredByOrder = (order) => {
 
     <ApplicationLayout>
 
-        <div class="flex flex-col md:flex-row">
+        <div class="flex flex-col lg:flex-row">
             <div class="flex flex-col lg:flex-row w-full">
                 <div class="bg-white p-4 w-full">
 
@@ -88,7 +88,7 @@ const filteredByOrder = (order) => {
                 </div>
             </div>
 
-            <div class="md:ml-4 md:w-96">
+            <div class="lg:ml-4 lg:w-96">
                 <Sidebar/>
             </div>
 

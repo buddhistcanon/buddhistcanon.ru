@@ -321,15 +321,21 @@ const makeUnlinked = (contentId) => {
 
         <div class="mx-auto w-full px-4 sm:px-6 lg:px-8">
 
-            <div class="text-2xl font-semibold leading-6 text-gray-700 mb-4">
-                <h1 v-if="sutta.id">Редактирование {{ sutta.name }}</h1>
-                <h1 v-else>Создание сутты</h1>
+            <div v-if="sutta.id" class="flex flex-row items-baseline">
+                <div class="text-2xl font-semibold leading-6 text-gray-700 mb-4">Редактирование {{ sutta.name }}</div>
+                <div class="ml-4">
+                    <Link :href="'/'+sutta.name" class="link">Посмотреть на сайте</Link>
+                </div>
             </div>
 
+            <div v-else class="text-2xl font-semibold leading-6 text-gray-700 mb-4">Создание сутты</div>
+
+
             <div class="mb-6 text-sm">
-                <Link class="mr-8 link" v-if="prevSutta" :href="'/admin/edit_sutta/'+prevSutta.name">Предыдущая сутта
-                </Link>
-                <Link class="link" v-if="nextSutta" :href="'/admin/edit_sutta/'+nextSutta.name">Следующая сутта</Link>
+
+                <!--                <Link class="mr-8 link" v-if="prevSutta" :href="'/admin/edit_sutta/'+prevSutta.name">Предыдущая сутта-->
+                <!--                </Link>-->
+                <!--                <Link class="link" v-if="nextSutta" :href="'/admin/edit_sutta/'+nextSutta.name">Следующая сутта</Link>-->
             </div>
 
             <Card class="max-w-5xl">

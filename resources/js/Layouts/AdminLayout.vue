@@ -119,7 +119,7 @@ const sidebarOpen = ref(false)
             <div class="flex min-h-0 flex-1 flex-col border-r border-gray-200 bg-white">
                 <div class="flex flex-1 flex-col overflow-y-auto pt-5 pb-4">
                     <div class="flex flex-shrink-0 items-center px-4">
-                        Logo
+                        <img src="/logo-white.svg" class="w-16 h-16 fill-current text-gray-500">
                     </div>
                     <nav class="mt-5 flex-1 space-y-1 bg-white px-2">
                         <Link v-for="item in navigation" :method="item.method" :key="item.name" :href="item.href"

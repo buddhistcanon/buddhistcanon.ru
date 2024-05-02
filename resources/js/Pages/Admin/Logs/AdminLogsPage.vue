@@ -59,7 +59,8 @@ const props = defineProps({
                                         {{ format(log.created_at, "d.MM.yyyy HH:mm") }}
                                     </td>
                                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-800">
-                                        {{ log.user.nickname }}
+                                        <span class="text-gray-500 text-sm mr-2">#{{ log.user.id }}</span>
+                                        {{ log.user.first_name }} {{ log.user.last_name }} ({{ log.user.nickname }})
                                     </td>
                                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-800">
                                         {{ log.action }}

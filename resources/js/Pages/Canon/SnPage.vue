@@ -27,7 +27,7 @@ const filteredByOrder = (order) => {
 
     <ApplicationLayout>
 
-        <div class="flex flex-col md:flex-row">
+        <div class="flex flex-col lg:flex-row">
             <div class="flex flex-col lg:flex-row w-full">
                 <div class="bg-white p-4 w-full">
 
@@ -38,7 +38,7 @@ const filteredByOrder = (order) => {
                     <div class="font-serif text-2xl">Саньютта-никая</div>
 
                     <div class="font-serif text-xl mt-6 mb-6">1. Строфы</div>
-                    <div class="grid sm:grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <Link class="bc-button px-4 py-4 mb-2" href="/sn/1">SN1: Дэвата саньютта - Дэвы</Link>
                         <Link class="bc-button px-4 py-4 mb-2" href="/sn/2">SN2: Дэвапутта саньютта - Молодые дэвы
                         </Link>
@@ -54,7 +54,7 @@ const filteredByOrder = (order) => {
                     </div>
 
                     <div class="font-serif text-xl mt-10 mb-6">2. Причинность</div>
-                    <div class="grid sm:grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <Link class="bc-button px-4 py-4 mb-2" href="/sn/12">SN12: Нидана саньютта - Причинность</Link>
                         <Link class="bc-button px-4 py-4 mb-2" href="/sn/13">SN13: Абхисамая саньютта - Постижение
                         </Link>
@@ -73,7 +73,7 @@ const filteredByOrder = (order) => {
                     </div>
 
                     <div class="font-serif text-xl mt-10 mb-6">3. Совокупности</div>
-                    <div class="grid sm:grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <Link class="bc-button px-4 py-4 mb-2" href="/sn/22">SN22: Кхандха саньютта - Совокупности
                         </Link>
                         <Link class="bc-button px-4 py-4 mb-2" href="/sn/23">SN23: Радха саньютта - Радха
@@ -103,7 +103,7 @@ const filteredByOrder = (order) => {
                     </div>
 
                     <div class="font-serif text-xl mt-10 mb-6">4. Шесть сфер</div>
-                    <div class="grid sm:grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <Link class="bc-button px-4 py-4 mb-2" href="/sn/35">SN35: Салаятана саньютта - Шесть сфер
                         </Link>
                         <Link class="bc-button px-4 py-4 mb-2" href="/sn/36">SN36: Ведана саньютта - Чувство
@@ -128,7 +128,7 @@ const filteredByOrder = (order) => {
                     </div>
 
                     <div class="font-serif text-xl mt-10 mb-6">5. Большой раздел</div>
-                    <div class="grid sm:grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <Link class="bc-button px-4 py-4 mb-2" href="/sn/45">СН 45: Магга саньютта - Путь
                         </Link>
                         <Link class="bc-button px-4 py-4 mb-2" href="/sn/46">СН 46: Бодджханга саньютта - Факторы
@@ -163,7 +163,7 @@ const filteredByOrder = (order) => {
                 </div>
             </div>
 
-            <div class="md:ml-4 md:w-96">
+            <div class="lg:ml-4 lg:w-96">
                 <Sidebar/>
             </div>
 

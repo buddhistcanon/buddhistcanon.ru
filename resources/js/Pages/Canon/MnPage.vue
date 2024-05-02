@@ -23,7 +23,7 @@ const suttaUrl = (sutta) => {
 
     <ApplicationLayout>
 
-        <div class="flex flex-col md:flex-row">
+        <div class="flex flex-col lg:flex-row">
             <div class="flex flex-col lg:flex-row w-full">
                 <div class="bg-white p-4 w-full">
 
@@ -33,11 +33,20 @@ const suttaUrl = (sutta) => {
 
                     <div class="font-serif text-2xl mb-6">Мадджхима-никая</div>
 
-                    <div class="grid grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <Link v-for="sutta in suttas" :key="sutta.id" class="bc-button px-4 py-4 mb-2"
                               :href="suttaUrl(sutta)">
-                            <div class="text-xl mb-2">{{sutta.name}}</div>
-                            <div>{{sutta.title_transcribe_ru}}</div>
+                            <div class="flex flex-row justify-between">
+                                <div class="text-xl mb-2">{{ sutta.name }}</div>
+                                <div>
+                                    <span class="mr-1" v-for="content in sutta.contents"
+                                          :key="content.id">
+                                        <span v-if="content.lang === 'ru' && content.is_synced === '1'"
+                                              class="text-green-600">перевод SV синхронизирован</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div>{{ sutta.title_transcribe_ru }}</div>
                         </Link>
                     </div>
 

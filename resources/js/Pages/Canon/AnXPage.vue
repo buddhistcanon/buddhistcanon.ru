@@ -29,7 +29,7 @@ const filteredByOrder = (order) => {
 
     <ApplicationLayout>
 
-        <div class="flex flex-col md:flex-row">
+        <div class="flex flex-col lg:flex-row">
             <div class="flex flex-col lg:flex-row w-full">
                 <div class="bg-white p-4 w-full">
 
@@ -38,20 +38,21 @@ const filteredByOrder = (order) => {
                         {title: 'Ангуттара-никая', url: '/an'},
                     ]" class="mb-3"/>
 
-                    <div class="font-serif text-2xl mb-2">{{props.title}}</div>
+                    <div class="font-serif text-2xl mb-2">{{ props.title }}</div>
 
-                    <div class="font-serif text-xl mb-6">{{props.subtitle}}</div>
+                    <div class="font-serif text-xl mb-6">{{ props.subtitle }}</div>
 
-                    <div class="grid grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <Link v-for="sutta in props.suttas" :key="sutta.id" class="bc-button px-4 py-4 mb-2"
                               :href="suttaUrl(sutta)">
                             <div class="flex flex-row justify-between mb-2">
-                                <div class="text-xl">{{sutta.name}}</div>
+                                <div class="text-xl">{{ sutta.name }}</div>
                                 <div class="text-sm text-gray-700">
-                                    <span class="mr-1" v-for="content in sutta.contents" :key="content.id">{{content.lang}}</span>
+                                    <span class="mr-1" v-for="content in sutta.contents"
+                                          :key="content.id">{{ content.lang }}</span>
                                 </div>
                             </div>
-                            <div>{{sutta.title_transcribe_ru}}</div>
+                            <div>{{ sutta.title_transcribe_ru }}</div>
                         </Link>
                     </div>
 
@@ -59,7 +60,7 @@ const filteredByOrder = (order) => {
                 </div>
             </div>
 
-            <div class="md:ml-4 md:w-96">
+            <div class="lg:ml-4 lg:w-96">
                 <Sidebar/>
             </div>
 
