@@ -43,7 +43,7 @@ server-meilisearch: ## Launch Meilisearch server
 	docker run -it --rm -p 7700:7700 -e MEILI_ENV='development' -e MEILI_MASTER_KEY='8yy_tNVZJ8_MdNa5RQiThfnC-MNZDD0F79xUS49tTq0' -v $(pwd)/meili_data:/meili_data getmeili/meilisearch:v1.7
 
 server-deploy: ## Launch deploy server
-	git reset HEAD --hard && git pull origin master && php artisan migrate && composer install && npm run build && php artisan inertia:start-ssr
+	git reset HEAD --hard && git pull origin master && php artisan migrate --force && composer install && npm run build && php artisan inertia:start-ssr
 
 migrate: ## Run migrate with ide-helper
 	./vendor/bin/sail artisan migrate
