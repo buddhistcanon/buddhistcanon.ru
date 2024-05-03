@@ -19,6 +19,6 @@
 
 @inertia
 
-{{--@include('yandex-metric')--}}
+@include('yandex-metric')
 </body>
 </html>
