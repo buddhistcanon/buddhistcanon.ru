@@ -4,7 +4,7 @@
 
 Установить пакетный менеджер composer.
 
-Установить зависимости:
+Установить зависимости php:
 
 ```bash
 composer install --ignore-platform-reqs
@@ -17,6 +17,12 @@ composer install --ignore-platform-reqs
 
 ```bash
 make up
+```
+
+Обновить зависимости js:
+
+```bash
+make npm-install
 ```
 
 #### Инициализация при первом запуске проекта

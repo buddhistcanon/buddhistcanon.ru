@@ -30,6 +30,9 @@ front: vite-dev ## Run vite dev server
 logs:
 	./vendor/bin/sail logs -f
 
+npm-install: ## npm install
+	./vendor/bin/sail npm install
+
 vite-dev: ## npm run dev
 	./vendor/bin/sail npm run dev
 
