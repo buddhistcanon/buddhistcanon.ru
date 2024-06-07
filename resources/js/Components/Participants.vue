@@ -7,6 +7,7 @@ const nameCardClass = 'text-xs flex-1 p-4 text-center md:text-left md:pl-12 md:p
 const nameClass = 'font-bold';
 const socialCardClass = 'flex-1 flex flex-row justify-center px-4 mb-6 md:my-6 md:justify-around';
 const linkClass = 'bc-button mx-1 py-1.5 px-2 block my-auto';
+const linkClassHidden = 'bc-button mx-1 py-1.5 px-2 my-auto invisible hidden md:block';
 const iconClass = 'w-6 h-6 min-w-6';
 
 </script>
@@ -65,7 +66,7 @@ const iconClass = 'w-6 h-6 min-w-6';
                         <img src="/icon-vk.svg" alt="vk" :class="iconClass" />
                     </a>
 
-                    <a href="#" target="_blank" :class="linkClass" style="visibility:hidden">
+                    <a href="#" target="_blank" :class="linkClassHidden">
                         <img src="/icon-telegram.svg" alt="telegram" :class="iconClass" />
                     </a>
                 </div>
@@ -95,11 +96,11 @@ const iconClass = 'w-6 h-6 min-w-6';
                         <img src="/icon-telegram.svg" alt="telegram" :class="iconClass" />
                     </a>
 
-                    <a href="#" target="_blank" :class="linkClass" style="visibility:hidden">
+                    <a href="#" target="_blank" :class="linkClassHidden">
                         <img src="/icon-youtube.svg" alt="youtube" :class="iconClass" />
                     </a>
 
-                    <a href="#" target="_blank" :class="linkClass" style="visibility:hidden">
+                    <a href="#" target="_blank" :class="linkClassHidden">
                         <img src="/icon-vk.svg" alt="vk" :class="iconClass" />
                     </a>
                 </div>
