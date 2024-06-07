@@ -1,12 +1,12 @@
 <script setup>
 
 const rowClass = 'flex flex-row mt-4';
-const leftColClass = 'bg-white mr-4 flex-1 flex flex-row';
-const rightColClass = 'bg-white ml-4 flex-1 flex flex-row';
-const nameCardClass = 'text-xs w-auto flex-1 p-4 pl-12 pr-0 my-auto';
+const leftColClass = 'bg-white mr-4 flex-1 flex flex-col md:flex-row';
+const rightColClass = 'bg-white ml-4 flex-1 flex flex-col md:flex-row';
+const nameCardClass = 'text-xs flex-1 p-4 text-center md:text-left md:pl-12 md:pr-0 md:my-auto';
 const nameClass = 'font-bold';
-const socialCardClass = 'flex-1 align-middle flex flex-row justify-around px-4 my-6';
-const linkClass = 'bc-button pyw-32 w-fit py-1.5 px-2 my-4 block mx-2 h-fit my-auto';
+const socialCardClass = 'flex-1 flex flex-row justify-center px-4 mb-6 md:my-6 md:justify-around';
+const linkClass = 'bc-button mx-1 py-1.5 px-2 block my-auto';
 const iconClass = 'w-6 h-6 min-w-6';
 
 </script>
