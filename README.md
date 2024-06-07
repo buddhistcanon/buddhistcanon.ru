@@ -95,6 +95,10 @@ make import-theravadaru-suttas
 php artisan lb:import_theravadaru_suttas AN --rebuild
 ``` 
 
+### CSS
+
+Используем [tailwindcss](https://tailwindcomponents.com/cheatsheet/).
+
 ## SSR
 
 Запуск ssr-сервера на сервере:
