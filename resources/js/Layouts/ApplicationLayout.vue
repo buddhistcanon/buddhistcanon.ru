@@ -12,6 +12,7 @@ import {
 import {Link} from '@inertiajs/vue3';
 import Sidebar from "@/Common/Sidebar.vue";
 import Footer from "@/Common/Footer.vue";
+import CookieBanner from "@/Common/CookieBanner.vue";
 import {router} from '@inertiajs/vue3'
 import {ref} from 'vue'
 
@@ -208,6 +209,8 @@ const submitSearch = () => {
 
         </main>
     </div>
+
+    <CookieBanner />
 
 
 </template>
