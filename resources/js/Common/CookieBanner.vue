@@ -1,13 +1,12 @@
 <script setup>
 import { ref, onMounted } from "vue";
 
-const consentCookieName = 'cookie_consent10';
+const consentCookieName = 'cookie_consent';
 const consent = ref(true);
 
 function setCookie() {
     document.cookie = `${consentCookieName}=true; expires=Fri, 31 Dec 9999 23:59:59 GMT`;
     consent.value = true;
-    console.log(1);
 }
 
 onMounted(() => {
