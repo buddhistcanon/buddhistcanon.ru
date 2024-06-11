@@ -99,6 +99,19 @@ php artisan lb:import_theravadaru_suttas AN --rebuild
 
 Используем [tailwindcss](https://tailwindcomponents.com/cheatsheet/).
 
+### Troubleshooting
+
+#### Поиск не работает
+
+```
+make reindex
+
+или
+
+php artisan lg:reindex
+```
+
+
 ## SSR
 
 Запуск ssr-сервера на сервере:
@@ -118,3 +131,5 @@ make server-meilisearch
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+

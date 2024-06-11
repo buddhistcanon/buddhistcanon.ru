@@ -37,9 +37,8 @@ class RegisteredUserController extends Controller
         $request->validate([
 //            'nickname' => 'required|string|max:255|unique:users', // TODO: remove here and in Db
             'email' => 'required|string|email|max:255|unique:users',
-            'invite' => 'required|starts_with:EDITORRUS',
             'password' => ['required', Rules\Password::defaults()],
-        ], ['starts_with' => 'Неправильный инвайт']);
+        ], []);
 
         $user = User::create([
             'nickname' => $request->email, // TODO: fallback to e-mail for now, not to break too many stuff
@@ -50,17 +49,15 @@ class RegisteredUserController extends Controller
         ]);
         $user->is_superadmin = 0;
 
-        if (str_contains($request->invite, 'EDITORRUS')) {
-            $role = Role::query()
+        $role = Role::query()
                 ->where('name', 'editor_russian')
-                ->firstOrFail();
-            $user->roles()->attach($role);
-        }
+            ->firstOrFail();
+        $user->roles()->attach($role);
 
         event(new Registered($user));
 
         Auth::login($user);
 
-        return redirect(RouteServiceProvider::HOME);
+        return redirect('/');
     }
 }
