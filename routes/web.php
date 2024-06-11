@@ -33,6 +33,10 @@ Route::group(['middleware' => ['admin_area']], function () {
     Route::get('/admin/help', \App\Http\Controllers\Admin\AdminHelpController::class.'@index');
 
     Route::get('/admin/logs', \App\Http\Controllers\Admin\AdminLogsController::class.'@index');
+
+    Route::group(['middleware' => ['super_admin']], function () {
+        Route::get('/admin/users', \App\Http\Controllers\Admin\AdminUsersController::class.'@index');
+    });
 });
 
 Route::get('/', \App\Http\Controllers\WelcomeController::class.'@index')->name('welcome');

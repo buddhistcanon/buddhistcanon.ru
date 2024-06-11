@@ -2,7 +2,7 @@
 import {ref} from 'vue'
 import {Dialog, DialogPanel, TransitionChild, TransitionRoot} from '@headlessui/vue'
 import {defineProps} from '@vue/runtime-core'
-import {Head, Link} from "@inertiajs/vue3";
+import {Head, Link, usePage} from "@inertiajs/vue3";
 import {
     Bars3Icon,
     CalendarIcon,
@@ -22,12 +22,19 @@ defineProps({
     title: String,
 })
 
+const page = usePage()
+
 const navigation = [
     {name: 'На сайт', href: '/', icon: HomeIcon, current: false, method: "get"},
     {name: 'MN', href: '/admin/suttas/mn', icon: FolderIcon, current: false, method: "get"},
     {name: 'AN', href: '/admin/suttas/an', icon: FolderIcon, current: false, method: "get"},
     {name: 'SN', href: '/admin/suttas/sn', icon: FolderIcon, current: false, method: "get"},
     {name: 'DN', href: '/admin/suttas/dn', icon: FolderIcon, current: false, method: "get"},
+    ...(
+        page.props.auth.user.is_superadmin ? [
+            {name: 'Пользователи', href: '/admin/users', icon: UsersIcon, current: false, method: "get"},
+        ] : []
+    ),
     {name: 'Термины', href: '/admin/terms', icon: BookOpenIcon, current: false, method: "get"},
     {name: 'Помощь', href: '/admin/help', icon: LifebuoyIcon, current: false, method: "get"},
     {name: 'Логи', href: '/admin/logs', icon: CalendarIcon, current: false, method: "get"},
