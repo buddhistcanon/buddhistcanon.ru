@@ -112,6 +112,22 @@ php artisan lg:reindex
 ```
 
 
+### Integration testings
+
+Install Google Chrome webdriver
+/Users/bgvozdev/dev/buddhistcanon/tests/Browser/ExampleTest.php
+
+```
+php artisan dusk:install
+```
+
+Run tests
+
+```
+php artisan dusk
+```
+
+
 ## SSR
 
 Запуск ssr-сервера на сервере:

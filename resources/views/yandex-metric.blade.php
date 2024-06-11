@@ -1,6 +1,10 @@
 <!-- Yandex.Metrika counter -->
 <script type="text/javascript">
     (function (m, e, t, r, i, k, a) {
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            return; // to speed up local testing
+        }
+
         m[i] = m[i] || function () {
             (m[i].a = m[i].a || []).push(arguments)
         };

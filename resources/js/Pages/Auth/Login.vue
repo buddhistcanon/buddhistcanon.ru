@@ -61,9 +61,7 @@ const submit = () => {
                     Регистрация
                 </Link>
 
-                <BreezeButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Вход
-                </BreezeButton>
+                <BreezeButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Вход</BreezeButton>
             </div>
         </form>
     </BreezeGuestLayout>
