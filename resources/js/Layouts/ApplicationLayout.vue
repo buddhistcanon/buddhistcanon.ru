@@ -35,14 +35,6 @@ const userNavigation = [
     {name: 'Выход', href: '/logout', method: "post"},
 ]
 
-const searchString = ref('');
-
-const submitSearch = () => {
-    if (searchString.value) {
-        router.post('/search', {search: searchString.value})
-    }
-}
-
 </script>
 
 
@@ -59,16 +51,15 @@ const submitSearch = () => {
                             Главная страница
                         </Link>
 
-                        <div class="relative ml-8 flex-1 border-1 border-bc rounded-bc">
+                        <Link :href="'/search'" class="relative ml-8 flex-1 border-1 border-bc rounded-bc">
                             <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                                 <MagnifyingGlassIcon class="h-5 w-5 text-gray-bc" aria-hidden="true"/>
                             </div>
-                            <input type="text" name="search" id="search"
-                                   class="block w-full rounded-bc bc-button-background border-0 py-2 pl-10 text-gray-900 ring-0 ring-inset ring-gray-bc placeholder:text-gray-400 focus:ring-2 focus:ring-offset-0 focus:ring-gray-200 text-sm"
-                                   v-model="searchString"
-                                   @keyup.enter="submitSearch"
-                                   placeholder="Поиск"/>
-                        </div>
+                            <div
+                                class="block text-gray-600 w-full rounded-bc bc-button-background border-0 py-2 pl-10 text-gray-900 ring-0 ring-inset ring-gray-bc placeholder:text-gray-400 focus:ring-2 focus:ring-offset-0 focus:ring-gray-200 text-sm"
+                            >Поиск
+                            </div>
+                        </Link>
 
                         <div v-if="!$page.props.auth.user">
                             <Link class="bc-button px-7 py-2 ml-8" :href="'/login'">
