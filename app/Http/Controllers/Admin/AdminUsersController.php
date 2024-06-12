@@ -4,20 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Log;
+use App\Models\User;
 
 class AdminUsersController extends Controller
 {
     public function index()
     {
-        // TODO
-        $logs = Log::query()
-            ->whereIn('action', ['update_content', 'make_synced', 'make_unsynced'])
-            ->with(['user', 'sutta', 'content.translator'])
-            ->orderByDesc('created_at')
-            ->paginate(20);
-
-        return inertia('Admin/Logs/AdminLogsPage', [
-            'logs' => $logs->toArray(),
+        return inertia('Admin/AdminUsersPage', [
+            'usersPage' => User::query()->with('roles')->orderBy('email')->paginate(20)
         ]);
     }
 }

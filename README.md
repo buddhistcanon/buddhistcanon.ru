@@ -129,7 +129,7 @@ make migrate-refresh-seed
 Run tests
 
 ```
-php artisan dusk
+source .env.dusk.sh && php artisan dusk
 ```
 
 

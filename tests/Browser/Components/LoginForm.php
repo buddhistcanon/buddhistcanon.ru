@@ -11,9 +11,10 @@ class LoginForm
         $this->browser = $browser;
     }
 
-    public function logIn(string $email, string $password): void
+    public function logIn(string $email, string $password, $pause = false): void
     {
         $this->browser->visit('/')
+            ->pause($pause ? 3000 : 0)
             ->clickLink('Вход / Регистрация')
             ->waitFor('input#email', 10)
             ->type('input#email', $email)

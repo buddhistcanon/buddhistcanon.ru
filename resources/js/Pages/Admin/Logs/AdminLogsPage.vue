@@ -79,7 +79,7 @@ const props = defineProps({
                                 </tbody>
                             </table>
 
-                            <Pagination class="pt-6 px-4 pb-4 bg-white" :links="logs.links"/>
+                            <Pagination class="pt-6 px-4 pb-4 bg-white" :links="usersPage.links"/>
                         </div>
                     </div>
                 </div>
