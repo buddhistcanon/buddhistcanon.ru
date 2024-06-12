@@ -115,10 +115,15 @@ php artisan lg:reindex
 ### Integration testings
 
 Install Google Chrome webdriver
-/Users/bgvozdev/dev/buddhistcanon/tests/Browser/ExampleTest.php
 
 ```
 php artisan dusk:install
+```
+
+Refresh database if necessary
+
+```
+make migrate-refresh-seed
 ```
 
 Run tests
