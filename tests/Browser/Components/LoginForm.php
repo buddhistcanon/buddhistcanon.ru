@@ -15,6 +15,7 @@ class LoginForm
     {
         $this->browser->visit('/')
             ->pause($pause ? 3000 : 0)
+            ->waitForText('Вход / Регистрация')
             ->clickLink('Вход / Регистрация')
             ->waitFor('input#email', 10)
             ->type('input#email', $email)
