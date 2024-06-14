@@ -45,18 +45,11 @@ class RegisteredUserController extends Controller
 //            'last_name' => $request->last_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'is_superadmin' => 0,
         ]);
-        $user->is_superadmin = 0;
-
-        $role = Role::query()
-                ->where('name', 'editor_russian')
-            ->firstOrFail();
-        $user->roles()->attach($role);
-
         event(new Registered($user));
 
         Auth::login($user);
-
         return redirect('/');
     }
 }
