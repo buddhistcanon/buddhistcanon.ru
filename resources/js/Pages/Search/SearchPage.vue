@@ -12,20 +12,22 @@ const props = defineProps({
     isIndexing: Boolean,
 });
 const page = usePage();
-
 const search = ref(props.search);
+const processSearch = ref(false);
 
 const handleSearch = () => {
     if (search.value) {
-        router.post('/search', {search: search.value})
+        processSearch.value = true;
+        router.post('/search', {
+                search: search.value
+            }, {
+                onFinish: (visit) => {
+                    processSearch.value = false;
+                }
+            }
+        );
     }
 }
-
-// onMounted(() => {
-//     if (search.value) {
-//         handleSearch();
-//     }
-// });
 
 </script>
 
@@ -52,13 +54,15 @@ const handleSearch = () => {
 
                     </div>
                     <div class="flex flex-row">
-                        <input type="text"
+                        <input type="text" autofocus
                                class="w-full flex-1 p-2 border border-gray-300 rounded focus:border-gray-300 focus:outline-none focus:ring-1 focus:ring-gray-300"
-                               v-model="search"
+                               v-model="search" @keyup.enter="handleSearch"
                                placeholder="Поиск...">
                         <Button class="ml-2" @click="handleSearch">Искать</Button>
                     </div>
                     <div v-if="page.props.errors.search" class="text-red-600 mt-2">{{ page.props.errors.search }}</div>
+
+                    <div v-if="processSearch" class="my-4 italic">выполняется поиск...</div>
 
                     <div class="search-page mt-8">
 
