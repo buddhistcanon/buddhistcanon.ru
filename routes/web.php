@@ -36,7 +36,7 @@ Route::group(['middleware' => ['admin_area']], function () {
 
     Route::group(['middleware' => ['super_admin']], function () {
         Route::get('/admin/users', \App\Http\Controllers\Admin\AdminUsersController::class.'@index');
-        Route::put('/admin/users/{id}/roles', \App\Http\Controllers\Admin\AdminUsersController::class.'@store');
+        Route::put('/admin/users/{id}/roles', \App\Http\Controllers\Admin\AdminUsersController::class.'@storeRoles');
     });
 });
 

@@ -20,7 +20,7 @@ class AdminUsersController extends Controller
         ]);
     }
 
-    public function store(Request $request) {
+    public function storeRoles(Request $request) {
         $request->validate([
             'is_superadmin' => 'required',
             'role_ids' => 'array',
@@ -32,6 +32,6 @@ class AdminUsersController extends Controller
         $user->roles()->attach(Role::whereIn('id', $request->role_ids)->get());
         $user->save();
         return json_encode(['ok' => true]);
-        
+
     }
 }
