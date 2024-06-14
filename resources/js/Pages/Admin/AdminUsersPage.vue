@@ -124,7 +124,7 @@ function hideEditUserRolesForm() {
                                             </form>
                                         </div>
                                         <div v-else class="flex flex-col md:flex-row">
-                                            <div class="content-center pr-2" :id="'roles-user-' + user.id">
+                                            <div class="content-center pr-2 text-wrap" :id="'roles-user-' + user.id">
                                                 {{ user.is_superadmin ? 'Суперадмин' : '' }}
                                                 {{ user.roles.sort((a, b) => a.name.localeCompare(b.name)).map(role => role.name).join(', ') }}
                                             </div>
