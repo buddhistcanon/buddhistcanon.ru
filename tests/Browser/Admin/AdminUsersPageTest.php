@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Dusk\Browser;
 use Tests\Browser\Components\AdminMenu;
+use Tests\Browser\Components\AdminUserEditForm;
 use Tests\Browser\Components\LoginForm;
 use Tests\DuskTestCase;
 
@@ -128,32 +129,19 @@ class AdminUsersPageTest extends DuskTestCase
         return $user;
     }
 
-    private function clickEdit($browser, int $editButtonIndex)
-    {
-        $buttons = $browser->elements('button');
-        $cnt = 0;
-        foreach ($buttons as $button) {
-            if ($button->getText() === 'Редактировать') {
-                $cnt ++;
-                if ($editButtonIndex == $cnt) {
-                    $button->click();
-                    return;
-                }
-            }
-        }
-        throw new \Exception("Edit button not found");
-    }
-
     private function _testEditRoleSuperadmin(Browser $browser)
     {
-        $this->clickEdit($browser, 2);
+        $user = User::whereEmail('editor_russian@editor.com')->first();
+        $this->assertEquals($user->is_superadmin, 0);
 
-        $browser->whenAvailable('#roles-form', function ($form) {
-            $form->select('is_superadmin', '1');
-        })->press('Сохранить')->waitForText('Суперадмин editor_russian');
+        (new AdminUserEditForm($browser, $user->id))
+            ->assertMissingRoleString('Суперадмин')
+            ->open()
+            ->selectSuperadmin()
+            ->save()
+            ->assertRoleString('Суперадмин');
 
         $user = User::whereEmail('editor_russian@editor.com')->first();
-
         $this->assertEquals($user->is_superadmin, 1);
     }
 
@@ -163,35 +151,32 @@ class AdminUsersPageTest extends DuskTestCase
         $this->assertEquals($user->is_superadmin, 1);
         $this->assertEquals(count($user->roles()->allRelatedIds()), 1);
 
-        $this->clickEdit($browser, 2);
-
-        $browser->whenAvailable('#roles-form', function ($form) {
-            $form->select('is_superadmin', '0');
-            $form->elements('option[class=editor_russian]')[0]->click();
-        })->press('Сохранить')->waitUntilMissingText('Сохранить');
+        $form = (new AdminUserEditForm($browser, $user->id));
+        $form->open();
+        $form->selectSuperadmin(false);
+        $form->clickRoleOption('editor_russian');
+        $form->save();
+        $form->assertMissingRoleString('editor_russian');
+        $form->assertMissingRoleString('Суперадмин');
 
         $user = User::whereEmail('editor_russian@editor.com')->first();
         $this->assertEquals($user->is_superadmin, 0);
         $this->assertEquals(count($user->roles()->allRelatedIds()), 0);
-
-        $browser->within("#roles-user-{$user->id}", function ($browser) {
-            $browser->waitUntilMissingText('editor_russian');
-            $browser->waitUntilMissingText('Суперадмин');
-        });
     }
 
     private function _testEditRoleAssignMultipleRoles(Browser $browser)
     {
         $user = User::whereEmail('editor_russian@editor.com')->first();
-        $this->assertEquals($user->is_superadmin, 0);
         $this->assertEquals(count($user->roles()->allRelatedIds()), 0);
 
-        $this->clickEdit($browser, 2);
-
-        $browser->whenAvailable('#roles-form', function ($form) {
-            $form->elements('option[class=editor_russian]')[0]->click();
-            $form->elements('option[class=editor_english]')[0]->click();
-        })->press('Сохранить')->waitUntilMissingText('Сохранить');
+        (new AdminUserEditForm($browser, $user->id))
+            ->open()
+            ->selectSuperadmin()
+            ->clickRoleOption('editor_russian')
+            ->clickRoleOption('editor_english')
+            ->save()
+            ->assertRoleString('editor_russian')
+            ->assertRoleString('editor_english');
 
         $user = User::whereEmail('editor_russian@editor.com')->first();
         $userRoles = $user->roles()->pluck('name')->all();
@@ -199,9 +184,5 @@ class AdminUsersPageTest extends DuskTestCase
         $this->assertEquals($userRoles,
             ['editor_english', 'editor_russian']
         );
-
-        $browser->within("#roles-user-{$user->id}", function ($browser) {
-            $browser->assertSee('editor_english, editor_russian');
-        });
     }
 }

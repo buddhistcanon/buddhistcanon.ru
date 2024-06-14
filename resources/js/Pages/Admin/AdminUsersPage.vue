@@ -95,7 +95,7 @@ function cancelEdit() {
                                 </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-200 bg-white">
-                                <tr v-for="user in users.data" :key="user.id">
+                                <tr v-for="user in users.data" :key="user.id" :id="'user-tr-' + user.id">
                                     <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-800 sm:pl-6">
                                         {{ user.email }}
                                     </td>
