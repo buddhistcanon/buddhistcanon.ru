@@ -19,7 +19,7 @@ const formDisabled = ref(false);
 const formIsSuperadmin = ref(0);
 const formRoles = ref([]);
 
-function onSubmit(e) {
+function onUserRolesFormSubmitted(e) {
     e.preventDefault();
 
     const existingUser = users.data.find(user => user.id === editUserRolesId.value);
@@ -51,14 +51,14 @@ function onSubmit(e) {
     });
 }
 
-function editUser(userId) {
+function showEditUserRolesForm(userId) {
     const user = props.usersPage.data.find(user => user.id === userId);
     editUserRolesId.value = userId;
     formIsSuperadmin.value = user.is_superadmin ? 1 : 0;
     formRoles.value = user.roles.map(role => role.id);
 }
 
-function cancelEdit() {
+function hideEditUserRolesForm() {
     editUserRolesId.value = -1;
 }
 
@@ -101,7 +101,7 @@ function cancelEdit() {
                                     </td>
                                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-800">
                                         <div v-if="editUserRolesId == user.id" class="w-fit">
-                                            <form @submit="onSubmit">
+                                            <form @submit="onUserRolesFormSubmitted">
                                                 <div class="flex flex-col" id="roles-form">
                                                     <div>Суперадмин?<br />
                                                         <select v-model="formIsSuperadmin" name="is_superadmin" class="w-full" :disabled="formDisabled">
@@ -116,7 +116,7 @@ function cancelEdit() {
                                                     </div>
                                                     <div class="flex flex-row">
                                                         <input type="submit" value="Сохранить" class="mb-1 mr-1 px-4 py-3 focus:text-indigo-500 text-sm leading-4 hover:bg-white border focus:border-indigo-500 rounded" :disabled="formDisabled" />
-                                                        <button @click="cancelEdit" class="mb-1 mr-1 px-4 py-3 focus:text-indigo-500 text-sm leading-4 hover:bg-white border focus:border-indigo-500 rounded" :disabled="formDisabled">
+                                                        <button @click="hideEditUserRolesForm" class="mb-1 mr-1 px-4 py-3 focus:text-indigo-500 text-sm leading-4 hover:bg-white border focus:border-indigo-500 rounded" :disabled="formDisabled">
                                                             Отмена
                                                         </button>
                                                     </div>
@@ -128,7 +128,7 @@ function cancelEdit() {
                                                 {{ user.is_superadmin ? 'Суперадмин' : '' }}
                                                 {{ user.roles.sort((a, b) => a.name.localeCompare(b.name)).map(role => role.name).join(', ') }}
                                             </div>
-                                            <button @click="editUser(user.id)" class="px-4 py-3 focus:text-indigo-500 text-sm leading-4 hover:bg-white border focus:border-indigo-500 rounded">
+                                            <button @click="showEditUserRolesForm(user.id)" class="px-4 py-3 focus:text-indigo-500 text-sm leading-4 hover:bg-white border focus:border-indigo-500 rounded">
                                                 Редактировать
                                             </button>
                                         </div>
