@@ -124,6 +124,7 @@ Refresh database if necessary
 
 ```
 make migrate-refresh-seed
+make add-test-users
 ```
 
 Run tests

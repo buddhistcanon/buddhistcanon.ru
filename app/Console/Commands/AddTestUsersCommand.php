@@ -1,20 +1,24 @@
 <?php
 
-namespace Database\Seeders;
+namespace App\Console\Commands;
 
 use Carbon\Carbon;
-use Illuminate\Database\Seeder;
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
 
-class EditorsSeeder extends Seeder
-{
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
-    public function run()
+class AddTestUsersCommand extends Command {
+    protected $signature = 'lb:add_test_users';
+
+    public function handle(): void
     {
+        $user = new \App\Models\User();
+        $user->nickname = 'admin';
+        $user->email = 'admin@admin.com';
+        $user->password = Hash::make('123456');
+        $user->email_verified_at = Carbon::now();
+        $user->is_superadmin = 1;
+        $user->save();
+
         $user = new \App\Models\User();
         $user->nickname = 'editor_rus';
         $user->email = 'editor_russian@editor.com';
