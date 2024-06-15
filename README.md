@@ -99,6 +99,41 @@ php artisan lb:import_theravadaru_suttas AN --rebuild
 
 Используем [tailwindcss](https://tailwindcomponents.com/cheatsheet/).
 
+### Troubleshooting
+
+#### Поиск не работает
+
+```
+make reindex
+
+или
+
+php artisan lg:reindex
+```
+
+
+### Integration testings
+
+Install Google Chrome webdriver
+
+```
+php artisan dusk:install
+```
+
+Refresh database if necessary
+
+```
+make migrate-refresh-seed
+make add-test-users
+```
+
+Run tests
+
+```
+source .env.dusk.sh && php artisan dusk
+```
+
+
 ## SSR
 
 Запуск ssr-сервера на сервере:
@@ -118,3 +153,5 @@ make server-meilisearch
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+

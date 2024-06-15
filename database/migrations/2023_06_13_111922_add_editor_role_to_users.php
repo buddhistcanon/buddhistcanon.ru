@@ -32,6 +32,10 @@ return new class extends Migration
 
     public function down(): void
     {
+        $roleIdsToDelete = DB::table('roles')
+            ->whereIn('name', ['admin', 'editor_russian', 'editor_english', 'editor_pali'])
+            ->pluck('id');
+        Db::table('role_user')->whereIn('role_id', $roleIdsToDelete)->delete();
         Schema::table('roles', function (Blueprint $table) {
             $table->dropColumn('description');
         });

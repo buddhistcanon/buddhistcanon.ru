@@ -66,6 +66,9 @@ migrate-refresh-seed: ## DELETE ALL DATABASE, then run migrate with ide-helper a
 	./vendor/bin/sail artisan migrate:refresh --seed
 	./vendor/bin/sail artisan ide-helper:models -W -R
 
+add-test-users: ## Add test users
+	./vendor/bin/sail artisan lb:add_test_users
+
 import-file-suttas: ## Import suttas from json files from suttacentral
 	./vendor/bin/sail artisan lb:import_file_suttas --rebuild
 

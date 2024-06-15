@@ -1,0 +1,6 @@
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=7402
+DB_DATABASE=buddhistcanon
+DB_USERNAME=sail
+DB_PASSWORD=password
