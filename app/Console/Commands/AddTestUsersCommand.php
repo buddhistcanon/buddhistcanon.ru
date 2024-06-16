@@ -30,5 +30,13 @@ class AddTestUsersCommand extends Command {
         $editor_rus_role = \App\Models\Role::where('name', 'editor_russian')->first();
         $user->roles()->attach($editor_rus_role->id);
         $user->save();
+
+        $user = new \App\Models\User();
+        $user->nickname = 'regular_user';
+        $user->email = 'user@user.com';
+        $user->password = Hash::make('123456');
+        $user->email_verified_at = Carbon::now();
+        $user->is_superadmin = 0;
+        $user->save();
     }
 }
