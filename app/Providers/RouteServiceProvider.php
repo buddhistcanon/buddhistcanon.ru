@@ -2,22 +2,28 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 
 class RouteServiceProvider extends ServiceProvider
 {
-    /**
-     * The path to the "home" route for your application.
-     *
-     * Typically, users are redirected here after authentication.
-     *
-     * @var string
-     */
-    public const HOME = '/admin';
+    public const HOME_ADMIN = '/admin';
+
+    public const HOME_USER = '/';
+
+    public static function getHomeRedirect(User | null $maybeUser = null) {
+        $user = $maybeUser ? $maybeUser : Auth::getUser();
+        if (count($user->roles()->get()) > 0 || $user->is_superadmin) {
+            return RouteServiceProvider::HOME_ADMIN;
+        } else {
+            return RouteServiceProvider::HOME_USER;
+        }
+    }
 
     /**
      * Define your route model bindings, pattern filters, and other route configuration.
