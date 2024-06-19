@@ -18,7 +18,7 @@ class AuthenticationTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_users_can_authenticate_using_the_login_screen()
+    public function test_plain_users_can_authenticate_using_the_login_screen()
     {
         $user = User::factory()->create();
 
@@ -28,7 +28,38 @@ class AuthenticationTest extends TestCase
         ]);
 
         $this->assertAuthenticated();
-        $response->assertRedirect(RouteServiceProvider::HOME);
+        $response->assertRedirect(RouteServiceProvider::HOME_USER);
+    }
+
+    public function test_admin_can_authenticate_using_the_login_screen()
+    {
+        $user = User::factory()->create([
+            'is_superadmin' => true,
+        ]);
+
+        $response = $this->post('/login', [
+            'email' => $user->email,
+            'password' => 'password',
+        ]);
+
+        $this->assertAuthenticated();
+        $response->assertRedirect(RouteServiceProvider::HOME_ADMIN);
+    }
+
+    public function test_editor_can_authenticate_using_the_login_screen()
+    {
+        $user = User::factory()->create();
+        $editor_rus_role = \App\Models\Role::where('name', 'editor_russian')->first();
+        $user->roles()->attach($editor_rus_role->id);
+        $user->save();
+
+        $response = $this->post('/login', [
+            'email' => $user->email,
+            'password' => 'password',
+        ]);
+
+        $this->assertAuthenticated();
+        $response->assertRedirect(RouteServiceProvider::HOME_ADMIN);
     }
 
     public function test_users_can_not_authenticate_with_invalid_password()
