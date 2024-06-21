@@ -38,7 +38,9 @@ const submit = () => {
                 <BreezeLabel for="email" value="Email"/>
                 <BreezeInput id="email" type="email" class="mt-1 block w-full" v-model="form.email" required autofocus
                              autocomplete="username"/>
-                <BreezeInputError class="mt-2" :message="form.errors.email"/>
+                <BreezeInputError class="mt-2" :message="form.errors.email">
+                    <a href="/forgot-password" class="underline">Забыли пароль?</a>
+                </BreezeInputError>
             </div>
 
             <div class="mt-4">
