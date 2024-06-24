@@ -9,16 +9,18 @@ import {
     ChevronDownIcon,
     MagnifyingGlassIcon
 } from '@heroicons/vue/24/outline'
-import {Link} from '@inertiajs/vue3';
+import {Link, usePage} from '@inertiajs/vue3';
 import Sidebar from "@/Common/Sidebar.vue";
 import Footer from "@/Common/Footer.vue";
 import CookieBanner from "@/Common/CookieBanner.vue";
 import {router} from '@inertiajs/vue3'
 import {ref} from 'vue'
 
+const page = usePage();
+
 const user = {
-    name: 'Имя Фамилия',
-    email: 'some-email@gmail.com',
+    name: '',
+    email: page?.props?.auth?.user?.email ? page.props.auth.user.email : '',
     imageUrl:
         '/avatar-placeholder.jpg',
 }
@@ -29,9 +31,11 @@ const navigation = [
     {name: 'Саньютта-никая', href: '/sn', current: false},
 ]
 const userNavigation = [
-    {name: 'Admin area', href: '/admin/suttas/mn', method: "get"},
+    ...((page?.props?.auth?.user?.is_superadmin || page?.props?.auth?.roles?.length)
+        ? [{name: 'Admin area', href: '/admin/suttas/mn', method: "get"}]
+        : []
+    ),
     {name: 'Профиль', href: '/profile', method: "get"},
-    {name: 'Настройки', href: '/settings', method: "get"},
     {name: 'Выход', href: '/logout', method: "post"},
 ]
 
@@ -42,7 +46,6 @@ const userNavigation = [
     <div class="min-h-full">
         <Disclosure as="nav" class="bg-white" v-slot="{ open }">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-
                 <!-- Desktop header -->
                 <div class="hidden md:block">
                     <div class="h-16 flex items-center">
