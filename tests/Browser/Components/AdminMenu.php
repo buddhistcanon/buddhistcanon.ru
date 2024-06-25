@@ -41,4 +41,8 @@ class AdminMenu
         $this->browser->clickLink('Пользователи');
         return $this;
     }
+
+    public function clickGotoSite() {
+        $this->browser->waitForLink("На сайт")->clickLink("На сайт");
+    }
 }

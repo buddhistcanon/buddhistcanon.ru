@@ -6,20 +6,24 @@ use Laravel\Dusk\Browser;
 
 class HomePage extends Page
 {
-    /**
-     * Get the URL for the page.
-     */
     public function url(): string
     {
         return '/';
     }
 
+    public function __construct(Browser $browser)
+    {
+        $this->browser = $browser;
+    }
+
     /**
      * Assert that the browser is on the page.
      */
-    public function assert(Browser $browser): void
+    public function assertHomePage()
     {
-        //
+        $this->browser->waitForLink('Читать Палийский канон');
+
+        return $this;
     }
 
     /**

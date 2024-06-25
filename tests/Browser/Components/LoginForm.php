@@ -11,7 +11,7 @@ class LoginForm
         $this->browser = $browser;
     }
 
-    public function logIn(string $email, string $password, $pause = false): void
+    public function logIn(string $email, string $password, $pause = false)
     {
         $this->browser->visit('/')
             ->pause($pause ? 3000 : 0)
@@ -21,6 +21,18 @@ class LoginForm
             ->type('input#email', $email)
             ->type('input#password', $password)
             ->press('ВХОД');
+        return $this;
+    }
+
+    public function clickForgotPassword() {
+        $this->browser->waitForText('Забыли пароль?')
+            ->clickLink('Забыли пароль?');
+        return $this;
+    }
+
+    public function assertPasswordResetMessage() {
+        $this->browser->waitForText('Пароль успешно сброшен!');
+        return $this;
     }
 
 }

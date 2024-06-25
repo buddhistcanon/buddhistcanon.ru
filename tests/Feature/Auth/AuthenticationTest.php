@@ -73,4 +73,24 @@ class AuthenticationTest extends TestCase
 
         $this->assertGuest();
     }
+
+    public function test_admin_is_redirected_from_login_when_authenticated()
+    {
+        $user = User::factory()->create([
+            'is_superadmin' => true,
+        ]);
+
+        $response = $this->actingAs($user)->get('/login');
+
+        $response->assertRedirect(RouteServiceProvider::HOME_ADMIN);
+    }
+
+    public function test_user_is_redirected_from_login_when_authenticated()
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get('/login');
+
+        $response->assertRedirect(RouteServiceProvider::HOME_USER);
+    }
 }
