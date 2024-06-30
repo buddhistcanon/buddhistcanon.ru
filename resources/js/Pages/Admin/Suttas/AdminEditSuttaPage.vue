@@ -59,21 +59,21 @@ onMounted(() => {
     });
 
     let cData = [];
-    let i = 0;
+    let chunkIdx = 0;
     let chunksExists = true;
     let row, isChunksAvailable;
     do {
         row = [];
         isChunksAvailable = false;
         props.sutta.contents.forEach((content, indexContent, arrayContents) => {
-            if (content.chunks[i]) {
+            if (content.chunks[chunkIdx]) {
                 isChunksAvailable = true;
-                row.push(content.chunks[i]);
+                row.push(content.chunks[chunkIdx]);
             } else {
                 row.push(null);
             }
         });
-        i++;
+        chunkIdx++;
         cData.push(row);
         if (isChunksAvailable === false) chunksExists = false;
     } while (chunksExists);

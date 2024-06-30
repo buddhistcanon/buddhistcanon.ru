@@ -23,6 +23,7 @@
         "alpinejs": "^3.4.2",
         "axios": "^1.6.8",
         "date-fns": "^3.6.0",
+        "diff-match-patch": "^1.0.5",
         "tailwindcss": "^3.1.0",
         "vue-contenteditable": "^4.1.0",
         "vue-sticky-element": "^1.6.0"

@@ -4,10 +4,60 @@ import {Head} from "@inertiajs/vue3";
 import Breadcrumbs from "@/Components/Breadcrumbs.vue";
 import Pagination from "@/Components/Pagination.vue";
 import {format} from 'date-fns';
+import {ref} from "vue";
+import DiffMatchPatch from 'diff-match-patch';
 
 const props = defineProps({
     logs: Array,
 });
+
+const expandedDiff = ref(new Set());
+
+const diffs = {};
+
+function diffToHtml(diffs) {
+    var html = [];
+    diffs.forEach(function(part) {
+        var type = part[0];
+        var text = part[1];
+        var className;
+        switch (type) {
+            case 1:
+                className = 'diff-insert';
+                break;
+            case -1:
+                className = 'diff-delete';
+                break;
+            default:
+                className = 'diff-equal';
+        }
+        html.push('<span class="' + className + '">' + text + '</span>');
+    });
+    return html.join('');
+}
+
+props.logs.data.forEach((log) => {
+    const dmp = new DiffMatchPatch();
+    console.log(log.before, log.after);
+    const diff = dmp.diff_main(
+        JSON.stringify(JSON.parse(log.before || '{}'), null, 2)
+            .split("\\n").join("\\n\n"),
+        JSON.stringify(JSON.parse(log.after || '{}'), null, 2)
+            .split("\\n").join("\\n\n"),
+    );
+    dmp.diff_cleanupSemantic(diff);
+    diffs[log.id] = diffToHtml(diff);
+});
+
+function expand(event, id) {
+    event.preventDefault();
+    if (expandedDiff.value.has(id)) {
+        expandedDiff.value.delete(id);
+    } else {
+        expandedDiff.value.add(id);
+    }
+}
+
 </script>
 
 <template>
@@ -53,29 +103,36 @@ const props = defineProps({
                                     </th>
                                 </tr>
                                 </thead>
-                                <tbody class="divide-y divide-gray-200 bg-white">
-                                <tr v-for="log in logs.data" :key="log.id">
-                                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-800 sm:pl-6">
-                                        {{ format(log.created_at, "d.MM.yyyy HH:mm") }}
-                                    </td>
-                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-800">
-                                        <span class="text-gray-500 text-sm mr-2">#{{ log.user.id }}</span>
-                                        {{ log.user.first_name }} {{ log.user.last_name }} ({{ log.user.nickname }})
-                                    </td>
-                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-800">
-                                        {{ log.action }}
-                                    </td>
-                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-800">
-                                        {{ log.sutta.name }}
-                                    </td>
-                                    <td class="whitespace-nowrap px-3 py-4 text-sm">
-                                        <span class="text-gray-500 mr-4">#{{ log.content.id }}</span>
-                                        <span class="text-gray-800">{{ log.content.short_description }}</span>
-                                    </td>
-                                    <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-
-                                    </td>
-                                </tr>
+                                <tbody v-for="log in logs.data" :key="log.id" class="divide-y divide-gray-200 bg-white">
+                                    <tr>
+                                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-800 sm:pl-6">
+                                            {{ format(log.created_at, "d.MM.yyyy HH:mm") }}
+                                        </td>
+                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-800">
+                                            <span class="text-gray-500 text-sm mr-2">#{{ log.user.id }}</span>
+                                            {{ log.user.first_name }} {{ log.user.last_name }} ({{ log.user.nickname }})
+                                        </td>
+                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-800">
+                                            {{ log.action }}
+                                        </td>
+                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-800">
+                                            {{ log.sutta.name }}
+                                        </td>
+                                        <td class="whitespace-nowrap px-3 py-4 text-sm">
+                                            <span class="text-gray-500 mr-4">#{{ log.content.id }}</span>
+                                            <span class="text-gray-800">{{ log.content.short_description }}</span>
+                                        </td>
+                                        <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                                            <a href="#" class="text-blue-500" @click="expand($event, log.id)">
+                                                {{ expandedDiff.has(log.id) ? 'collapse' : 'show diff' }}
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr v-if="expandedDiff.has(log.id)">
+                                        <td colspan="6" class="px-3 py-2 text-sm text-gray-800">
+                                            <pre v-html="diffs[log.id]" class="whitespace-pre-wrap break-words"></pre>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
 
@@ -88,3 +145,14 @@ const props = defineProps({
         </div>
     </Layout>
 </template>
+<style>
+.diff-insert {
+    background-color: #d4fcbc;
+}
+.diff-delete {
+    background-color: #fbb6c2;
+}
+.diff-equal {
+    background-color: #ffffff;
+}
+</style>
