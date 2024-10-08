@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted, ref, reactive, watch, computed} from "vue";
+import {onMounted, ref, reactive, watch, computed, onUnmounted} from "vue";
 import {Head, Link, useForm, router} from '@inertiajs/vue3';
 import Layout from '@/Layouts/AdminLayout.vue';
 import Breadcrumbs from "@/Components/Breadcrumbs.vue";
@@ -10,6 +10,7 @@ import SmallButton from "@/Components/SmallButton.vue";
 import Checkbox from "@/Components/Checkbox.vue";
 import Contenteditable from "vue-contenteditable";
 import {textToHtml} from "@/helpers.js";
+import Modal from "@/Components/Modal.vue";
 
 const props = defineProps({
     sutta: Object,
@@ -306,6 +307,60 @@ const makeUnlinked = (contentId) => {
 
 }
 
+// модальное окно
+const isShowModalExport = ref(false);
+
+// экспорт в json
+const contentJson = ref(null);
+const isCommentsExists = ref(false);
+const exportJson = (contentId) => {
+    isCommentsExists.value = false;
+    const contentChunks = contentRows.value.flat().filter((cell) => cell && cell.content_id === contentId);
+    // console.log("contentChunks", contentChunks);
+    contentJson.value = "{\n";
+    let lines = [];
+    let name = props.sutta.category + props.sutta.order;
+    if (props.sutta.suborder) name += "." + props.sutta.suborder;
+    let numChunk = 0;
+    let numLine = 1;
+    contentChunks.forEach((chunk, i) => {
+        // console.log("chunk", chunk);
+        lines = chunk.text.split("\n");
+        numLine = 1;
+        lines.forEach((line, j) => {
+            if (line.includes("[^")) isCommentsExists.value = true;
+            contentJson.value += `  "${name}:${numChunk}.${numLine}": "${line.replaceAll('"', '\\"').trim()}"`;
+            if (j === lines.length - 1 && i === contentChunks.length - 1) {
+                contentJson.value += "\n";
+            } else {
+                contentJson.value += ",\n";
+            }
+            numLine++;
+        });
+        numChunk++;
+    });
+    contentJson.value += "}";
+    isShowModalExport.value = true;
+}
+
+// импорт из json
+const isShowModalImport = ref(false);
+const importJson = (contentId) => {
+    contentJson.value = "";
+    isCommentsExists.value = false;
+    const contentChunks = contentRows.value.flat().filter((cell) => cell && cell.content_id === contentId);
+    contentChunks.forEach((chunk, i) => {
+        if (chunk.text.includes("[^")) isCommentsExists.value = true;
+    });
+}
+const processImport = () => {
+    console.log("contentJson", contentJson.value);
+    isShowModalImport.value = false;
+    const json = JSON.parse(contentJson.value);
+    console.log("json", json);
+
+}
+
 </script>
 
 <template>
@@ -314,6 +369,28 @@ const makeUnlinked = (contentId) => {
             <title v-if="sutta.id">Редактирование {{sutta.name}}</title>
             <title v-else>Создание сутты</title>
         </Head>
+
+        <Modal :display="isShowModalExport" title="Json for suttacentral"
+               :handle-ok="() => isShowModalExport = false"
+               :handle-cancel="() => isShowModalExport = false"
+               text-ok=""
+        >
+            <div v-if="isCommentsExists" class="text-red-600 mb-2">В тексте есть комментарии, которые не могут быть
+                экспортированы в json
+            </div>
+            <textarea class="w-full overflow-scroll border-gray-100" rows="16" v-model="contentJson"></textarea>
+        </Modal>
+
+        <Modal :display="isShowModalImport" title="Json from suttacentral"
+               :handle-ok="processImport"
+               :handle-cancel="() => isShowModalImport = false"
+               text-ok="Import"
+        >
+            <div v-if="isCommentsExists" class="text-red-600 mb-2">В тексте есть комментарии, которые не могут быть
+                экспортированы в json
+            </div>
+            <textarea class="w-full overflow-scroll border-gray-100" rows="16" v-model="contentJson"></textarea>
+        </Modal>
 
         <div class="mb-2">
             <Breadcrumbs :pages="[{label:'Сутты', url: '/admin/suttas'}]"/>
@@ -411,6 +488,10 @@ const makeUnlinked = (contentId) => {
                         <span class="ml-2 text-gray-400 text-sm">content_id #{{ content.id }}</span>
                         <span class="ml-2 text-sm" v-if="content.link_url"><a class="link" target="_blank"
                                                                               :href="content.link_url">источник</a></span>
+                        <!--                        <span class="ml-4 text-sm text-gray-500 underline decoration-dotted cursor-pointer"-->
+                        <!--                              @click="importJson(content.id)">import json</span>-->
+                        <span class="ml-2 text-sm text-gray-500 underline decoration-dotted cursor-pointer"
+                              @click="exportJson(content.id)">export json</span>
                     </div>
                 </div>
 
