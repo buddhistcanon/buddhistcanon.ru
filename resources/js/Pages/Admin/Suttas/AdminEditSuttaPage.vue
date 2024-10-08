@@ -325,11 +325,20 @@ const exportJson = (contentId) => {
     let numLine = 1;
     contentChunks.forEach((chunk, i) => {
         // console.log("chunk", chunk);
-        lines = chunk.text.split("\n");
+        if (chunk.text) {
+            lines = chunk.text.split("\n");
+        } else {
+            lines = [""];
+        }
+
         numLine = 1;
         lines.forEach((line, j) => {
-            if (line.includes("[^")) isCommentsExists.value = true;
-            contentJson.value += `  "${name}:${numChunk}.${numLine}": "${line.replaceAll('"', '\\"').trim()}"`;
+            if (line.includes("[^")) isCommentsExists.value = true; // красная надпись на модалке экспорта, что были комментарии, которых теперь нет
+            if (/^\[\^/.test(line)) return; // строку с текстом комментария пропускаем полностью
+            let preparedLine = line.replaceAll('"', '\\"').trim();
+            preparedLine = preparedLine.replace(/(?!^\[\^\d+\])\[\^\d+\]/g, ''); // удаление ссылок на комментарии
+            // preparedLine = preparedLine.replace(/^\[\^.*?$/gm, ''); // удаление текстов комментариев
+            contentJson.value += `  "${name}:${numChunk}.${numLine}": "${preparedLine}"`;
             if (j === lines.length - 1 && i === contentChunks.length - 1) {
                 contentJson.value += "\n";
             } else {
@@ -344,22 +353,22 @@ const exportJson = (contentId) => {
 }
 
 // импорт из json
-const isShowModalImport = ref(false);
-const importJson = (contentId) => {
-    contentJson.value = "";
-    isCommentsExists.value = false;
-    const contentChunks = contentRows.value.flat().filter((cell) => cell && cell.content_id === contentId);
-    contentChunks.forEach((chunk, i) => {
-        if (chunk.text.includes("[^")) isCommentsExists.value = true;
-    });
-}
-const processImport = () => {
-    console.log("contentJson", contentJson.value);
-    isShowModalImport.value = false;
-    const json = JSON.parse(contentJson.value);
-    console.log("json", json);
-
-}
+// const isShowModalImport = ref(false);
+// const importJson = (contentId) => {
+//     contentJson.value = "";
+//     isCommentsExists.value = false;
+//     const contentChunks = contentRows.value.flat().filter((cell) => cell && cell.content_id === contentId);
+//     contentChunks.forEach((chunk, i) => {
+//         if (chunk.text.includes("[^")) isCommentsExists.value = true;
+//     });
+// }
+// const processImport = () => {
+//     console.log("contentJson", contentJson.value);
+//     isShowModalImport.value = false;
+//     const json = JSON.parse(contentJson.value);
+//     console.log("json", json);
+//
+// }
 
 </script>
 
@@ -563,11 +572,12 @@ const processImport = () => {
                                         </div>
                                         <template v-if="isContentSynced[chunk.content_id] === '0'">
                                             <!--                                        <template v-if="1">-->
-                                            <Contenteditable class="outline-0" tag="div" :contenteditable="true"
+                                            <Contenteditable class="outline-0" tag="div"
+                                                             :contenteditable="true"
                                                              v-model="chunk.text"></Contenteditable>
                                         </template>
                                         <template v-else>
-                                            <div v-if="chunk.text" v-html="chunk.text.replaceAll('\n','<br>')"></div>
+                                            <div v-if="chunk.text" v-html="chunk.text.replaceAll('\n','⏎<br>')"></div>
                                             <div v-else></div>
                                         </template>
 
