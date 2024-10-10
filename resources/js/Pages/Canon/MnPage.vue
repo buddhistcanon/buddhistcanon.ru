@@ -41,8 +41,7 @@ const suttaUrl = (sutta) => {
                                 <div>
                                     <span class="mr-1" v-for="content in sutta.contents"
                                           :key="content.id">
-                                        <span v-if="content.lang === 'ru' && content.is_synced === '1'"
-                                              class="text-green-600">перевод SV синхронизирован</span>
+
                                     </span>
                                 </div>
                             </div>
