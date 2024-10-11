@@ -10,7 +10,7 @@ import LogoTitle from "@/Common/LogoTitle.vue";
             <LogoTitle/>
         </div>
 
-        <Link href="/news" class="bc-button py-2 text-center w-full my-4">Новое на сайте</Link>
+        <!--        <Link href="/news" class="bc-button py-2 text-center w-full my-4">Новое на сайте</Link>-->
 
         <Link href="/about" class="bc-button py-2 text-center w-full my-4">О Фонде</Link>
 
