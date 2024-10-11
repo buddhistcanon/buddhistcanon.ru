@@ -122,13 +122,13 @@ onMounted(() => {
                 <div :class="[needSticky ? 'fixed' : 'relative', '']">
                     <div class="flex flex-col items-center">
                         <div class="bc-button w-72 text-sm py-2 px-2 flex flex-col items-center">
-                            <div class="flex flex-row items-center cursor-pointer"
+                            <div class="flex flex-row items-start cursor-pointer"
                                  @click="handleContentSelectorClick()">
                                 <div class="">{{ content.short_description }}</div>
                                 <ChevronDownIcon v-if="!openContentSelector" class="w-4 text-gray-800"/>
                                 <ChevronUpIcon v-if="openContentSelector" class="w-4 text-gray-800"/>
                             </div>
-                            <div v-if="openContentSelector" class="flex flex-col items-center">
+                            <div v-if="openContentSelector" class="flex flex-col items-start">
                                 <div v-for="(content, index) of contents" class="mt-4 cursor-pointer"
                                      @click="handleContentSelect(content.id)">{{ index + 1 }}.
                                     {{ content.short_description }}
