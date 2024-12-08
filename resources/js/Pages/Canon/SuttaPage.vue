@@ -10,7 +10,8 @@ import {ChevronDownIcon, ChevronUpIcon, PencilSquareIcon} from "@heroicons/vue/2
 import {onKeyStroke} from '@vueuse/core'
 
 const page = usePage();
-const user = computed(() => page.props.auth.user)
+const user = computed(() => page.props.auth.user);
+const roles = computed(() => page.props.auth.roles);
 
 const props = defineProps({
     sutta: {type: Object, required: true},
@@ -65,6 +66,13 @@ onMounted(() => {
         console.log(anchorMark);
     }
 });
+
+const showEditIcon = () => {
+    if (!user) return false;
+    if (user.is_superadmin) return true;
+    if (roles && (roles.includes('editor_russian') || roles.includes('editor_english'))) return true;
+    return false;
+}
 
 </script>
 
