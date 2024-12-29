@@ -17,7 +17,7 @@ const diffs = {};
 
 function diffToHtml(diffs) {
     var html = [];
-    diffs.forEach(function(part) {
+    diffs.forEach(function (part) {
         var type = part[0];
         var text = part[1];
         var className;
@@ -104,35 +104,37 @@ function expand(event, id) {
                                 </tr>
                                 </thead>
                                 <tbody v-for="log in logs.data" :key="log.id" class="divide-y divide-gray-200 bg-white">
-                                    <tr>
-                                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-800 sm:pl-6">
-                                            {{ format(log.created_at, "d.MM.yyyy HH:mm") }}
-                                        </td>
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-800">
-                                            <span class="text-gray-500 text-sm mr-2">#{{ log.user.id }}</span>
-                                            {{ log.user.first_name }} {{ log.user.last_name }} ({{ log.user.nickname }})
-                                        </td>
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-800">
-                                            {{ log.action }}
-                                        </td>
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-800">
-                                            {{ log.sutta.name }}
-                                        </td>
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm">
-                                            <span class="text-gray-500 mr-4">#{{ log.content.id }}</span>
-                                            <span class="text-gray-800">{{ log.content.short_description }}</span>
-                                        </td>
-                                        <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                                            <a href="#" class="text-blue-500" @click="expand($event, log.id)">
-                                                {{ expandedDiff.has(log.id) ? 'collapse' : 'show diff' }}
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr v-if="expandedDiff.has(log.id)">
-                                        <td colspan="6" class="px-3 py-2 text-sm text-gray-800">
-                                            <pre v-html="diffs[log.id]" class="whitespace-pre-wrap break-words"></pre>
-                                        </td>
-                                    </tr>
+                                <tr>
+                                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-800 sm:pl-6">
+                                        {{ format(log.created_at, "d.MM.yyyy HH:mm") }}
+                                    </td>
+                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-800">
+                                        <span class="text-gray-500 text-sm mr-2">#{{ log.user.id }}</span>
+                                        {{ log.user.first_name }} {{ log.user.last_name }} ({{ log.user.nickname }})
+                                    </td>
+                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-800">
+                                        {{ log.action }}
+                                    </td>
+                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-800">
+                                        {{ log.sutta.name }}
+                                    </td>
+                                    <td class="whitespace-nowrap px-3 py-4 text-sm">
+                                        <span class="text-gray-500 mr-4" v-if="log.content">#{{ log.content.id }}</span>
+                                        <span class="text-gray-800" v-if="log.content">{{
+                                                log.content.short_description
+                                            }}</span>
+                                    </td>
+                                    <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                                        <a href="#" class="text-blue-500" @click="expand($event, log.id)">
+                                            {{ expandedDiff.has(log.id) ? 'collapse' : 'show diff' }}
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr v-if="expandedDiff.has(log.id)">
+                                    <td colspan="6" class="px-3 py-2 text-sm text-gray-800">
+                                        <pre v-html="diffs[log.id]" class="whitespace-pre-wrap break-words"></pre>
+                                    </td>
+                                </tr>
                                 </tbody>
                             </table>
 
@@ -149,9 +151,11 @@ function expand(event, id) {
 .diff-insert {
     background-color: #d4fcbc;
 }
+
 .diff-delete {
     background-color: #fbb6c2;
 }
+
 .diff-equal {
     background-color: #ffffff;
 }

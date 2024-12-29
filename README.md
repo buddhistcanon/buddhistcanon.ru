@@ -111,6 +111,16 @@ make reindex
 php artisan lg:reindex
 ```
 
+#### Несоответствие версий БД meilisearch
+
+Если обнаруживается несоответствие версий БД meilisearch, то проще удалить контейнер и вольюм, и пересоздать контейнер:
+
+```bash
+docker container rm buddhistcanon-meilisearch-1
+docker volume rm buddhistcanon_sail-meilisearch
+docker compose up -d
+make reindex
+```
 
 ### Integration testings
 
@@ -133,7 +143,6 @@ Run tests
 source .env.dusk.sh && php artisan dusk
 ```
 
-
 ## SSR
 
 Запуск ssr-сервера на сервере:
@@ -149,6 +158,11 @@ make server-ssr
 ```bash
 make server-meilisearch
 ```
+
+## Импорт сутт
+
+Репозиторий Павла Каторгина с построчным сведением переводов SV c палийским
+оригиналом: https://github.com/o28o/fdg/tree/main/assets/texts/sutta
 
 ## License
 

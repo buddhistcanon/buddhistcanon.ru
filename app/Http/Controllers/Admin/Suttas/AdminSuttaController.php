@@ -61,6 +61,17 @@ class AdminSuttaController extends Controller
         $sutta->title_transcribe_ru = $suttaData['title_transcribe_ru'];
         $sutta->title_translate_ru = $suttaData['title_translate_ru'];
         $sutta->description = $suttaData['description'];
+        $prevValidatedBy = $sutta->validated_by;
+        if ($suttaData['is_validated'] and ! $sutta->validated_by) {
+            $sutta->validated_by = auth()->id();
+            Logger::log(new LogData(
+                action: 'validate_sutta',
+                userId: auth()->id(),
+                suttaId: $sutta->id,
+                before: ['validated_by' => $prevValidatedBy],
+                after: ['validated_by' => $sutta->validated_by]
+            ));
+        }
         if ($sutta->isDirty()) {
             Logger::log(new LogData(
                 action: 'update_sutta',
@@ -79,9 +90,10 @@ class AdminSuttaController extends Controller
 
         $existingChunkIds = [];
         $editedContentIds = [];
+        $modifiedContent = [];
         foreach ($rows as $chunks) {
             foreach ($chunks as $chunkRow) {
-                if (is_null($chunkRow)) {
+                if (is_null($chunkRow) or ! isset($chunkRow['text'])) {
                     continue;
                 }
                 if ($chunkRow['id'] and ! str_contains($chunkRow['id'], 'new')) {

@@ -25,6 +25,7 @@ const suttaForm = useForm({
     title_transcribe_ru: props.sutta.title_transcribe_ru ?? null,
     title_translate_ru: props.sutta.title_translate_ru ?? null,
     description: props.sutta.description ?? null,
+    is_validated: props.sutta.validated_by > 0,
 });
 
 // работа с контентами
@@ -308,11 +309,13 @@ const makeUnlinked = (contentId) => {
 }
 
 // модальное окно
-const isShowModalExport = ref(false);
+
 
 // экспорт в json
+const isShowModalExport = ref(false);
 const contentJson = ref(null);
 const isCommentsExists = ref(false);
+
 const exportJson = (contentId) => {
     isCommentsExists.value = false;
     const contentChunks = contentRows.value.flat().filter((cell) => cell && cell.content_id === contentId);
@@ -353,22 +356,63 @@ const exportJson = (contentId) => {
 }
 
 // импорт из json
-// const isShowModalImport = ref(false);
-// const importJson = (contentId) => {
-//     contentJson.value = "";
-//     isCommentsExists.value = false;
-//     const contentChunks = contentRows.value.flat().filter((cell) => cell && cell.content_id === contentId);
-//     contentChunks.forEach((chunk, i) => {
-//         if (chunk.text.includes("[^")) isCommentsExists.value = true;
-//     });
-// }
-// const processImport = () => {
-//     console.log("contentJson", contentJson.value);
-//     isShowModalImport.value = false;
-//     const json = JSON.parse(contentJson.value);
-//     console.log("json", json);
-//
-// }
+const isShowModalImport = ref(false);
+const importedIndex = ref(null);
+const isHeadersExists = ref(false);
+const importJson = (i) => {
+    contentJson.value = "";
+    isCommentsExists.value = contentRows.value.flat().filter((cell, index) => cell && cell.content_id === contentRows.value[0][i].content_id).some((cell) => cell.text.includes("[^"));
+    isHeadersExists.value = contentRows.value.flat().filter((cell, index) => cell && cell.content_id === contentRows.value[0][i].content_id).some((cell) => cell.text.includes("##"));
+    importedIndex.value = i;
+    isShowModalImport.value = true;
+}
+const processImport = async () => {
+    if (!contentJson.value) {
+        return;
+    }
+    let json = JSON.parse(contentJson.value);
+    let jsonChunks = [];
+    let prevChunkIndex = 0;
+    let chunk = null;
+    Object.keys(json).forEach(key => {
+        if (!key.includes(":0")) {
+            // console.log("key", key);
+            const [name, chunkArea] = key.split(":");
+            const [chunkIndex, lineIndex] = chunkArea.split(".");
+            // console.log("chunkIndex", chunkIndex);
+            if (chunkIndex !== prevChunkIndex) {
+                if (chunk) jsonChunks.push(chunk);
+                // console.log("jsonChunks", jsonChunks);
+                prevChunkIndex = chunkIndex;
+                chunk = json[key];
+            } else {
+                chunk += "\n" + json[key];
+            }
+        }
+    });
+    if (chunk) jsonChunks.push(chunk);
+    // console.log("jsonChunks", jsonChunks);
+    contentRows.value = contentRows.value.map((row) => {
+        return row.map((cell, index) => {
+            if (cell && index === importedIndex.value) {
+                if (jsonChunks.length > 0) cell.text = jsonChunks.shift();
+                else {
+                    chunksToDelete.value.push(cell.id)
+                    cell = null;
+                }
+            }
+            return cell;
+        });
+    });
+    isShowModalImport.value = false;
+    isCommentsExists.value = false;
+    isHeadersExists.value = false;
+    contentJson.value = "";
+}
+
+const isExistsComments = (contentId) => {
+    return contentRows.value.flat().filter((cell) => cell && cell.content_id === contentId).some((cell) => cell.text.includes("[^"));
+}
 
 </script>
 
@@ -390,13 +434,16 @@ const exportJson = (contentId) => {
             <textarea class="w-full overflow-scroll border-gray-100" rows="16" v-model="contentJson"></textarea>
         </Modal>
 
-        <Modal :display="isShowModalImport" title="Json from suttacentral"
+        <Modal :display="isShowModalImport" title="Import JSON"
                :handle-ok="processImport"
                :handle-cancel="() => isShowModalImport = false"
                text-ok="Import"
         >
-            <div v-if="isCommentsExists" class="text-red-600 mb-2">В тексте есть комментарии, которые не могут быть
-                экспортированы в json
+            <div v-if="isCommentsExists" class="text-red-600 mb-2">В тексте есть комментарии, которые затрутся
+                импортированным json ! Импорт не рекомендуется.
+            </div>
+            <div v-if="isHeadersExists" class="text-red-600 mb-2">В тексте есть подзаголовки разделов, которые затрутся
+                импортированным json. Добавьте их вручную после импорта, сверяясь с источником.
             </div>
             <textarea class="w-full overflow-scroll border-gray-100" rows="16" v-model="contentJson"></textarea>
         </Modal>
@@ -466,6 +513,18 @@ const exportJson = (contentId) => {
                         затронутые.</p>
                 </div>
 
+                <div class="col-span-full mb-4 flex flex-row">
+                    <div class="mr-2">
+                        <input type="checkbox" v-model="suttaForm.is_validated"/>
+                    </div>
+                    <div>
+                        <label for="is_validated"
+                               class="block text-sm font-medium leading-6 text-gray-900">Сутта проверена, контенты
+                            содержат все нужные под заголовки и комментарии, корректны и слинкованы друг с
+                            другом.</label>
+                    </div>
+                </div>
+
                 <form @submit.prevent="handleStoreSutta">
                     <input v-if="sutta.id" type="hidden" name="id" :value="suttaForm.id"/>
                     <div class="flex flex-row items-center">
@@ -485,7 +544,7 @@ const exportJson = (contentId) => {
 
             <Card>
 
-                <div v-for="content in sutta.contents" class="flex flex-row mb-4">
+                <div v-for="(content, index) in sutta.contents" class="flex flex-row mb-4">
                     <div class="mr-2">
                         <input type="checkbox" v-model="showContent[content.id]"/>
                     </div>
@@ -497,8 +556,8 @@ const exportJson = (contentId) => {
                         <span class="ml-2 text-gray-400 text-sm">content_id #{{ content.id }}</span>
                         <span class="ml-2 text-sm" v-if="content.link_url"><a class="link" target="_blank"
                                                                               :href="content.link_url">источник</a></span>
-                        <!--                        <span class="ml-4 text-sm text-gray-500 underline decoration-dotted cursor-pointer"-->
-                        <!--                              @click="importJson(content.id)">import json</span>-->
+                        <span class="ml-4 text-sm text-gray-500 underline decoration-dotted cursor-pointer"
+                              @click="importJson(index)">import json</span>
                         <span class="ml-2 text-sm text-gray-500 underline decoration-dotted cursor-pointer"
                               @click="exportJson(content.id)">export json</span>
                     </div>
