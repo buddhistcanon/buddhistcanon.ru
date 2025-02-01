@@ -28,4 +28,52 @@ class SuttaService
         $this->sutta->contents()->where('id', $contentId)->update(['is_main' => 1]);
         $this->refresh();
     }
+
+    public function findPrevSutta(): Sutta | null {
+        $prevSutta = null;
+        if (!empty($this->sutta->suborder)) {
+            $prevSutta = Sutta::query()
+                ->where('category', $this->sutta->category)
+                ->where('order', $this->sutta->order)
+                ->where('suborder', '<', $this->sutta->suborder)
+                ->orderByDesc('suborder')
+                ->first();
+        }
+
+        if (!empty($prevSutta)) {
+            return $prevSutta;
+        }
+
+        $prevSutta = Sutta::query()
+            ->where('category', $this->sutta->category)
+            ->where('order', '<', $this->sutta->order)
+            ->orderByDesc('order')
+            ->first();
+
+        return $prevSutta;
+    }
+
+    public function findNextSutta(): Sutta | null {
+        $nextSutta = null;
+        if (!empty($this->sutta->suborder)) {
+            $nextSutta = Sutta::query()
+                ->where('category', $this->sutta->category)
+                ->where('order', $this->sutta->order)
+                ->where('suborder', '>', $this->sutta->suborder)
+                ->orderBy('suborder')
+                ->first();
+        }
+
+        if (!empty($nextSutta)) {
+            return $nextSutta;
+        }
+
+        $nextSutta = Sutta::query()
+            ->where('category', $this->sutta->category)
+            ->where('order', '>', $this->sutta->order)
+            ->orderBy('order')
+            ->first();
+
+        return $nextSutta;
+    }
 }

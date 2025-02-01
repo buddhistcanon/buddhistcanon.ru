@@ -6,6 +6,7 @@ use App\Data\SuttaNameData;
 use App\Http\Controllers\Controller;
 use App\Models\People;
 use App\Models\Sutta;
+use App\Services\SuttaService;
 use App\TextParser\TextParser;
 
 class SuttaController extends Controller
@@ -28,20 +29,11 @@ class SuttaController extends Controller
 
         $sutta = Sutta::query()
             ->bySuttaName($suttaNameData)
-            ->with('contents.chunks')
+            ->with('contents.chunks', 'contents.translator')
             ->first();
 
-        // определение selectedContentId
-        $content = $sutta->contents;
-        if ($lang) {
-            $content = $content->filter(fn ($content) => $content->lang == $lang);
-        }
-        if ($translatorSlug) {
-            $translator = People::where('slug', $translatorSlug)->firstOrFail();
-            //            $content = $content->where('translator_id', $translator->id);
-            $content = $content->filter(fn ($content) => $content->translator_id == $translator->id);
-        }
-        $content = $content->first();
+        $content = $this->findSelectedContent($lang, $translatorSlug, $sutta);
+
         if ($content->translator_name or $content->translator_id) {
             $content->display_translator_name = $content->translator_name ?? $content->translator->displayNameRu();
         } else {
@@ -86,6 +78,8 @@ class SuttaController extends Controller
             $breadcrumbs[] = ['title' => 'Раздел '.strtoupper($sutta->category.$sutta->order), 'url' => '/'.$sutta->category.'/'.$sutta->order];
         }
 
+        $suttaService = new SuttaService($sutta);
+
         return inertia('Canon/SuttaPage', [
             'sutta' => $sutta,
             'contents' => $sutta->contents,
@@ -94,8 +88,33 @@ class SuttaController extends Controller
             'nikayaTitle' => $nikayaTitle,
             'lang' => $lang,
             'suttaSlug' => $sutta->displaySlug(),
+            'prevSuttaSlug' => $suttaService->findPrevSutta()?->displaySlug(),
+            'nextSuttaSlug' => $suttaService->findNextSutta()?->displaySlug(),
             'breadcrumbs' => $breadcrumbs,
 
         ]);
     }
+
+    private function findSelectedContent(string $lang, string | null $translatorSlug, Sutta $sutta) {
+        $suttaContents = $sutta->contents;
+
+        $langContents = $suttaContents->filter(fn ($content) => $content->lang == $lang);
+
+        $translator = People::query()->where('slug', $translatorSlug)->first();
+        if (!empty($translator)) {
+            $translatedContents = $langContents->filter(fn($content) => $content->translator?->id == $translator->id);
+            $content = $translatedContents->first();
+            if (!empty($content)) {
+                return $content;
+            }
+        }
+
+        $content = $langContents->first();
+        if (!empty($content)) {
+            return $content;
+        }
+
+        return $suttaContents->first();
+    }
+
 }

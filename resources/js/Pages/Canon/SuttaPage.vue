@@ -22,6 +22,8 @@ const props = defineProps({
     breadcrumbs: {type: Array, required: true},
     selectedContentId: {type: Number, required: true},
     chunksByContentId: {type: Object, required: true},
+    prevSuttaSlug: {type: String, required: false},
+    nextSuttaSlug: {type: String, required: false},
 })
 
 const selectedContentId = ref(props.selectedContentId);
@@ -121,6 +123,14 @@ const showEditIcon = () => {
                                  v-html="chunk.html"></div>
                         </div>
                     </div>
+                </div>
+                <div class="flex justify-between w-full">
+                    <a class="button w-16 sm:w-72 text-center my-4" :href="prevSuttaSlug + '/' + content.lang + '/' + (content.translator?.slug || 'none')" v-if="prevSuttaSlug">← <span class="hidden sm:inline">Предыдущая сутта</span></a>
+
+                    <!-- solely to keep the"next sutta" button in place -->
+                    <a class="button w-16 sm:w-72 text-center my-4 invisible" href="/" v-if="!prevSuttaSlug">← <span class="hidden sm:inline">Предыдущая сутта</span></a>
+
+                    <a class="button w-16 sm:w-72 text-center my-4" :href="nextSuttaSlug + '/' + content.lang + '/' + (content.translator?.slug || 'none')" v-if="nextSuttaSlug"><span class="hidden sm:inline">Следующая сутта</span> →</a>
                 </div>
             </div>
             <div class="lg:ml-4 lg:w-96 flex flex-col items-center ">
