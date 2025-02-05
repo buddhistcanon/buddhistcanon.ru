@@ -5,7 +5,7 @@ import {Link, Head, usePage} from "@inertiajs/vue3";
 import LogoTitle from "@/Common/LogoTitle.vue";
 import Breadcrumbs from "@/Components/Breadcrumbs.vue";
 import {useWindowScroll} from '@vueuse/core';
-import {ref, reactive, computed, onMounted} from "vue";
+import {ref, reactive, computed, onMounted, nextTick} from "vue";
 import {ChevronDownIcon, ChevronUpIcon, PencilSquareIcon} from "@heroicons/vue/24/outline";
 import {onKeyStroke} from '@vueuse/core'
 
@@ -38,7 +38,70 @@ const contentChunks = computed(() => {
 const {x, y} = useWindowScroll();
 const needSticky = computed(() => {
     return y.value > 267;
-})
+});
+
+const smoothScrollToFootnoteElt = (elt) => {
+    setTimeout(() => {
+        elt.scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest',
+        });
+    }, 100);
+};
+
+const findElementContainingText = (elts, lookupText) => {
+    for (let elt of elts) {
+        if (elt.innerHTML.indexOf(lookupText) >= 0) {
+            return elt;
+        }
+    }
+    return undefined;
+}
+
+const populateFootnoteClickHandlers = () => {
+
+    const allFootnoteTextElts = document.querySelectorAll('.footnotes li');
+    const allFootnoteLabelElts = document.querySelectorAll('span.footnote');
+
+    const addCollapseButtonIfNotExists = (footnoteTextElt, footnoteLabelElt) => {
+        if (!footnoteTextElt.querySelector('.collapse-button')) {
+            const collapseButton = document.createElement('span');
+            collapseButton.innerHTML = '↑ свернуть';
+            collapseButton.classList.add('collapse-button');
+            collapseButton.onclick = () => {
+                footnoteTextElt.classList.remove('expanded');
+                smoothScrollToFootnoteElt(footnoteLabelElt);
+            };
+            footnoteTextElt.appendChild(collapseButton);
+        }
+    };
+
+    const createFootnoteLabelClickHandler = (footnoteLabelElt) => (e) => {
+        e.preventDefault();
+
+        const footnoteTextElt = findElementContainingText(allFootnoteTextElts, footnoteLabelElt.innerHTML);
+        if (!footnoteTextElt) {
+            console.error('Footnote not found for label', footnoteLabelElt.innerHTML);
+            return ;
+        }
+
+        footnoteTextElt.classList.toggle('expanded');
+        if (footnoteTextElt.classList.contains('expanded')) {
+            smoothScrollToFootnoteElt(footnoteTextElt);
+        }
+
+        addCollapseButtonIfNotExists(footnoteTextElt, footnoteLabelElt);
+    };
+
+    allFootnoteLabelElts.forEach((footnoteLabelElt) => {
+        if (footnoteLabelElt.classList.contains("clickable")) {
+            return;
+        }
+        footnoteLabelElt.classList.add("clickable");
+
+        footnoteLabelElt.addEventListener('click', createFootnoteLabelClickHandler(footnoteLabelElt));
+    });
+};
 
 // Выбор перевода сутты
 const openContentSelector = ref(false);
@@ -48,6 +111,7 @@ const handleContentSelectorClick = () => {
 const handleContentSelect = (contentId) => {
     selectedContentId.value = contentId;
     openContentSelector.value = false;
+    nextTick(populateFootnoteClickHandlers);
 }
 onKeyStroke(['1', '2', '3', '4', '5', '6', '7', '8', '9'], (e) => {
     e.preventDefault();
@@ -67,6 +131,7 @@ onMounted(() => {
         document.getElementById(anchorMark).scrollIntoView();
         console.log(anchorMark);
     }
+    nextTick(populateFootnoteClickHandlers);
 });
 
 const showEditIcon = () => {

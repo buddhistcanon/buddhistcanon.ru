@@ -98,6 +98,22 @@ h2 {
     @apply mt-2 px-4 text-sm text-gray-600 border-t border-gray-100
 }
 
+.content-text span.footnote.clickable  {
+    cursor: pointer;
+}
+
+.content-text .footnotes li {
+    display: none;
+}
+
+.content-text .footnotes li.expanded {
+    display: block;
+}
+
+.content-text .footnotes li .collapse-button {
+    cursor: pointer;
+}
+
 .content-text .footnotes hr {
     @apply border-gray-100
 }
