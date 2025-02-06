@@ -29,6 +29,10 @@ h2 {
     color: #5B0769;
 }
 
+.custom-max-w-8xl {
+    max-width: 95rem;
+}
+
 .ring-indigo-bc {
     --tw-ring-opacity: 1;
     --tw-ring-color: rgb(91 7 105 / var(--tw-ring-opacity));

@@ -45,7 +45,7 @@ const userNavigation = [
 <template>
     <div class="min-h-full">
         <Disclosure as="nav" class="bg-white" v-slot="{ open }">
-            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="mx-auto custom-max-w-8xl px-4 sm:px-6 lg:px-8">
                 <!-- Desktop header -->
                 <div class="hidden md:block">
                     <div class="h-16 flex items-center">
@@ -183,7 +183,7 @@ const userNavigation = [
         </Disclosure>
 
         <main>
-            <div class="mx-auto max-w-7xl py-2 sm:px-6 lg:px-8">
+            <div class="mx-auto custom-max-w-8xl py-2 sm:px-6 lg:px-8">
 
                 <slot/>
 
