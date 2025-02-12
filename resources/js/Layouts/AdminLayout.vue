@@ -6,15 +6,13 @@ import {Head, Link, usePage} from "@inertiajs/vue3";
 import {
     Bars3Icon,
     CalendarIcon,
-    ChartBarIcon,
     FolderIcon,
     HomeIcon,
-    InboxIcon,
     UsersIcon,
     XMarkIcon,
     BookOpenIcon,
     LifebuoyIcon,
-    ArrowRightOnRectangleIcon
+    ArrowRightStartOnRectangleIcon
 } from '@heroicons/vue/24/outline'
 import ApplicationLogo from "@/Components/ApplicationLogo.vue";
 
@@ -38,7 +36,7 @@ const navigation = [
     {name: 'Термины', href: '/admin/terms', icon: BookOpenIcon, current: false, method: "get"},
     {name: 'Помощь', href: '/admin/help', icon: LifebuoyIcon, current: false, method: "get"},
     {name: 'Логи', href: '/admin/logs', icon: CalendarIcon, current: false, method: "get"},
-    {name: 'Выход', href: '/logout', icon: ArrowRightOnRectangleIcon, current: false, method: "post"},
+    {name: 'Выход', href: '/logout', icon: ArrowRightStartOnRectangleIcon, current: false, method: "post"},
 ]
 
 const sidebarOpen = ref(false)
