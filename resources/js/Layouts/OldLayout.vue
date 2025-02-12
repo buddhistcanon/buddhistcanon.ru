@@ -1,6 +1,6 @@
 <script setup>
 import {Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems} from '@headlessui/vue'
-import {Bars3Icon, BellIcon, XMarkIcon, ArrowUpIcon, ArrowDownIcon, ChevronDownIcon} from '@heroicons/vue/24/outline'
+import {Bars3Icon, XMarkIcon, ArrowUpIcon, ArrowDownIcon, ChevronDownIcon} from '@heroicons/vue/24/outline'
 import {Link} from '@inertiajs/vue3';
 
 const user = {

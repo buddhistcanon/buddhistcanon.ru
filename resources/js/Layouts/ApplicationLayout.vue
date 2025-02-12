@@ -2,11 +2,7 @@
 import {Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems} from '@headlessui/vue'
 import {
     Bars3Icon,
-    BellIcon,
     XMarkIcon,
-    ArrowUpIcon,
-    ArrowDownIcon,
-    ChevronDownIcon,
     MagnifyingGlassIcon
 } from '@heroicons/vue/24/outline'
 import {Link, usePage} from '@inertiajs/vue3';
@@ -32,8 +28,8 @@ const navigation = [
 ]
 const userNavigation = [
     ...((page?.props?.auth?.user?.is_superadmin || page?.props?.auth?.roles?.length)
-        ? [{name: 'Admin area', href: '/admin/suttas/mn', method: "get"}]
-        : []
+            ? [{name: 'Admin area', href: '/admin/suttas/mn', method: "get"}]
+            : []
     ),
     {name: 'Профиль', href: '/profile', method: "get"},
     {name: 'Выход', href: '/logout', method: "post"},
@@ -59,7 +55,7 @@ const userNavigation = [
                                 <MagnifyingGlassIcon class="h-5 w-5 text-gray-bc" aria-hidden="true"/>
                             </div>
                             <div
-                                class="block text-gray-600 w-full rounded-bc bc-button-background border-0 py-2 pl-10 text-gray-900 ring-0 ring-inset ring-gray-bc placeholder:text-gray-400 focus:ring-2 focus:ring-offset-0 focus:ring-gray-200 text-sm"
+                                class="block w-full rounded-bc bc-button-background border-0 py-2 pl-10 text-gray-900 ring-0 ring-inset ring-gray-bc placeholder:text-gray-400 focus:ring-2 focus:ring-offset-0 focus:ring-gray-200 text-sm"
                             >Поиск
                             </div>
                         </Link>
@@ -121,7 +117,6 @@ const userNavigation = [
                             <input type="text" name="search" id="search"
                                    class="block w-full rounded-bc bc-button-background border-0 py-2 pl-10 text-gray-900 ring-0 ring-inset ring-gray-bc placeholder:text-gray-400 focus:ring-2 focus:ring-offset-0 focus:ring-gray-200 text-sm"
                                    v-model="searchString"
-                                   @keyup.enter="submitSearch"
                                    placeholder="Поиск"/>
                         </div>
                     </div>
@@ -204,7 +199,7 @@ const userNavigation = [
         </main>
     </div>
 
-    <CookieBanner />
+    <CookieBanner/>
 
 
 </template>
