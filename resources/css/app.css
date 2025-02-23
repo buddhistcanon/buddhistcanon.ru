@@ -99,10 +99,10 @@ h2 {
 
 /* текст примечания */
 .content-text .footnotes {
-    @apply mt-2 px-4 text-sm text-gray-600 border-t border-gray-100
+    @apply mt-2 px-4 text-sm text-gray-600
 }
 
-.content-text span.footnote.clickable  {
+.content-text span.footnote.clickable {
     cursor: pointer;
 }
 
