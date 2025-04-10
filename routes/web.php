@@ -49,6 +49,8 @@ Route::get('/an', \App\Http\Controllers\Canon\CanonController::class.'@an');
 Route::get('/an/{x}', \App\Http\Controllers\Canon\CanonController::class.'@an_x');
 Route::get('/sn', \App\Http\Controllers\Canon\CanonController::class.'@sn');
 Route::get('/sn/{x}', \App\Http\Controllers\Canon\CanonController::class.'@sn_x');
+Route::get('/kn', \App\Http\Controllers\Canon\CanonController::class.'@kn');
+Route::get('/dhp', \App\Http\Controllers\Canon\CanonController::class.'@dhp');
 
 Route::any('/search', \App\Http\Controllers\SearchController::class.'@index')->name('search');
 Route::get('/search/status', \App\Http\Controllers\SearchController::class.'@status')->name('search.status');

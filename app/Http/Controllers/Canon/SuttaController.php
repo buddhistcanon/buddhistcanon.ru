@@ -32,6 +32,10 @@ class SuttaController extends Controller
             ->with('contents.chunks', 'contents.translator')
             ->first();
 
+        //        if (! $sutta) {
+        //            return redirect()->route('welcome');
+        //        }
+
         $content = $this->findSelectedContent($lang, $translatorSlug, $sutta);
 
         if ($content->translator_name or $content->translator_id) {
@@ -95,26 +99,26 @@ class SuttaController extends Controller
         ]);
     }
 
-    private function findSelectedContent(string $lang, string | null $translatorSlug, Sutta $sutta) {
+    private function findSelectedContent(string $lang, ?string $translatorSlug, Sutta $sutta)
+    {
         $suttaContents = $sutta->contents;
 
         $langContents = $suttaContents->filter(fn ($content) => $content->lang == $lang);
 
         $translator = People::query()->where('slug', $translatorSlug)->first();
-        if (!empty($translator)) {
-            $translatedContents = $langContents->filter(fn($content) => $content->translator?->id == $translator->id);
+        if (! empty($translator)) {
+            $translatedContents = $langContents->filter(fn ($content) => $content->translator?->id == $translator->id);
             $content = $translatedContents->first();
-            if (!empty($content)) {
+            if (! empty($content)) {
                 return $content;
             }
         }
 
         $content = $langContents->first();
-        if (!empty($content)) {
+        if (! empty($content)) {
             return $content;
         }
 
         return $suttaContents->first();
     }
-
 }

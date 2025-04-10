@@ -29,9 +29,10 @@ class SuttaService
         $this->refresh();
     }
 
-    public function findPrevSutta(): Sutta | null {
+    public function findPrevSutta(): ?Sutta
+    {
         $prevSutta = null;
-        if (!empty($this->sutta->suborder)) {
+        if (! empty($this->sutta->suborder)) {
             $prevSutta = Sutta::query()
                 ->where('category', $this->sutta->category)
                 ->where('order', $this->sutta->order)
@@ -40,7 +41,7 @@ class SuttaService
                 ->first();
         }
 
-        if (!empty($prevSutta)) {
+        if (! empty($prevSutta)) {
             return $prevSutta;
         }
 
@@ -53,9 +54,10 @@ class SuttaService
         return $prevSutta;
     }
 
-    public function findNextSutta(): Sutta | null {
+    public function findNextSutta(): ?Sutta
+    {
         $nextSutta = null;
-        if (!empty($this->sutta->suborder)) {
+        if (! empty($this->sutta->suborder)) {
             $nextSutta = Sutta::query()
                 ->where('category', $this->sutta->category)
                 ->where('order', $this->sutta->order)
@@ -64,7 +66,7 @@ class SuttaService
                 ->first();
         }
 
-        if (!empty($nextSutta)) {
+        if (! empty($nextSutta)) {
             return $nextSutta;
         }
 

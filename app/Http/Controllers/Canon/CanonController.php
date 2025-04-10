@@ -116,4 +116,22 @@ class CanonController extends Controller
 
         return inertia('Canon/SnXPage', ['suttas' => $suttas, 'title' => $title, 'subtitle' => $subtitle]);
     }
+
+    public function kn()
+    {
+        return inertia('Canon/KnPage');
+    }
+
+    public function dhp()
+    {
+        $suttas = Sutta::query()
+            ->where('category', 'dhp')
+            ->with('contents')
+            ->orderBy('order', 'asc')
+            ->get();
+
+        return inertia('Canon/DhpPage', [
+            'suttas' => $suttas,
+        ]);
+    }
 }
