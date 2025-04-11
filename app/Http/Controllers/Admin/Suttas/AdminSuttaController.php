@@ -47,6 +47,7 @@ class AdminSuttaController extends Controller
 
     public function store(Request $request)
     {
+        dd($request->json()->all());
         $suttaData = $request->json('sutta');
         $suttaId = $suttaData['id'];
         $isContentSynced = $request->json('isContentSynced') ?? [];
@@ -219,5 +220,22 @@ class AdminSuttaController extends Controller
         return [
             'status' => 'success',
         ];
+    }
+
+    public function createContent(string $id)
+    {
+        if (is_numeric($id)) {
+            $sutta = Sutta::query()
+                ->where('id', $id)
+                ->firstOrFail();
+        } else {
+            $sutta = Sutta::query()
+                ->where('name', strtoupper($id))
+                ->firstOrFail();
+        }
+
+        return inertia('Admin/Suttas/AdminCreateContentPage', [
+            'sutta' => $sutta,
+        ]);
     }
 }

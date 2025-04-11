@@ -11,6 +11,8 @@ import Checkbox from "@/Components/Checkbox.vue";
 import Contenteditable from "vue-contenteditable";
 import {textToHtml} from "@/helpers.js";
 import Modal from "@/Components/Modal.vue";
+import Dropdown from "@/Components/Dropdown.vue";
+import EditContentDescription from "@/Pages/Admin/Suttas/EditContentDescription.vue";
 
 const props = defineProps({
     sutta: Object,
@@ -32,6 +34,7 @@ const suttaForm = useForm({
 let showContent = ref({});
 let isContentSynced = ref({});
 let chunksByContent = ref({});
+let contents = ref([]);
 let contentRows = ref([]);
 let isShowContentForms = ref(false);
 
@@ -49,13 +52,12 @@ let chunksToDelete = ref([]); // id чанков, которые нужно уд
 
 
 onMounted(() => {
-    // let obj = {};
-    // props.sutta.contents.forEach((item)=>{
-    //     //obj = Object.assign(obj, JSON.parse('{"'+item.id+'" : true}'));
-    //     showContent[item.id] = true;
-    // });
+    contents.value = props.sutta.contents;
+    initContentRows();
+});
 
-    props.sutta.contents.forEach((content, index, array) => {
+const initContentRows = () => {
+    contents.value.forEach((content, index, array) => {
         showContent.value = {...showContent.value, ...JSON.parse('{"' + content.id + '" : true}')}
         isContentSynced.value = {...isContentSynced.value, ...JSON.parse('{"' + content.id + '" : "' + content.is_synced + '"}')}
     });
@@ -67,7 +69,7 @@ onMounted(() => {
     do {
         row = [];
         isChunksAvailable = false;
-        props.sutta.contents.forEach((content, indexContent, arrayContents) => {
+        contents.value.forEach((content, indexContent, arrayContents) => {
             if (content.chunks[chunkIdx]) {
                 isChunksAvailable = true;
                 row.push(content.chunks[chunkIdx]);
@@ -80,13 +82,17 @@ onMounted(() => {
         if (isChunksAvailable === false) chunksExists = false;
     } while (chunksExists);
     contentRows.value = cData;
-});
+}
 
 const handleStoreSutta = () => {
     router.post("/admin/store_sutta", {
             sutta: suttaForm.data(),
             rows: contentRows.value,
-            chunksToDelete: chunksToDelete.value
+            chunksToDelete: chunksToDelete.value,
+            contentsWithoutChunks: contents.value.map((content => {
+                content.chunks = null;
+                return content;
+            })),
         },
         {
             preserveScroll: true,
@@ -223,7 +229,6 @@ const insertCell = (contentId, chunkId) => {
         }
         return row;
     });
-
     contentRows.value = toContentInColumns(contentInRows);
 }
 
@@ -254,22 +259,16 @@ const addContentToPrevChunk = (contentId, chunkId) => {
             return row;
         }
     });
-    // console.log("contentInRows after", contentInRows);
     contentRows.value = toContentInColumns(contentInRows);
 }
 
 const makeLinked = (contentId) => {
-
-    console.log("makeLinked", isContentSynced.value);
     isContentSynced.value[contentId] = "1";
-    console.log("after", isContentSynced.value);
-
     router.post("/admin/store_sutta", {
             sutta: suttaForm.data(),
             rows: contentRows.value,
             chunksToDelete: chunksToDelete.value,
             isContentSynced: isContentSynced.value
-
         },
         {
             preserveScroll: true,
@@ -283,10 +282,7 @@ const makeLinked = (contentId) => {
         });
 }
 const makeUnlinked = (contentId) => {
-
-    console.log("makeUnlinked", isContentSynced.value);
     isContentSynced.value[contentId] = "0";
-    console.log("after", isContentSynced.value);
 
     router.post("/admin/store_sutta", {
             sutta: suttaForm.data(),
@@ -319,7 +315,6 @@ const isCommentsExists = ref(false);
 const exportJson = (contentId) => {
     isCommentsExists.value = false;
     const contentChunks = contentRows.value.flat().filter((cell) => cell && cell.content_id === contentId);
-    // console.log("contentChunks", contentChunks);
     contentJson.value = "{\n";
     let lines = [];
     let name = props.sutta.category + props.sutta.order;
@@ -327,7 +322,6 @@ const exportJson = (contentId) => {
     let numChunk = 0;
     let numLine = 1;
     contentChunks.forEach((chunk, i) => {
-        // console.log("chunk", chunk);
         if (chunk.text) {
             lines = chunk.text.split("\n");
         } else {
@@ -376,13 +370,10 @@ const processImport = async () => {
     let chunk = null;
     Object.keys(json).forEach(key => {
         if (!key.includes(":0")) {
-            // console.log("key", key);
             const [name, chunkArea] = key.split(":");
             const [chunkIndex, lineIndex] = chunkArea.split(".");
-            // console.log("chunkIndex", chunkIndex);
             if (chunkIndex !== prevChunkIndex) {
                 if (chunk) jsonChunks.push(chunk);
-                // console.log("jsonChunks", jsonChunks);
                 prevChunkIndex = chunkIndex;
                 chunk = json[key];
             } else {
@@ -391,7 +382,6 @@ const processImport = async () => {
         }
     });
     if (chunk) jsonChunks.push(chunk);
-    // console.log("jsonChunks", jsonChunks);
     contentRows.value = contentRows.value.map((row) => {
         return row.map((cell, index) => {
             if (cell && index === importedIndex.value) {
@@ -413,6 +403,56 @@ const processImport = async () => {
 const isExistsComments = (contentId) => {
     return contentRows.value.flat().filter((cell) => cell && cell.content_id === contentId).some((cell) => cell.text.includes("[^"));
 }
+
+
+// Создание нового контента
+const isShowCreateContentModal = ref(false);
+let editedContent = reactive({
+    lang: "",
+    translator: {
+        fullname_ru: "",
+        slug: "",
+    }
+});
+const createContent = () => {
+    isShowCreateContentModal.value = true;
+    editedContent = {
+        lang: "",
+        translator: {
+            fullname_ru: "",
+            slug: "",
+        }
+    }
+}
+const handleCreateContent = () => {
+    isShowCreateContentModal.value = false;
+    let newContents = contents.value;
+    const newContentId = "new" + Math.round(Math.random() * 100000);
+    newContents.push({
+        id: newContentId,
+        lang: editedContent.lang,
+        is_synced: 0,
+        translator: {
+            fullname_ru: editedContent.translator.fullname_ru,
+            slug: editedContent.translator.slug
+        },
+        chunks: [
+            {
+                id: "new" + Math.round(Math.random() * 100000),
+                text: "insert content here",
+                order: 10,
+                mark: null,
+                content_id: newContentId,
+            }
+        ]
+    });
+    contents.value = newContents;
+    initContentRows();
+}
+const updateEditedContent = (newValue) => {
+    Object.assign(editedContent, newValue);
+}
+
 
 </script>
 
@@ -446,6 +486,17 @@ const isExistsComments = (contentId) => {
                 импортированным json. Добавьте их вручную после импорта, сверяясь с источником.
             </div>
             <textarea class="w-full overflow-scroll border-gray-100" rows="16" v-model="contentJson"></textarea>
+        </Modal>
+
+        <Modal :display="isShowCreateContentModal" title="Добавить контент"
+               :handle-cancel="() => isShowCreateContentModal = false"
+               :handle-ok="handleCreateContent"
+        >
+            <EditContentDescription
+                :modelValue="editedContent"
+                @update:modelValue="updateEditedContent"
+            ></EditContentDescription>
+
         </Modal>
 
         <div class="mb-2">
@@ -544,7 +595,7 @@ const isExistsComments = (contentId) => {
 
             <Card>
 
-                <div v-for="(content, index) in sutta.contents" class="flex flex-row mb-4">
+                <div v-for="(content, index) in contents" class="flex flex-row mb-4">
                     <div class="mr-2">
                         <input type="checkbox" v-model="showContent[content.id]"/>
                     </div>
@@ -562,12 +613,15 @@ const isExistsComments = (contentId) => {
                               @click="exportJson(content.id)">export json</span>
                     </div>
                 </div>
+                <div class="mb-16">
+                    <span @click="createContent()" class="link cursor-pointer">Добавить контент</span>
+                </div>
 
                 <!--                <div class="mb-4 text-base text-gray-700">-->
                 <!--                    <a class="mr-4 cursor-pointer" @click="isShowContentForms = true">Развернуть данные контентов</a>-->
                 <!--                    <a class="mr-2 cursor-pointer" @click="isShowContentForms = false">Свернуть данные контентов</a>-->
                 <!--                </div>-->
-                <div v-if="isShowContentForms" v-for="content in sutta.contents" class="mb-4">
+                <div v-if="isShowContentForms" v-for="content in contents" class="mb-4">
                     <div class="mb-4 text-sm text-gray-500">
                         #{{ content.id }}
                     </div>
