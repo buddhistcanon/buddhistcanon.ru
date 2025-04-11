@@ -17,19 +17,16 @@ class AdminSuttaController extends Controller
         if (is_numeric($id)) {
             $sutta = Sutta::query()
                 ->where('id', $id)
-//                ->with(["contents.chunks"=>fn($q)=>$q->orderBy("order")])
                 ->with('contents.chunks')
                 ->with('contents.translator')
                 ->firstOrFail();
         } else {
             $sutta = Sutta::query()
                 ->where('name', strtoupper($id))
-//                ->with(["contents.chunks"=>fn($q)=>$q->orderBy("order")])
                 ->with('contents.chunks')
                 ->with('contents.translator')
                 ->firstOrFail();
         }
-        //dd($sutta->contents->filter(fn($c)=>$c->lang=='ru')->first()->chunks->toArray());
         $nextSutta = Sutta::query()
             ->where('category', $sutta->category)
             ->where('order', '>', $sutta->order)
@@ -93,14 +90,14 @@ class AdminSuttaController extends Controller
         $modifiedContent = [];
         foreach ($rows as $chunks) {
             foreach ($chunks as $chunkRow) {
-                if (is_null($chunkRow) or ! isset($chunkRow['text'])) {
+                if (is_null($chunkRow)) {
                     continue;
                 }
                 if ($chunkRow['id'] and ! str_contains($chunkRow['id'], 'new')) {
                     $chunk = ContentChunk::query()
                         ->where('id', $chunkRow['id'])
                         ->first();
-                    $chunk->text = $chunkRow['text'];
+                    $chunk->text = $chunkRow['text'] ?? '';
                     $chunk->order = $chunkRow['order'];
                     if ($chunk->getOriginal()['text'] != $chunk->text) {
                         Logger::log(new LogData(
