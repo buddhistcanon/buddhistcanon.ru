@@ -4,22 +4,6 @@ import {Head, Link} from "@inertiajs/vue3";
 import Sidebar from "@/Common/Sidebar.vue";
 import Breadcrumbs from "@/Components/Breadcrumbs.vue";
 
-const props = defineProps({
-    suttas: {type: Array, required: true},
-})
-
-const suttaUrl = (sutta) => {
-    if (sutta.suborder) {
-        return `/${sutta.category}${sutta.order}.${sutta.suborder}`;
-    } else {
-        return `/${sutta.category}${sutta.order}`;
-    }
-}
-
-const filteredByOrder = (order) => {
-    return props.suttas.filter(sutta => sutta.order === order);
-}
-
 </script>
 
 <template>
