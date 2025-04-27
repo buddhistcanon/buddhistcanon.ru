@@ -17,26 +17,51 @@ class SuttaController extends Controller
         $lang = request()->route()->lang;
         $translatorSlug = request()->route()->translator;
 
-        if (! $lang and ! $translatorSlug) {
-            return redirect()->route('sutta', [
-                'sutta' => $suttaName,
-                'lang' => 'ru',
-                'translator' => 'sv',
-            ]);
-        }
-
         $suttaNameData = SuttaNameData::from($suttaName);
-
         $sutta = Sutta::query()
             ->bySuttaName($suttaNameData)
-            ->with('contents.chunks', 'contents.translator')
             ->first();
 
-        //        if (! $sutta) {
-        //            return redirect()->route('welcome');
-        //        }
+        // Урл вида /mn123 - берём первый русский перевод, если нет - берём палийский, и редиректим на него
+        if (! $lang and ! $translatorSlug) {
+            $existsRuContent = $sutta->contents()->where('lang', 'ru')->orderBy('created_at', 'asc')->first();
+            if ($existsRuContent) {
+                return redirect()->route('sutta', [
+                    'sutta' => $suttaName,
+                    'lang' => 'ru',
+                    'translator' => $existsRuContent->translator->slug,
+                ]);
+            }
 
-        $content = $this->findSelectedContent($lang, $translatorSlug, $sutta);
+            return redirect()->route('sutta', [
+                'sutta' => $suttaName,
+                'lang' => 'pali',
+            ]);
+        }
+        // Урл вида /mn123/en - берём первый перевод данного языка и редиректим на него
+        if ($lang and $lang !== 'pali' and ! $translatorSlug) {
+            $existsLangContent = $sutta->contents()->where('lang', $lang)->orderBy('created_at', 'asc')->first();
+            if ($existsLangContent) {
+                return redirect()->route('sutta', [
+                    'sutta' => $suttaName,
+                    'lang' => $lang,
+                    'translator' => $existsLangContent->translator->slug,
+                ]);
+            }
+        }
+
+        if ($lang == 'pali') {
+            $content = $sutta->contents()->where('lang', $lang)->first();
+        } else {
+            $translator = People::query()
+                ->where('slug', $translatorSlug)
+                ->first();
+            $content = $sutta->contents()->where('lang', $lang)->where('translator_id', $translator->id)->first();
+        }
+
+        if (! $content) {
+            abort(404);
+        }
 
         if ($content->translator_name or $content->translator_id) {
             $content->display_translator_name = $content->translator_name ?? $content->translator->displayNameRu();
@@ -99,26 +124,26 @@ class SuttaController extends Controller
         ]);
     }
 
-    private function findSelectedContent(string $lang, ?string $translatorSlug, Sutta $sutta)
-    {
-        $suttaContents = $sutta->contents;
-
-        $langContents = $suttaContents->filter(fn ($content) => $content->lang == $lang);
-
-        $translator = People::query()->where('slug', $translatorSlug)->first();
-        if (! empty($translator)) {
-            $translatedContents = $langContents->filter(fn ($content) => $content->translator?->id == $translator->id);
-            $content = $translatedContents->first();
-            if (! empty($content)) {
-                return $content;
-            }
-        }
-
-        $content = $langContents->first();
-        if (! empty($content)) {
-            return $content;
-        }
-
-        return $suttaContents->first();
-    }
+    //    private function findSelectedContent(string $lang, ?string $translatorSlug, Sutta $sutta)
+    //    {
+    //        $suttaContents = $sutta->contents;
+    //
+    //        $langContents = $suttaContents->filter(fn ($content) => $content->lang == $lang);
+    //
+    //        $translator = People::query()->where('slug', $translatorSlug)->first();
+    //        if (! empty($translator)) {
+    //            $translatedContents = $langContents->filter(fn ($content) => $content->translator?->id == $translator->id);
+    //            $content = $translatedContents->first();
+    //            if (! empty($content)) {
+    //                return $content;
+    //            }
+    //        }
+    //
+    //        $content = $langContents->first();
+    //        if (! empty($content)) {
+    //            return $content;
+    //        }
+    //
+    //        return $suttaContents->first();
+    //    }
 }

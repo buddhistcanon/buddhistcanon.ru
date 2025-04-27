@@ -63,7 +63,7 @@ class ImportDhammapadaSuttasCommand extends Command
                 if ($prevSuttaName !== $suttaName) {
                     $this->line($prevSuttaName);
                     $order = str_replace('dhp', '', $prevSuttaName);
-                    $name = 'Dhammapada '.$order;
+                    $name = 'Dhp'.$order;
                     $existSutta = Sutta::query()
                         ->where('category', $category)
                         ->where('order', $order)

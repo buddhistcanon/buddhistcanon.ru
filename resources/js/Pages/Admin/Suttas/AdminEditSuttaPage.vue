@@ -19,7 +19,8 @@ const props = defineProps({
     errors: Object,
     prevSutta: Object,
     nextSutta: Object,
-    translators: Array
+    translators: Array,
+    lastAddedContentTitle: String
 });
 
 const suttaForm = useForm({
@@ -295,7 +296,11 @@ const makeLinked = (contentId) => {
             sutta: suttaForm.data(),
             rows: contentRows.value,
             chunksToDelete: chunksToDelete.value,
-            isContentSynced: isContentSynced.value
+            isContentSynced: isContentSynced.value,
+            contentsWithoutChunks: contents.value.map((content => {
+                content.chunks = null;
+                return content;
+            })),
         },
         {
             preserveScroll: true,
@@ -315,7 +320,11 @@ const makeUnlinked = (contentId) => {
             sutta: suttaForm.data(),
             rows: contentRows.value,
             chunksToDelete: chunksToDelete.value,
-            isContentSynced: isContentSynced.value
+            isContentSynced: isContentSynced.value,
+            contentsWithoutChunks: contents.value.map((content => {
+                content.chunks = null;
+                return content;
+            })),
 
         },
         {
@@ -441,7 +450,7 @@ const createContent = () => {
     isShowCreateContentModal.value = true;
     editedContent = {
         lang: "",
-        short_description: "",
+        short_description: props.lastAddedContentTitle,
         link_url: "",
         translator_id: 0,
         translator: {
@@ -456,7 +465,7 @@ const handleCreateContent = () => {
     console.log("editedContent", editedContent);
 
     if (!editedContent.lang || (!editedContent.translator_id && (!editedContent.translator.signature || !editedContent.translator.slug))) {
-        editedContentError.value = "Выберите язык и переводчика";
+        editedContentError.value = "Заполните необходимые поля";
         return;
     }
 
@@ -554,7 +563,7 @@ const updateEditedContent = (newValue) => {
             <div v-if="sutta.id" class="flex flex-row items-baseline">
                 <div class="text-2xl font-semibold leading-6 text-gray-700 mb-4">Редактирование {{ sutta.name }}</div>
                 <div class="ml-4">
-                    <Link :href="'/'+sutta.name" class="link">Посмотреть на сайте</Link>
+                    <Link :href="'/'+sutta.name.toLowerCase()" class="link">Посмотреть на сайте</Link>
                 </div>
             </div>
 
@@ -745,8 +754,8 @@ const updateEditedContent = (newValue) => {
 
                                     </div>
                                 </template>
-                                <template v-else>
-                                    <!--                                    <div class="flex-1 mr-2 mb-4"></div>-->
+                                <template v-else> <!-- пустая ячейка -->
+                                    <div class="flex-1 mr-2 mb-4"></div>
                                 </template>
                             </template>
 

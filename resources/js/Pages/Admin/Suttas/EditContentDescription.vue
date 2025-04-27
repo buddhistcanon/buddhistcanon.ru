@@ -70,7 +70,8 @@ const updateContent = (field, value) => {
     <div class="flex flex-col space-y-4">
         <!-- Выбор языка -->
         <div class="flex flex-col">
-            <label class="block text-sm font-medium leading-6 text-gray-900 mb-2">Язык контента</label>
+            <label class="block text-sm font-medium leading-6 text-gray-900 mb-2">Язык контента <span
+                class="text-red-600">*</span></label>
             <div class="flex flex-row items-center">
                 <div class="flex gap-4">
                     <label class="inline-flex items-center">
@@ -120,7 +121,8 @@ const updateContent = (field, value) => {
                 </div>
             </div>
             <div class="mt-4">
-                <label class="block text-sm font-medium leading-6 text-gray-900 mb-2">Краткое описание</label>
+                <label class="block text-sm font-medium leading-6 text-gray-900 mb-2">Краткое описание <span
+                    class="text-red-600">*</span></label>
                 <input
                     type="text"
                     :value="modelValue.short_description || ''"
@@ -142,7 +144,7 @@ const updateContent = (field, value) => {
         </div>
 
         <div class="flex flex-col border-t pt-2 mt-4">
-            <label class="block text-sm font-medium leading-6 text-gray-900 mb-2">Переводчик</label>
+            <label class="block text-sm font-medium leading-6 text-gray-900 mb-2">Переводчик <span class="text-red-600">*</span></label>
             <select
                 :value="modelValue.translator_id"
                 @input="updateTranslatorId($event.target.value)"
@@ -155,7 +157,8 @@ const updateContent = (field, value) => {
         <!-- Данные переводчика (только если это не оригинал) -->
         <div class="flex flex-col space-y-4" v-if="selectedTranslator === '0'">
             <div>
-                <label class="block text-sm font-medium leading-6 text-gray-900 mb-2">Подпись переводчика</label>
+                <label class="block text-sm font-medium leading-6 text-gray-900 mb-2">Подпись переводчика <span
+                    class="text-red-600">*</span></label>
                 <input
                     type="text"
                     :value="modelValue.translator?.signature || ''"
@@ -168,7 +171,7 @@ const updateContent = (field, value) => {
 
             <div>
                 <label class="block text-sm font-medium leading-6 text-gray-900 mb-2">Slug переводчика
-                    (латиницей)</label>
+                    (латиницей) <span class="text-red-600">*</span></label>
                 <input
                     type="text"
                     :value="modelValue.translator?.slug || ''"

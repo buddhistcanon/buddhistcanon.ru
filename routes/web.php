@@ -64,5 +64,5 @@ Route::get('/user_agreement', \App\Http\Controllers\PublicPagesController::class
 Route::get('/{sutta}/{lang?}/{translator?}', \App\Http\Controllers\Canon\SuttaController::class.'@index')
     ->name('sutta')
     ->where([
-        'sutta' => "(mn|an|sn|MN|AN|SN)([\d\.\-]*)",
+        'sutta' => "(mn|an|sn|dhp|MN|AN|SN|DHP)([\d\.\-]*)",
     ]);

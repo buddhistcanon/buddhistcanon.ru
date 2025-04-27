@@ -77,6 +77,10 @@ function displayNikayaTitleByCategory($suttaCategory)
             return 'Ангуттара-никая';
         case 'sn':
             return 'Саньютта-никая';
+        case 'kn':
+            return 'Кхудакка-никая';
+        case 'dhp':
+            return 'Дхаммапада';
         default:
             return 'неизвестно';
     }

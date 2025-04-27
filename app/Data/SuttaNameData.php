@@ -11,13 +11,12 @@ class SuttaNameData extends Data
         public string $category,
         public string $order,
         public ?string $suborder
-    ) {
-    }
+    ) {}
 
     public static function fromString(string $string): self
     {
         $string = strtolower($string);
-        preg_match('/^(dn|mn|an|sn)/', $string, $match);
+        preg_match('/^(dn|mn|an|sn|dhp)/', $string, $match);
         if (! isset($match[1])) {
             throw new WrongSuttaNameException("$string is not valid sutta name");
         }

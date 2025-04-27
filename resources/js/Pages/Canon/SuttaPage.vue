@@ -82,7 +82,7 @@ const populateFootnoteClickHandlers = () => {
         const footnoteTextElt = findElementContainingText(allFootnoteTextElts, footnoteLabelElt.innerHTML);
         if (!footnoteTextElt) {
             console.error('Footnote not found for label', footnoteLabelElt.innerHTML);
-            return ;
+            return;
         }
 
         footnoteTextElt.classList.toggle('expanded');
@@ -158,7 +158,9 @@ const showEditIcon = () => {
                 <div class="flex flex-row justify-between">
                     <div class="">
                         <h1 class="text-3xl font-normal font-serif">{{ nikayaTitle }}</h1>
-                        <h2 class="text-lg font-normal">{{ sutta.title_transcribe_ru }} "{{
+                        <h2 class="text-lg font-normal" v-if="sutta.title_translate_ru && sutta.title_transcribe_ru">
+                            {{ sutta.title_transcribe_ru }}
+                            "{{
                                 sutta.title_translate_ru
                             }}"</h2>
                     </div>
@@ -190,12 +192,17 @@ const showEditIcon = () => {
                     </div>
                 </div>
                 <div class="flex justify-between w-full">
-                    <a class="button w-16 sm:w-72 text-center my-4" :href="prevSuttaSlug + '/' + content.lang + '/' + (content.translator?.slug || 'none')" v-if="prevSuttaSlug">← <span class="hidden sm:inline">Предыдущая сутта</span></a>
+                    <a class="button w-16 sm:w-72 text-center my-4"
+                       :href="prevSuttaSlug + '/' + content.lang + '/' + (content.translator?.slug || 'none')"
+                       v-if="prevSuttaSlug">← <span class="hidden sm:inline">Предыдущая сутта</span></a>
 
                     <!-- solely to keep the"next sutta" button in place -->
-                    <a class="button w-16 sm:w-72 text-center my-4 invisible" href="/" v-if="!prevSuttaSlug">← <span class="hidden sm:inline">Предыдущая сутта</span></a>
+                    <a class="button w-16 sm:w-72 text-center my-4 invisible" href="/" v-if="!prevSuttaSlug">← <span
+                        class="hidden sm:inline">Предыдущая сутта</span></a>
 
-                    <a class="button w-16 sm:w-72 text-center my-4" :href="nextSuttaSlug + '/' + content.lang + '/' + (content.translator?.slug || 'none')" v-if="nextSuttaSlug"><span class="hidden sm:inline">Следующая сутта</span> →</a>
+                    <a class="button w-16 sm:w-72 text-center my-4"
+                       :href="nextSuttaSlug + '/' + content.lang + '/' + (content.translator?.slug || 'none')"
+                       v-if="nextSuttaSlug"><span class="hidden sm:inline">Следующая сутта</span> →</a>
                 </div>
             </div>
             <div class="lg:ml-4 lg:w-96 flex flex-col items-center ">

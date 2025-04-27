@@ -49,12 +49,16 @@ class AdminSuttaController extends Controller
                     'name' => $person->signature,
                 ];
             });
+        $lastAddedContentTitle = Content::query()
+            ->orderByDesc('created_at')
+            ->first()->short_description ?? null;
 
         return inertia('Admin/Suttas/AdminEditSuttaPage', [
             'sutta' => $sutta,
             'nextSutta' => $nextSutta,
             'prevSutta' => $prevSutta,
             'translators' => $translators,
+            'lastAddedContentTitle' => $lastAddedContentTitle,
         ]);
     }
 
@@ -199,7 +203,11 @@ class AdminSuttaController extends Controller
                     $chunk = new ContentChunk();
                     $chunk->chunkable_type = 'sutta';
                     $chunk->chunkable_id = $sutta->id;
-                    $contentId = $replacedContentIds->filter(fn ($item) => $item['old'] === $chunkRow['content_id'])->first()['new'];
+                    if (str_contains($chunkRow['content_id'], 'new')) {
+                        $contentId = $replacedContentIds->filter(fn ($item) => $item['old'] === $chunkRow['content_id'])->first()['new'];
+                    } else {
+                        $contentId = $chunkRow['content_id'];
+                    }
                     $chunk->content_id = $contentId;
                     $chunk->order = $chunkRow['order'];
                     $chunk->mark = $chunkRow['mark'] ?? Str::random(5);
