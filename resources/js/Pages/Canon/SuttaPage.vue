@@ -193,7 +193,7 @@ const showEditIcon = () => {
                 </div>
                 <div class="flex justify-between w-full">
                     <a class="button w-16 sm:w-72 text-center my-4"
-                       :href="prevSuttaSlug + '/' + content.lang + '/' + (content.translator?.slug || 'none')"
+                       :href="prevSuttaSlug + '/' + content.lang + '/' + (content.translator?.slug || '')"
                        v-if="prevSuttaSlug">← <span class="hidden sm:inline">Предыдущая сутта</span></a>
 
                     <!-- solely to keep the"next sutta" button in place -->
@@ -201,7 +201,7 @@ const showEditIcon = () => {
                         class="hidden sm:inline">Предыдущая сутта</span></a>
 
                     <a class="button w-16 sm:w-72 text-center my-4"
-                       :href="nextSuttaSlug + '/' + content.lang + '/' + (content.translator?.slug || 'none')"
+                       :href="nextSuttaSlug + '/' + content.lang + '/' + (content.translator?.slug || '')"
                        v-if="nextSuttaSlug"><span class="hidden sm:inline">Следующая сутта</span> →</a>
                 </div>
             </div>
