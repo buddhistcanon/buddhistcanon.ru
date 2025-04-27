@@ -19,10 +19,10 @@ import Sidebar from "@/Common/Sidebar.vue";
                             Читать Палийский канон
                         </Link>
 
-                        <div
-                            class="mt-4 text-gray-400 bc-button-background border-bc mb-8 py-6 w-1/2 text-center rounded-bc">
+                        <Link class="bc-button-background border-bc mb-8 py-6 w-1/2 text-center rounded-bc"
+                              href="/kangyur">
                             Читать Тибетский канон
-                        </div>
+                        </Link>
 
                         <div
                             class="mt-4 text-gray-400 bc-button-background border-bc mb-8 py-6 w-1/2 text-center rounded-bc">

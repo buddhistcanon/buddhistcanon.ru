@@ -42,6 +42,7 @@ Route::group(['middleware' => ['admin_area']], function () {
 
 Route::get('/', \App\Http\Controllers\WelcomeController::class.'@index')->name('welcome');
 Route::get('/palicanon', \App\Http\Controllers\PalicanonController::class.'@index')->name('palicanon');
+Route::get('/kangyur', \App\Http\Controllers\KangyurController::class.'@index')->name('kangyur');
 
 Route::get('/dn', \App\Http\Controllers\Canon\CanonController::class.'@dn');
 Route::get('/mn', \App\Http\Controllers\Canon\CanonController::class.'@mn');
@@ -51,6 +52,8 @@ Route::get('/sn', \App\Http\Controllers\Canon\CanonController::class.'@sn');
 Route::get('/sn/{x}', \App\Http\Controllers\Canon\CanonController::class.'@sn_x');
 Route::get('/kn', \App\Http\Controllers\Canon\CanonController::class.'@kn');
 Route::get('/dhp', \App\Http\Controllers\Canon\CanonController::class.'@dhp');
+
+Route::get('/kangyur/general', \App\Http\Controllers\KangyurController::class.'@general')->name('kangyur.general');
 
 Route::any('/search', \App\Http\Controllers\SearchController::class.'@index')->name('search');
 Route::get('/search/status', \App\Http\Controllers\SearchController::class.'@status')->name('search.status');
