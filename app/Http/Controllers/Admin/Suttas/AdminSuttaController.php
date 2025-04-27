@@ -5,8 +5,12 @@ namespace App\Http\Controllers\Admin\Suttas;
 use App\Http\Controllers\Controller;
 use App\Logger\LogData;
 use App\Logger\Logger;
+use App\Models\Content;
 use App\Models\ContentChunk;
+use App\Models\People;
 use App\Models\Sutta;
+use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -37,21 +41,31 @@ class AdminSuttaController extends Controller
             ->where('order', '<', $sutta->order)
             ->orderByDesc('order')
             ->first();
+        $translators = People::query()
+            ->get()
+            ->map(function (People $person) {
+                return [
+                    'id' => $person->id,
+                    'name' => $person->signature,
+                ];
+            });
 
         return inertia('Admin/Suttas/AdminEditSuttaPage', [
             'sutta' => $sutta,
             'nextSutta' => $nextSutta,
             'prevSutta' => $prevSutta,
+            'translators' => $translators,
         ]);
     }
 
     public function store(Request $request)
     {
-        dd($request->json()->all());
+        //        dd($request->json()->all());
         $suttaData = $request->json('sutta');
         $suttaId = $suttaData['id'];
         $isContentSynced = $request->json('isContentSynced') ?? [];
 
+        // Данные сутты
         $sutta = Sutta::query()
             ->where('id', $suttaId)
             ->firstOrFail();
@@ -80,8 +94,76 @@ class AdminSuttaController extends Controller
             ));
         }
         $sutta->save();
-
         $originalContents = $sutta->load('contents.chunks')->contents;
+
+        // Добавление нового контента
+        $contentsWithoutChunks = $request->json('contentsWithoutChunks');
+        $replacedContentIds = collect();
+        foreach ($contentsWithoutChunks as $contentRow) {
+            if (is_null($contentRow)) {
+                continue;
+            }
+            // TODO добавить редактирование существующего контента
+
+            //            if ($contentRow['id'] and ! str_contains($contentRow['id'], 'new')) {
+            //                // это существующий контент, надо его просто сохранить
+            //                $content = $sutta->contents->filter(fn ($content) => $content->id === $contentRow['id'])->first();
+            //                $content->is_synced = $contentRow['is_synced'];
+            //                $content->title = $contentRow['title'] ?? 'Контент #'.$contentRow['id'];
+            //                $content->subtitle = $contentRow['subtitle'] ?? null;
+            //                $content->lang = $contentRow['lang'] ?? null;
+            //                $content->save();
+            //            }
+            if (str_contains($contentRow['id'], 'new')) {
+                // это новый контент, надо его добавить.
+                $translatorId = $contentRow['translator_id'];
+                if (! $translatorId) {
+                    // это новый переводчик, надо добавить
+                    $translatorData = $contentRow['translator'];
+                    $translator = new People();
+                    $translator->fullname_ru = $translatorData['fullname_ru'];
+                    $translator->slug = $translatorData['slug'];
+                    $translator->signature = $translatorData['signature'];
+                    $translator->save();
+                    Logger::log(new LogData(
+                        action: 'create_translator',
+                        userId: auth()->id(),
+                        after: $translator->toArray()
+                    ));
+                    $translatorId = $translator->id;
+                } else {
+                    try {
+                        $translator = People::findOrFail($translatorId);
+                    } catch (ModelNotFoundException $e) {
+                        throw new Exception("Переводчик $translatorId не найден");
+                        // TODO возврат ошибки на фронт
+                    }
+                }
+                $content = new Content();
+                $content->contentable_type = 'sutta';
+                $content->contentable_id = $sutta->id;
+                $content->is_synced = $contentRow['is_synced'];
+                $content->title = $sutta->name;
+                $content->subtitle = $contentRow['subtitle'] ?? null;
+                $content->short_description = $contentRow['short_description'] ?? null;
+                $content->link_url = $contentRow['link_url'] ?? null;
+                $content->lang = $contentRow['lang'] ?? null;
+                $content->translator_id = $translatorId;
+                $content->translator_name = $translator->signature;
+                $content->save();
+                Logger::log(new LogData(
+                    action: 'create_content',
+                    userId: auth()->id(),
+                    suttaId: $sutta->id,
+                    contentId: $content->id,
+                    after: $content->toArray()
+                ));
+                $replacedContentIds->push([
+                    'old' => $contentRow['id'],
+                    'new' => $content->id,
+                ]);
+            }
+        }
 
         $rows = $request->json('rows');
         $chunksIdsToDelete = $request->json('chunksToDelete');
@@ -116,8 +198,9 @@ class AdminSuttaController extends Controller
                 } else {
                     $chunk = new ContentChunk();
                     $chunk->chunkable_type = 'sutta';
-                    $chunk->chunkable_id = $chunkRow['chunkable_id'];
-                    $chunk->content_id = $chunkRow['content_id'];
+                    $chunk->chunkable_id = $sutta->id;
+                    $contentId = $replacedContentIds->filter(fn ($item) => $item['old'] === $chunkRow['content_id'])->first()['new'];
+                    $chunk->content_id = $contentId;
                     $chunk->order = $chunkRow['order'];
                     $chunk->mark = $chunkRow['mark'] ?? Str::random(5);
                     $chunk->text = $chunkRow['text'];
@@ -177,13 +260,15 @@ class AdminSuttaController extends Controller
         foreach ($editedContentIds as $contentId) {
             $prevContent = $originalContents->filter(fn ($content) => $content->id === $contentId)->first();
             $newContent = $sutta->contents->filter(fn ($content) => $content->id === $contentId)->first();
+            $prevContent ? $prevContentArray = $prevContent->toArray() : $prevContentArray = null;
+            $newContent ? $newContentArray = $newContent->toArray() : $newContentArray = null;
             Logger::log(new LogData(
                 action: 'update_content',
                 userId: auth()->id(),
                 suttaId: $sutta->id,
                 contentId: $contentId,
-                before: $prevContent->toArray(),
-                after: $newContent->toArray()
+                before: $prevContentArray,
+                after: $newContentArray
             ));
         }
 

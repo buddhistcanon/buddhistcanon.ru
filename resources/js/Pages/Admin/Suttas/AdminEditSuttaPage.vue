@@ -19,6 +19,7 @@ const props = defineProps({
     errors: Object,
     prevSutta: Object,
     nextSutta: Object,
+    translators: Array
 });
 
 const suttaForm = useForm({
@@ -232,6 +233,32 @@ const insertCell = (contentId, chunkId) => {
     contentRows.value = toContentInColumns(contentInRows);
 }
 
+const insertCellAfter = (contentId, chunkId) => {
+    let contentInRows = toContentInRows(contentRows.value);
+    contentInRows = contentInRows.map((row) => {
+        if (row[0].content_id === contentId) {
+            let index = null;
+            let cell = null
+            row.forEach((cell, i) => {
+                if (cell && cell.id === chunkId) {
+                    index = i;
+                }
+            });
+            cell = JSON.parse(JSON.stringify(row[index]));
+            cell.id = "new" + Math.round(Math.random() * 100000);
+            cell.mark = null;
+            cell.order = cell.order + 1; // увеличиваем порядок, т.к. ячейка после
+            cell.text = "";
+            row.splice(index + 1, 0, cell); // вставляем после текущей ячейки
+            row = setOrderInContentInRow(row);
+            return row;
+        }
+        return row;
+    });
+    contentRows.value = toContentInColumns(contentInRows);
+}
+
+
 const addContentToPrevChunk = (contentId, chunkId) => {
     let contentInRows = toContentInRows(contentRows.value);
 
@@ -407,44 +434,61 @@ const isExistsComments = (contentId) => {
 
 // Создание нового контента
 const isShowCreateContentModal = ref(false);
-let editedContent = reactive({
-    lang: "",
-    translator: {
-        fullname_ru: "",
-        slug: "",
-    }
-});
+let editedContent = reactive({});
+let editedContentError = ref(null);
+
 const createContent = () => {
     isShowCreateContentModal.value = true;
     editedContent = {
         lang: "",
+        short_description: "",
+        link_url: "",
+        translator_id: 0,
         translator: {
             fullname_ru: "",
             slug: "",
+            signature: ""
         }
     }
+    editedContentError.value = null;
 }
 const handleCreateContent = () => {
+    console.log("editedContent", editedContent);
+
+    if (!editedContent.lang || (!editedContent.translator_id && (!editedContent.translator.signature || !editedContent.translator.slug))) {
+        editedContentError.value = "Выберите язык и переводчика";
+        return;
+    }
+
+    editedContentError.value = null;
     isShowCreateContentModal.value = false;
     let newContents = contents.value;
     const newContentId = "new" + Math.round(Math.random() * 100000);
+    let newChunks = [];
+    const countChunksInMainContent = contents.value.filter((content) => content.is_original === 1)[0].chunks.length;
+    for (let i = 1; i <= countChunksInMainContent; i++) {
+        newChunks.push({
+            id: "new" + Math.round(Math.random() * 100000),
+            text: "",
+            order: i * 10,
+            mark: null,
+            content_id: newContentId,
+        });
+    }
+
     newContents.push({
         id: newContentId,
         lang: editedContent.lang,
         is_synced: 0,
+        translator_id: editedContent.translator_id,
+        short_description: editedContent.short_description,
+        link_url: editedContent.link_url,
         translator: {
             fullname_ru: editedContent.translator.fullname_ru,
-            slug: editedContent.translator.slug
+            slug: editedContent.translator.slug,
+            signature: editedContent.translator.signature
         },
-        chunks: [
-            {
-                id: "new" + Math.round(Math.random() * 100000),
-                text: "insert content here",
-                order: 10,
-                mark: null,
-                content_id: newContentId,
-            }
-        ]
+        chunks: newChunks
     });
     contents.value = newContents;
     initContentRows();
@@ -493,6 +537,8 @@ const updateEditedContent = (newValue) => {
                :handle-ok="handleCreateContent"
         >
             <EditContentDescription
+                :translators="translators"
+                :error="editedContentError"
                 :modelValue="editedContent"
                 @update:modelValue="updateEditedContent"
             ></EditContentDescription>
@@ -669,12 +715,15 @@ const updateEditedContent = (newValue) => {
                                             <template v-if="isContentSynced[chunk.content_id] === '0'">
                                                 <a class="mr-3 text-gray-300">c{{ chunk.id }} o{{ chunk.order }}</a>
                                                 <a class="mr-3 text-gray-500 cursor-pointer"
-                                                   @click="insertCell(chunk.content_id, chunk.id)">вставить ячейку</a>
+                                                   @click="insertCell(chunk.content_id, chunk.id)">вставить перед</a>
                                                 <a class="mr-3 text-gray-500 cursor-pointer"
                                                    @click="addContentToPrevChunk(chunk.content_id, chunk.id)">перенести
                                                     выше</a>
                                                 <a class="mr-3 text-gray-500 cursor-pointer"
                                                    @click="deleteCell(chunk.content_id, chunk.id)">удалить ячейку</a>
+                                                <a class="mr-3 text-gray-500 cursor-pointer"
+                                                   @click="insertCellAfter(chunk.content_id, chunk.id)">вставить
+                                                    после</a>
                                             </template>
                                             <template v-else>
                                                 <a class="mr-3 text-gray-300">c{{ chunk.id }} o{{ chunk.order }}</a>
