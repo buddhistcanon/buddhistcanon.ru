@@ -56,6 +56,9 @@ class SuttaController extends Controller
             $translator = People::query()
                 ->where('slug', $translatorSlug)
                 ->first();
+            if (! $translator) {
+                abort(404);
+            }
             $content = $sutta->contents()->where('lang', $lang)->where('translator_id', $translator->id)->first();
         }
 
