@@ -7,6 +7,10 @@ html {
     font-size: 15px;
 }
 
+#app {
+    @apply min-h-screen;
+}
+
 .link {
     color: #5B0769;
     @apply underline;
@@ -25,41 +29,51 @@ h2 {
 }
 
 /** Дизайн из figma **/
-.text-indigo-bc {
+.bc-text-indigo {
     color: #5B0769;
 }
 
-.custom-max-w-8xl {
-    max-width: 95rem;
+.bc-text-gray {
+    color: #272B2D;
 }
 
-.ring-indigo-bc {
+.bc-border {
+    border: 1px solid #E6E6E6;
+}
+
+.bc-rounded {
+    border-radius: 9px;
+}
+
+.bc-ring-indigo {
     --tw-ring-opacity: 1;
     --tw-ring-color: rgb(91 7 105 / var(--tw-ring-opacity));
 }
 
-.bc-button {
-    border-radius: 10px;
+.bc-ring-gray {
+    --tw-ring-opacity: 1;
+    --tw-ring-color: rgb(230 230 230 / var(--tw-ring-opacity));
+}
+
+.bc-button,
+.bc-button-disabled {
+    border-radius: 9px;
     background-color: #FBFBFB;
     border: 1px solid #E6E6E6;
-    color: #272B2D;
-    /*@apply text-gray-700;*/
     @apply text-sm font-medium;
 }
 
+.bc-button {
+    color: #272B2D;
+}
+
 .bc-button-disabled {
-    border-radius: 10px;
-    background-color: #FBFBFB;
-    border: 1px solid #E6E6E6;
-    /*color: #272B2D;*/
     cursor: default !important;
     @apply text-gray-400;
-    @apply text-sm font-medium;
 }
 
 .bc-button:hover {
     background-color: #F9F9F9;
-    /*@apply shadow-sm;*/
 }
 
 .bc-button-background {
@@ -70,27 +84,10 @@ h2 {
     background-color: #F6F6F6;
 }
 
-.rounded-bc {
-    border-radius: 10px;
-}
-
-.text-gray-bc {
-    color: #272B2D;
-}
-
-.border-bc {
-    border: 1px solid #E6E6E6;
-}
-
-.ring-gray-bc {
-    --tw-ring-opacity: 1;
-    --tw-ring-color: rgb(230 230 230 / var(--tw-ring-opacity));
-}
-
 /** Контент книги, сутты и т.п. */
 .content-text .footnote {
     color: #ba0cee;
-    @apply text-sm ml-1  font-mono
+    @apply text-sm ml-1 font-mono
 }
 
 .content-text h2 {
@@ -129,4 +126,68 @@ h2 {
 /* страница поиска */
 .search-page em {
     @apply bg-yellow-200 font-normal
+}
+
+.bc-dropdown {
+    width: 30px;
+    border-radius: 9px;
+    background-color: #FBFBFB;
+    border: 1px solid #E6E6E6;
+    color: #272B2D;
+    @apply text-sm font-medium;
+}
+
+.bc-list-dash {
+    list-style-type: "\2013\00a0\00a0";
+}
+
+.tribar {
+    border-top: 2px solid #272B2D;
+}
+
+.tribar,
+.tribar::after,
+.tribar::before {
+    display: block;
+    width: 40px;
+}
+
+.tribar::after,
+.tribar::before {
+    background-color: #272B2D;
+    content: "";
+    height: 2px;
+    margin-top: 10px;
+}
+
+.xmark,
+.xmark::after,
+.xmark::before {
+    display: block;
+    width: 40px;
+}
+
+.xmark::after,
+.xmark::before {
+    background-color: #272B2D;
+    content: "";
+    position: relative;
+    height: 2px;
+}
+
+.xmark::before {
+    top: 2px;
+    transform: rotate(45deg);
+}
+
+.xmark::after {
+    transform: rotate(-45deg);
+}
+
+.bc-mobile-bottom-line {
+    border-top: 1px solid #d3dadc;
+}
+
+.bc-mobile-bottom-color {
+    color: #aaa;
 }

@@ -1,4 +1,4 @@
-<script setup>
+<!-- <script setup>
 import {Head, Link} from '@inertiajs/vue3';
 import ApplicationLayout from '@/Layouts/ApplicationLayout.vue';
 import LogoTitle from "@/Common/LogoTitle.vue";
@@ -40,4 +40,42 @@ import Sidebar from "@/Common/Sidebar.vue";
 
 
     </ApplicationLayout>
+</template> -->
+
+<script setup>
+import { Head, Link } from '@inertiajs/vue3';
+import ApplicationLayout from '@/Layouts/ApplicationLayout.vue';
+import Sidebar from "@/Common/Sidebar.vue";
+</script>
+
+<template>
+
+    <Head title="Главная страница" />
+
+    <ApplicationLayout>
+
+        <div class="flex-1 flex flex-col-reverse md:flex-row">
+
+            <div class="flex-1 flex flex-row bg-white">
+                <div class="flex-[3]"></div>
+                <div class="flex-[4] flex flex-col justify-center">
+                    <Link href="/palicanon" class="py-6 text-center bc-button-background bc-border bc-rounded">
+                        Читать Палийский канон
+                    </Link>
+                    <Link href="/kangyur" class="py-6 text-center mt-12 bc-button-background bc-border bc-rounded">
+                        Читать Тибетский канон
+                    </Link>
+                    <div class="py-6 text-center mt-12 text-gray-400 bc-button-background bc-border bc-rounded">
+                        Читать Китайский канон
+                    </div>
+                </div>
+                <div class="flex-[3]"></div>
+            </div>
+
+            <Sidebar />
+
+        </div>
+
+    </ApplicationLayout>
+
 </template>

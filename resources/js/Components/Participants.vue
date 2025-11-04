@@ -3,7 +3,7 @@
 const rowClass = 'flex flex-row mt-4';
 const leftColClass = 'bg-white mr-4 flex-1 flex flex-col md:flex-row';
 const rightColClass = 'bg-white ml-4 flex-1 flex flex-col md:flex-row';
-const nameCardClass = 'text-xs flex-1 p-4 text-center md:text-left md:pl-12 md:pr-0 md:my-auto';
+const nameCardClass = 'text-s flex-1 p-4 text-center md:text-left md:pl-12 md:pr-0 md:my-auto';
 const nameClass = 'font-bold';
 const socialCardClass = 'flex-1 flex flex-row justify-center px-4 mb-6 md:my-6 md:justify-around';
 const linkClass = 'bc-button mx-1 py-1.5 px-2 block my-auto';
@@ -16,11 +16,11 @@ const iconClass = 'w-6 h-6 min-w-6';
     <div class="flex flex-col">
         <div :class="rowClass">
             <div :class="leftColClass">
-                <div :class="nameCardClass  ">
+                <div :class="nameCardClass">
                     <div :class="nameClass">
                         Игорь Васильев (Нара Лока)
                     </div>
-                    <div>ведущий дизайнер и инициатор создания фонда</div>
+                    <div>ведущий дизайнер&nbsp;и инициатор создания фонда</div>
                 </div>
                 <div :class="socialCardClass">
                     <a href="https://www.youtube.com/naraloka" target="_blank" :class="linkClass">
@@ -38,7 +38,7 @@ const iconClass = 'w-6 h-6 min-w-6';
             </div>
 
             <div :class="rightColClass">
-                <div :class="nameCardClass  ">
+                <div :class="nameCardClass">
                     <div :class="nameClass">
                         Михаил Парфёнов
                     </div>
@@ -51,7 +51,7 @@ const iconClass = 'w-6 h-6 min-w-6';
 
         <div :class="rowClass">
             <div :class="leftColClass">
-                <div :class="nameCardClass  ">
+                <div :class="nameCardClass">
                     <div :class="nameClass">
                         Олег Павлов
                     </div>
@@ -72,9 +72,9 @@ const iconClass = 'w-6 h-6 min-w-6';
                 </div>
             </div>
             <div :class="rightColClass">
-                <div :class="nameCardClass  ">
+                <div :class="nameCardClass">
                     <div :class="nameClass">
-                        Борис Гроздев
+                        Борис Гвоздев
                     </div>
                     <div>программист</div>
                 </div>
@@ -85,7 +85,7 @@ const iconClass = 'w-6 h-6 min-w-6';
 
         <div :class="rowClass">
             <div :class="leftColClass">
-                <div :class="nameCardClass  ">
+                <div :class="nameCardClass">
                     <div :class="nameClass">
                         Миямото Мусаси
                     </div>
@@ -106,7 +106,7 @@ const iconClass = 'w-6 h-6 min-w-6';
                 </div>
             </div>
             <div :class="rightColClass">
-                <div :class="nameCardClass  ">
+                <div :class="nameCardClass">
                     <div :class="nameClass">
                         Влад Аскинази
                     </div>

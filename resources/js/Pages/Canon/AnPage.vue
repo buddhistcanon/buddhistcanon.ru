@@ -25,7 +25,7 @@ import Breadcrumbs from "@/Components/Breadcrumbs.vue";
                     <div class="flex flex-col lg:flex-row w-full">
                         <div class="bg-white p-4 w-full">
                             <div class="mt-4 flex flex-col items-center mb-36">
-                                <Link class="bc-button-background border-bc mb-8 py-6 w-1/2 text-center rounded-bc"
+                                <Link class="mb-8 py-6 w-1/2 text-center bc-button-background bc-border bc-rounded"
                                       href="/an/1">
                                     AN1 - Книга единиц
                                 </Link>

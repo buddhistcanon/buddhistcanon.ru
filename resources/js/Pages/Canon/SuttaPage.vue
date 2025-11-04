@@ -144,11 +144,11 @@ const showEditIcon = () => {
 </script>
 
 <template>
-
+<Head :title="props.sutta.name"/>
 
     <ApplicationLayout>
 
-        <Head :title="props.sutta.name"/>
+        
 
         <div class="flex flex-col lg:flex-row w-full">
             <div class="bg-white p-4 w-full">
