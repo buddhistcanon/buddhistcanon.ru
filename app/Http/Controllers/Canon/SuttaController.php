@@ -112,6 +112,12 @@ class SuttaController extends Controller
 
         $suttaService = new SuttaService($sutta);
 
+        // Проверяем, добавлена ли сутта в закладки (если пользователь авторизован)
+        $isBookmarked = false;
+        if (auth()->check()) {
+            $isBookmarked = auth()->user()->bookmarks()->where('suttas.id', $sutta->id)->exists();
+        }
+
         return inertia('Canon/SuttaPage', [
             'sutta' => $sutta,
             'contents' => $sutta->contents,
@@ -123,7 +129,7 @@ class SuttaController extends Controller
             'prevSuttaSlug' => $suttaService->findPrevSutta()?->displaySlug(),
             'nextSuttaSlug' => $suttaService->findNextSutta()?->displaySlug(),
             'breadcrumbs' => $breadcrumbs,
-
+            'isBookmarked' => $isBookmarked,
         ]);
     }
 

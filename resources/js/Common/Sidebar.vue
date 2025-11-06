@@ -11,7 +11,7 @@ import LogoTitle from "@/Common/LogoTitle.vue";
             <Link href="/about" class="py-2 text-center w-full mt-7 bc-button">О Фонде</Link>
             <Link href="#" class="py-2 text-center w-full mt-7 bc-button-disabled">Включить тёмное оформление</Link>
             <!--        <Link href="/news" class="bc-button py-2 text-center w-full my-4">Новое на сайте</Link>-->
-            <!--        <Link href="/bookmarks" class="bc-button py-2 text-center w-full my-4">Мои закладки</Link>-->
+            <Link v-if="$page.props.auth?.user" href="/bookmarks" class="bc-button py-2 text-center w-full my-4">Мои закладки</Link>
         </div>
     </div>
 </template>

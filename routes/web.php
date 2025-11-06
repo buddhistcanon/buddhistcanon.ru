@@ -18,6 +18,12 @@ require __DIR__.'/auth.php';
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/profile', \App\Http\Controllers\ProfileController::class.'@index');
+
+    // Закладки
+    Route::get('/bookmarks', \App\Http\Controllers\BookmarksController::class.'@index')->name('bookmarks');
+    Route::post('/bookmarks', \App\Http\Controllers\BookmarksController::class.'@store');
+    Route::delete('/bookmarks/{suttaId}', \App\Http\Controllers\BookmarksController::class.'@destroy');
+    Route::get('/bookmarks/check/{suttaId}', \App\Http\Controllers\BookmarksController::class.'@check');
 });
 
 Route::group(['middleware' => ['admin_area']], function () {
