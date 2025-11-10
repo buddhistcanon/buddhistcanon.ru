@@ -50,6 +50,12 @@ class Sutta extends Model
         return $this->morphMany(Content::class, 'contentable');
     }
 
+    public function bookmarkedByUsers()
+    {
+        return $this->belongsToMany(User::class, 'bookmarks', 'sutta_id', 'user_id')
+            ->withTimestamps();
+    }
+
     public function pali_content()
     {
         return $this->contents->first(function (Content $content) {

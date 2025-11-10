@@ -103,6 +103,12 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class);
     }
 
+    public function bookmarks()
+    {
+        return $this->belongsToMany(Sutta::class, 'bookmarks', 'user_id', 'sutta_id')
+            ->withTimestamps();
+    }
+
     public function gravatarUrl()
     {
         return 'https://www.gravatar.com/avatar/'.md5(strtolower(trim($this->email)));

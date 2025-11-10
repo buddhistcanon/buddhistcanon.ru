@@ -1,9 +1,9 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { Link, router, usePage } from "@inertiajs/vue3";
 import { Dialog, Listbox, ListboxButton, ListboxOptions, ListboxOption } from '@headlessui/vue';
-import { MagnifyingGlassIcon, CheckIcon, XMarkIcon } from '@heroicons/vue/24/outline';
-import { PlayIcon } from '@heroicons/vue/24/solid';
+import { MagnifyingGlassIcon, CheckIcon, XMarkIcon, BookmarkIcon } from '@heroicons/vue/24/outline';
+import { PlayIcon, BookmarkIcon as BookmarkAddedIcon } from '@heroicons/vue/24/solid';
 
 const props = defineProps({
     search: String,
@@ -53,6 +53,57 @@ const showChangeScale = ref(false);
 const showChangeScaleOpen = () => showChangeScale.value = true;
 const showChangeScaleClose = () => showChangeScale.value = false;
 
+// Функционал закладок
+const isBookmarked = ref(page.props.isBookmarked || false);
+const isLoadingBookmark = ref(false);
+
+const toggleBookmark = async () => {
+    if (!page.props.auth?.user) {
+        router.visit('/login');
+        return;
+    }
+
+    // Проверяем, есть ли информация о сутте на странице
+    const sutta = page.props.sutta;
+    if (!sutta) {
+        return;
+    }
+
+    isLoadingBookmark.value = true;
+
+    try {
+        let response;
+        if (isBookmarked.value) {
+            // Удаляем из закладок
+            response = await window.axios.delete(`/bookmarks/${sutta.id}`);
+        } else {
+            // Добавляем в закладки
+            response = await window.axios.post('/bookmarks', {
+                sutta_id: sutta.id
+            });
+        }
+
+        // Обновляем состояние на основе ответа сервера
+        if (response.data) {
+            isBookmarked.value = response.data.is_bookmarked;
+        }
+    } catch (error) {
+        console.error('Ошибка при работе с закладкой:', error);
+        if (error.response?.data?.message) {
+            console.error(error.response.data.message);
+        }
+    } finally {
+        isLoadingBookmark.value = false;
+    }
+};
+
+// Отслеживаем изменения isBookmarked из props при навигации
+watch(() => page.props.isBookmarked, (newValue) => {
+    if (newValue !== undefined) {
+        isBookmarked.value = newValue;
+    }
+}, { immediate: true });
+
 </script>
 
 <template>
@@ -99,7 +150,7 @@ const showChangeScaleClose = () => showChangeScale.value = false;
                 <!-- fixed inset-0 bc-background min-h-screen w-full flex flex-col -->
                 <div class="absolute mt-1 max-h-60 w-5/6 overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
 
-                    
+
 
 
                     <div class="h-11 w-11 flex justify-center items-center" @click="showChangeScaleClose">
@@ -124,14 +175,17 @@ const showChangeScaleClose = () => showChangeScale.value = false;
             </div>
         </div>
 
-        <div v-if="!showSearchX" class="bc-button h-11 w-14 flex justify-center items-center mr-5">
-            <div class="block h-5 w-5 -translate-y-1 -translate-x-1">
-                <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M8.58911 4H17.4104C18.6628 4 19.6788 5.0152 19.679 6.26758V22.874L13.4534 18.1514L13.0002 17.8076L12.5471 18.1514L6.32153 22.874V6.26758C6.32168 5.01529 7.33683 4.00015 8.58911 4Z"
-                        stroke="#272B2D" stroke-width="1.5" />
-                </svg>
-            </div>
+        <!-- Кнопка закладки (показывается только на странице сутты) -->
+        <div
+            v-if="!showSearchX && page.props.sutta"
+            class="bc-button h-11 w-14 flex justify-center items-center mr-5 cursor-pointer relative"
+            @click="toggleBookmark"
+            :class="{ 'opacity-50 cursor-not-allowed': isLoadingBookmark }"
+        >
+            <Transition name="bookmark" mode="out-in">
+                <BookmarkIcon v-if="!isBookmarked" key="outline" class="h-6 w-6 absolute" />
+                <BookmarkAddedIcon v-else key="filled" class="h-6 w-6 absolute" />
+            </Transition>
         </div>
 
     </div>
@@ -164,7 +218,7 @@ const showChangeScaleClose = () => showChangeScale.value = false;
                     <Link v-else class="bc-border bc-button-background bc-rounded text-center mt-7 py-4 text-base"
                         :href="'/profile'">Профиль</Link>
 
-                    <Link class="bc-border bc-button-background bc-rounded text-center mt-7 py-4 text-base" :href="'#'">
+                    <Link v-if="page.props.auth?.user" class="bc-border bc-button-background bc-rounded text-center mt-7 py-4 text-base" :href="'/bookmarks'">
                     Мои закладки</Link>
                     <Link class="bc-border bc-button-background bc-rounded text-center mt-7 py-4 text-base" :href="'/'">
                     Главная страница</Link>
@@ -221,3 +275,26 @@ const showChangeScaleClose = () => showChangeScale.value = false;
         </div>
     </Dialog>
 </template>
+
+<style scoped>
+.bookmark-enter-active,
+.bookmark-leave-active {
+    transition: all 0.3s ease;
+}
+
+.bookmark-enter-from {
+    opacity: 0;
+    transform: scale(0.8) rotate(-10deg);
+}
+
+.bookmark-leave-to {
+    opacity: 0;
+    transform: scale(0.8) rotate(10deg);
+}
+
+.bookmark-enter-to,
+.bookmark-leave-from {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+}
+</style>

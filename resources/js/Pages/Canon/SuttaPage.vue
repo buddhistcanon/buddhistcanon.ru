@@ -148,7 +148,7 @@ const showEditIcon = () => {
 
     <ApplicationLayout>
 
-        
+
 
         <div class="flex flex-col lg:flex-row w-full">
             <div class="bg-white p-4 w-full">
@@ -231,8 +231,6 @@ const showEditIcon = () => {
                         </div>
 
                         <!--                        <div class="button w-72 text-center my-4">Поделиться суттой</div>-->
-                        <!--                        <div class="button w-72 text-center my-4">Добавить в закладки</div>-->
-
                         <!--                        <div class="border-b border-gray-200 mt-4 mb-3 w-72"></div>-->
                         <!--                        <div class="text-sm text-gray-800 cursor-pointer">сообщить об ошибке перевода</div>-->
                         <!--                        <div class="border-b border-gray-200 mt-3 mb-4 w-72"></div>-->

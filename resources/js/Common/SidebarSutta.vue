@@ -1,6 +1,12 @@
 <script setup>
 import {Link} from "@inertiajs/vue3";
 import LogoTitle from "@/Common/LogoTitle.vue";
+
+const props = defineProps({
+    sutta: {type: Object, required: true},
+    suttaSlug: {type: String, required: true},
+    lang: {type: String, required: true},
+});
 </script>
 
 <template>
@@ -18,7 +24,6 @@ import LogoTitle from "@/Common/LogoTitle.vue";
             пали
         </Link>
         <div class="button w-80 text-center my-4">Поделиться суттой</div>
-        <div class="button w-80 text-center my-4">Добавить в закладки</div>
 
         <div class="border-b border-gray-200 mt-4 mb-3 w-80"></div>
         <div class="text-sm text-gray-800 cursor-pointer">сообщить об ошибке перевода</div>
