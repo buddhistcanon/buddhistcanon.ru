@@ -1,0 +1,170 @@
+{
+    "common": {
+        "welcome": "Welcome",
+        "loading": "Loading...",
+        "error": "Error",
+        "success": "Success",
+        "save": "Save",
+        "cancel": "Cancel",
+        "delete": "Delete",
+        "edit": "Edit",
+        "close": "Close",
+        "home": "Home"
+    },
+    "nav": {
+        "home": "Home",
+        "about": "About",
+        "bookmarks": "My Bookmarks",
+        "profile": "Profile",
+        "login": "Login / Register",
+        "logout": "Logout",
+        "search": "Search",
+        "language": "Language",
+        "dark_theme": "Enable dark theme"
+    },
+    "profile": {
+        "title": "Profile",
+        "greeting": "Hello"
+    },
+    "breadcrumbs": {
+        "palicanon": "Pali Canon",
+        "section": "Section"
+    },
+    "languages": {
+        "ru": "Russian",
+        "en": "English"
+    },
+    "logo": {
+        "foundation": "FOUNDATION",
+        "canon": "OF CANON",
+        "buddhism": "BUDDHISM"
+    },
+    "auth": {
+        "login": "Login",
+        "register": "Register",
+        "email": "Email",
+        "password": "Password",
+        "remember": "Remember me",
+        "forgot_password": "Forgot password?",
+        "confirm_password": "Confirm password"
+    },
+    "sutta": {
+        "add_to_bookmarks": "Add to bookmarks",
+        "remove_from_bookmarks": "Remove from bookmarks",
+        "share": "Share sutta",
+        "report_error": "Report translation error",
+        "pali_version": "This sutta in Pali",
+        "russian_version": "This sutta in Russian",
+        "english_version": "This sutta in English",
+        "previous": "Previous sutta",
+        "next": "Next sutta",
+        "switch_translations": "You can also switch translations by pressing keys 1, 2, 3, etc.",
+        "translation": "Translation:"
+    },
+    "bookmarks": {
+        "title": "My Bookmarks",
+        "empty": "You don't have any bookmarks yet",
+        "added": "Sutta added to bookmarks",
+        "removed": "Sutta removed from bookmarks",
+        "remove": "Remove from bookmarks"
+    },
+    "canon": {
+        "palicanon": "Pali Canon",
+        "kangyur": "Tibetan Canon",
+        "read_palicanon": "Read Pali Canon",
+        "read_kangyur": "Read Tibetan Canon",
+        "read_chinese": "Read Chinese Canon",
+        "sutta_pitaka": "Sutta Pitaka",
+        "sutta_pitaka_desc": "Basket of Discourses",
+        "vinaya_pitaka": "Vinaya Pitaka",
+        "vinaya_pitaka_desc": "Basket of Discipline",
+        "abhidhamma_pitaka": "Abhidhamma Pitaka",
+        "abhidhamma_pitaka_desc": "Basket of Higher Dhamma",
+        "dn": "Digha Nikaya (DN)",
+        "mn": "Majjhima Nikaya (MN)",
+        "sn": "Samyutta Nikaya (SN)",
+        "an": "Anguttara Nikaya (AN)",
+        "kn": "Khuddaka Nikaya (KN)",
+        "sutta_vibhanga": "Sutta Vibhanga",
+        "khandhaka": "Khandhaka",
+        "parivara": "Parivara",
+        "dhammasangani": "Dhammasangani",
+        "vibhanga": "Vibhanga",
+        "dhatukatha": "Dhatukatha",
+        "puggalapannatti": "Puggalapannatti",
+        "kathavatthu": "Kathavatthu",
+        "yamaka": "Yamaka",
+        "patthana": "Patthana",
+        "derge_kangyur": "Derge Kangyur",
+        "buddha_discourses": "Buddha's Discourses",
+        "prajnaparamita": "Prajnaparamita",
+        "buddhavatamsaka": "Buddhavatamsaka",
+        "ratnakuta": "Ratnakuta",
+        "large_collection": "Large Collection of Various Sutras",
+        "later_translations": "Sutras Translated Later",
+        "tantra": "Tantra",
+        "tantra_collection": "Tantra Collection",
+        "old_tantras": "Old Tantras",
+        "kalachakra_commentary": "Commentary on Kalachakra Tantra",
+        "short_sutras": "Short Sutras",
+        "main_collection": "Main Collection",
+        "dedications": "Dedications",
+        "vinaya": "Vinaya",
+        "monastic_rules": "Monastic Rules"
+    },
+    "about": {
+        "title": "About the Foundation",
+        "description": "The \"Foundation Of Canon Buddhism\" is a completely non-profit organization and all work is done by volunteers free of charge.",
+        "gift": "This is our gift to all humanity.",
+        "mission_title": "Our mission is to provide access to Buddhist canons",
+        "mission_items": {
+            "readable_format": "in a format convenient for reading;",
+            "free": "completely free;",
+            "translations": "with translations in different languages, including the original;",
+            "no_copyright": "without copyright restrictions;",
+            "open_license": "with an open license and free for distribution in any form;",
+            "no_affiliation": "not belonging to any community, tradition or school;",
+            "canons_only": "without any extra materials, only canons of all traditions."
+        },
+        "translations_title": "About Translations",
+        "translations_text": "Translations are performed by a large team of participants with constant rechecking and under the editorship of educated laypeople and monks who speak the languages. If you find an error in the translation or a typo, please click the \"report translation error\" button in the sutta. If you speak one of the languages at a high level and would like to participate in the Foundation's work as a volunteer, please join us.",
+        "web_version_title": "Why a web version and not a printed or electronic book?",
+        "web_version_items": {
+            "easy_edits": "this allows making edits to translations in a few clicks to improve them;",
+            "disputes": "convenient to display controversial translation points;",
+            "language_comments": "easier to manage language switching and comments on texts;",
+            "collaboration": "work together as a large team;",
+            "no_printing": "avoid problems of reprints and versions - keep access free for everyone, as the digital format does not require printing costs;",
+            "add_materials": "add new materials and translations as they are completed."
+        },
+        "contact": "Write a message to the foundation",
+        "telegram": "Telegram",
+        "participants": "List of Participants"
+    },
+    "participants": {
+        "roles": {
+            "lead_designer": "lead designer",
+            "founder": "founder",
+            "lead_designer_and_founder": "lead designer and founder",
+            "lead_developer": "lead developer",
+            "developer": "developer"
+        }
+    },
+    "pages": {
+        "welcome": {
+            "title": "Home"
+        },
+        "about": {
+            "title": "News"
+        },
+        "bookmarks": {
+            "title": "My Bookmarks"
+        },
+        "palicanon": {
+            "title": "Pali Canon"
+        },
+        "kangyur": {
+            "title": "Kangyur - Tibetan Canon"
+        }
+    }
+}

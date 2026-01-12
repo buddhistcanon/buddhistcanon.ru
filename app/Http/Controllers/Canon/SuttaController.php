@@ -100,14 +100,14 @@ class SuttaController extends Controller
         }
 
         $breadcrumbs = [
-            ['title' => 'Палийский канон', 'url' => '/palicanon'],
+            ['title' => __('breadcrumbs.palicanon'), 'url' => '/palicanon'],
             ['title' => displayNikayaTitleByCategory($sutta->category), 'url' => '/'.$sutta->category],
         ];
         if ($sutta->category === 'an') {
-            $breadcrumbs[] = ['title' => 'Раздел '.strtoupper($sutta->category.$sutta->order), 'url' => '/'.$sutta->category.'/'.$sutta->order];
+            $breadcrumbs[] = ['title' => __('breadcrumbs.section').' '.strtoupper($sutta->category.$sutta->order), 'url' => '/'.$sutta->category.'/'.$sutta->order];
         }
         if ($sutta->category === 'sn') {
-            $breadcrumbs[] = ['title' => 'Раздел '.strtoupper($sutta->category.$sutta->order), 'url' => '/'.$sutta->category.'/'.$sutta->order];
+            $breadcrumbs[] = ['title' => __('breadcrumbs.section').' '.strtoupper($sutta->category.$sutta->order), 'url' => '/'.$sutta->category.'/'.$sutta->order];
         }
 
         $suttaService = new SuttaService($sutta);

@@ -7,7 +7,10 @@ import Breadcrumbs from "@/Components/Breadcrumbs.vue";
 import {useWindowScroll} from '@vueuse/core';
 import {ref, reactive, computed, onMounted, nextTick} from "vue";
 import {ChevronDownIcon, ChevronUpIcon, PencilSquareIcon} from "@heroicons/vue/24/outline";
-import {onKeyStroke} from '@vueuse/core'
+import {onKeyStroke} from '@vueuse/core';
+import { useTranslation } from '@/composables/useTranslation.js';
+
+const { t } = useTranslation();
 
 const page = usePage();
 const user = computed(() => page.props.auth.user);
@@ -125,11 +128,9 @@ onKeyStroke(['1', '2', '3', '4', '5', '6', '7', '8', '9'], (e) => {
 
 let anchorMark = "";
 onMounted(() => {
-    console.log(window.location);
     anchorMark = window.location.href.split('#')[1];
     if (anchorMark) {
-        document.getElementById(anchorMark).scrollIntoView();
-        console.log(anchorMark);
+        document.getElementById(anchorMark)?.scrollIntoView();
     }
     nextTick(populateFootnoteClickHandlers);
 });
@@ -172,7 +173,7 @@ const showEditIcon = () => {
                 </div>
 
                 <div v-if="content.translator_name" class="mt-1 text-sm">
-                    Перевод: {{ content.translator_name }}
+                    {{ t('sutta.translation') }} {{ content.translator_name }}
                     <span v-if="content.link_url" class="ml-2">
                         <a class="link" :href="content.link_url" target="_blank">Источник</a>
                     </span>
@@ -194,15 +195,15 @@ const showEditIcon = () => {
                 <div class="flex justify-between w-full">
                     <a class="button w-16 sm:w-72 text-center my-4"
                        :href="prevSuttaSlug + '/' + content.lang + '/' + (content.translator?.slug || '')"
-                       v-if="prevSuttaSlug">← <span class="hidden sm:inline">Предыдущая сутта</span></a>
+                       v-if="prevSuttaSlug">← <span class="hidden sm:inline">{{ t('sutta.previous') }}</span></a>
 
                     <!-- solely to keep the"next sutta" button in place -->
                     <a class="button w-16 sm:w-72 text-center my-4 invisible" href="/" v-if="!prevSuttaSlug">← <span
-                        class="hidden sm:inline">Предыдущая сутта</span></a>
+                        class="hidden sm:inline">{{ t('sutta.previous') }}</span></a>
 
                     <a class="button w-16 sm:w-72 text-center my-4"
                        :href="nextSuttaSlug + '/' + content.lang + '/' + (content.translator?.slug || '')"
-                       v-if="nextSuttaSlug"><span class="hidden sm:inline">Следующая сутта</span> →</a>
+                       v-if="nextSuttaSlug"><span class="hidden sm:inline">{{ t('sutta.next') }}</span> →</a>
                 </div>
             </div>
             <div class="lg:ml-4 lg:w-96 flex flex-col items-center ">
@@ -227,7 +228,7 @@ const showEditIcon = () => {
                         </div>
 
                         <div class="mt-2 mb-4 w-72 text-xs text-gray-500">
-                            Переключать переводы также можно при помощи нажатия клавиш 1, 2, 3 и т.д.
+                            {{ t('sutta.switch_translations') }}
                         </div>
 
                         <!--                        <div class="button w-72 text-center my-4">Поделиться суттой</div>-->
