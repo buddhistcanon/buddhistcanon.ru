@@ -46,11 +46,14 @@ import Sidebar from "@/Common/Sidebar.vue";
 import { Head, Link } from '@inertiajs/vue3';
 import ApplicationLayout from '@/Layouts/ApplicationLayout.vue';
 import Sidebar from "@/Common/Sidebar.vue";
+import { useTranslation } from '@/composables/useTranslation.js';
+
+const { t } = useTranslation();
 </script>
 
 <template>
 
-    <Head title="Главная страница" />
+    <Head :title="t('pages.welcome.title')" />
 
     <ApplicationLayout>
 
@@ -60,13 +63,13 @@ import Sidebar from "@/Common/Sidebar.vue";
                 <div class="flex-[3]"></div>
                 <div class="flex-[4] flex flex-col justify-center">
                     <Link href="/palicanon" class="py-6 text-center bc-button-background bc-border bc-rounded">
-                        Читать Палийский канон
+                        {{ t('canon.read_palicanon') }}
                     </Link>
                     <Link href="/kangyur" class="py-6 text-center mt-12 bc-button-background bc-border bc-rounded">
-                        Читать Тибетский канон
+                        {{ t('canon.read_kangyur') }}
                     </Link>
                     <div class="py-6 text-center mt-12 text-gray-400 bc-button-background bc-border bc-rounded">
-                        Читать Китайский канон
+                        {{ t('canon.read_chinese') }}
                     </div>
                 </div>
                 <div class="flex-[3]"></div>

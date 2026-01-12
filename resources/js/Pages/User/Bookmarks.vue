@@ -5,6 +5,9 @@ import Sidebar from "@/Common/Sidebar.vue";
 import Breadcrumbs from "@/Components/Breadcrumbs.vue";
 import { BookmarkIcon as BookmarkAddedIcon } from '@heroicons/vue/24/solid';
 import { ref } from 'vue';
+import { useTranslation } from '@/composables/useTranslation.js';
+
+const { t } = useTranslation();
 
 const props = defineProps({
     bookmarks: { type: Array, required: true },
@@ -32,7 +35,7 @@ const removeBookmark = async (sutta) => {
 
 <template>
 
-    <Head title="Мои закладки" />
+    <Head :title="t('bookmarks.title')" />
 
     <ApplicationLayout>
 
@@ -41,13 +44,13 @@ const removeBookmark = async (sutta) => {
                 <div class="bg-white p-4 w-full">
 
                     <Breadcrumbs :items="[
-                        { title: 'Главная', url: '/' },
+                        { title: t('common.home'), url: '/' },
                     ]" class="mb-1" />
 
-                    <div class="font-serif text-2xl mb-6">Мои закладки</div>
+                    <div class="font-serif text-2xl mb-6">{{ t('bookmarks.title') }}</div>
 
                     <div v-if="bookmarks.length === 0" class="text-center py-12 text-gray-500">
-                        У вас пока нет закладок
+                        {{ t('bookmarks.empty') }}
                     </div>
 
                     <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -67,7 +70,7 @@ const removeBookmark = async (sutta) => {
                                 <button
                                     @click="removeBookmark(sutta)"
                                     class="ml-4 p-2 hover:bg-gray-100 rounded transition-colors"
-                                    title="Удалить из закладок"
+                                    :title="t('bookmarks.remove')"
                                 >
                                     <BookmarkAddedIcon class="h-5 w-5" />
                                 </button>

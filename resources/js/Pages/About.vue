@@ -3,11 +3,14 @@ import { Head, Link } from '@inertiajs/vue3';
 import ApplicationLayout from '@/Layouts/ApplicationLayout.vue';
 import Sidebar from "@/Common/Sidebar.vue";
 import Participants from "@/Components/Participants.vue";
+import { useTranslation } from '@/composables/useTranslation.js';
+
+const { t } = useTranslation();
 </script>
 
 <template>
 
-    <Head title="Новости" />
+    <Head :title="t('pages.about.title')" />
 
     <ApplicationLayout>
 
@@ -15,58 +18,50 @@ import Participants from "@/Components/Participants.vue";
             <div class="flex-1 flex flex-col">
                 <div class="bg-white py-4 px-12 w-full">
 
-                    <h1 class="py-4">О фонде</h1>
+                    <h1 class="py-4">{{ t('about.title') }}</h1>
                     <p class="mb-3">
-                        “Фонд канона буддизма” является полностью некоммерческой организацией и вся работа выполняется
-                        волонтерами бесплатно. <br />
-                        Это наш подарок всему человечеству.
+                        {{ t('about.description') }} <br />
+                        {{ t('about.gift') }}
                     </p>
 
-                    <h2 class="py-4">Наша задача предоставить доступ к канонам буддизмa</h2>
+                    <h2 class="py-4">{{ t('about.mission_title') }}</h2>
                     <ul class="bc-list-dash px-4 mb-3">
-                        <li>в формате удобном для чтения;</li>
-                        <li>полностью бесплатно;</li>
-                        <li>с переводами на разных языках, включая оригинал;</li>
-                        <li>без ограничений авторскими правами;</li>
-                        <li>с открытой лицензией и свободный для распространения в любом виде;</li>
-                        <li>не принадлежащий ни одному сообществу, традиции или школе;</li>
-                        <li>без каких-либо лишних материалов, только каноны всех традиций.</li>
+                        <li>{{ t('about.mission_items.readable_format') }}</li>
+                        <li>{{ t('about.mission_items.free') }}</li>
+                        <li>{{ t('about.mission_items.translations') }}</li>
+                        <li>{{ t('about.mission_items.no_copyright') }}</li>
+                        <li>{{ t('about.mission_items.open_license') }}</li>
+                        <li>{{ t('about.mission_items.no_affiliation') }}</li>
+                        <li>{{ t('about.mission_items.canons_only') }}</li>
                     </ul>
 
-                    <h2 class="py-4">О переводах</h2>
+                    <h2 class="py-4">{{ t('about.translations_title') }}</h2>
                     <p class="mb-3">
-                        Переводы выполняются большим коллективом участников с постоянной перепроверкой и под редактурой
-                        образованных мирян и монахов владеющих языками. Если вы нашли ошибку в переводе или опечатку,
-                        пожалуйста нажмите кнопку
-                        “сообщить об ошибке перевода” в сутре / сутте. Если вы владеете на высоком уровне одним из
-                        языков и хотели бы
-                        принять участие в работе Фонда как волонтёр, пожалуйста присоединяйтесь.
+                        {{ t('about.translations_text') }}
                     </p>
 
-                    <h2 class="py-4">Почему web версия, а не печатная или электронная книга?</h2>
+                    <h2 class="py-4">{{ t('about.web_version_title') }}</h2>
                     <ul class="bc-list-dash px-4 mb-3">
-                        <li>это позволяет в несколько кликов вносить правки в переводы с целью их улучшения;</li>
-                        <li>удобно отображать спорные моменты перевода;</li>
-                        <li>удобнее управлять переключением языка и комментариями к текстам;</li>
-                        <li>совместно работать большому коллективу;</li>
-                        <li>избежать проблем переизданий и версий- сохранять доступ бесплатным для всех, так как
-                            цифровой формат не требует расходов на печать;
-                        </li>
-                        <li>добавлять новые материалы и переводы по ходу их выполнения.</li>
+                        <li>{{ t('about.web_version_items.easy_edits') }}</li>
+                        <li>{{ t('about.web_version_items.disputes') }}</li>
+                        <li>{{ t('about.web_version_items.language_comments') }}</li>
+                        <li>{{ t('about.web_version_items.collaboration') }}</li>
+                        <li>{{ t('about.web_version_items.no_printing') }}</li>
+                        <li>{{ t('about.web_version_items.add_materials') }}</li>
                     </ul>
 
                     <p class="py-4">
-                        Написать сообщение в фонд &nbsp;
+                        {{ t('about.contact') }} &nbsp;
                         <a href="https://t.me/BuddhistCanonFoundation" target="_blank"
                             class="bc-button py-1.5 px-3 inline-block">
-                            <img src="/icon-telegram.svg" alt="telegram"
-                                class="w-6 h-6 min-w-6 inline-block mr-3" /><span>Телеграм</span>
+                            <img src="/icon-telegram.svg" :alt="t('about.telegram')"
+                                class="w-6 h-6 min-w-6 inline-block mr-3" /><span>{{ t('about.telegram') }}</span>
                         </a>
                     </p>
 
                 </div>
                 <div class="w-full p-4 pb-0">
-                    <h3 class="text-center">Список участников</h3>
+                    <h3 class="text-center">{{ t('about.participants') }}</h3>
                 </div>
                 <Participants />
             </div>

@@ -14,5 +14,6 @@ class VerifyCsrfToken extends Middleware
     protected $except = [
         '/admin/edit_sutta/*',
         '/admin/edit_term/*',
+        '/api/language',
     ];
 }

@@ -3,12 +3,15 @@ import ApplicationLayout from "@/Layouts/ApplicationLayout.vue";
 import {Head, Link} from "@inertiajs/vue3";
 import Sidebar from "@/Common/Sidebar.vue";
 import Breadcrumbs from "@/Components/Breadcrumbs.vue";
+import { useTranslation } from '@/composables/useTranslation.js';
 
 const props = defineProps({
     suttas: {type: Array, required: true},
     title: {type: String, required: true},
     subtitle: {type: String, required: true},
 })
+
+const { t } = useTranslation();
 
 const suttaUrl = (sutta) => {
     if (sutta.suborder) {
@@ -34,7 +37,7 @@ const filteredByOrder = (order) => {
                 <div class="bg-white p-4 w-full">
 
                     <Breadcrumbs :items="[
-                        {title: 'Палийский канон', url: '/palicanon'},
+                        {title: t('breadcrumbs.palicanon'), url: '/palicanon'},
                         {title: 'Ангуттара-никая', url: '/an'},
                     ]" class="mb-3"/>
 

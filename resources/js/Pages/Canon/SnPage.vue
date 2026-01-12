@@ -3,7 +3,9 @@ import ApplicationLayout from "@/Layouts/ApplicationLayout.vue";
 import {Head, Link} from "@inertiajs/vue3";
 import Sidebar from "@/Common/Sidebar.vue";
 import Breadcrumbs from "@/Components/Breadcrumbs.vue";
+import { useTranslation } from '@/composables/useTranslation.js';
 
+const { t } = useTranslation();
 </script>
 
 <template>
@@ -16,7 +18,7 @@ import Breadcrumbs from "@/Components/Breadcrumbs.vue";
                 <div class="bg-white p-4 w-full">
 
                     <Breadcrumbs :items="[
-                        {title: 'Палийский канон', url: '/palicanon'},
+                        {title: t('breadcrumbs.palicanon'), url: '/palicanon'},
                     ]" class="mb-1"/>
 
                     <div class="font-serif text-2xl">Саньютта-никая</div>

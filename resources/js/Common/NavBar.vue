@@ -1,9 +1,11 @@
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, watch, onMounted, computed } from 'vue';
 import { Link, router, usePage } from "@inertiajs/vue3";
 import { Dialog, Listbox, ListboxButton, ListboxOptions, ListboxOption } from '@headlessui/vue';
 import { MagnifyingGlassIcon, CheckIcon, XMarkIcon, BookmarkIcon } from '@heroicons/vue/24/outline';
 import { PlayIcon, BookmarkIcon as BookmarkAddedIcon } from '@heroicons/vue/24/solid';
+import { useLanguage, availableLanguages } from '@/composables/useLanguage.js';
+import { useTranslation } from '@/composables/useTranslation.js';
 
 const props = defineProps({
     search: String,
@@ -15,11 +17,62 @@ const menuBarOpen = ref(false);
 const menuBarOpenShow = () => menuBarOpen.value = true;
 const menuBarOpenClose = () => menuBarOpen.value = false;
 
-const langs = [
-    { id: 1, name: 'Русский', available: true },
-    { id: 2, name: 'Английский', available: false },
-];
-const selectedLang = ref(langs[0]);
+// Используем composable для работы с языками
+const { currentLanguage, setLanguage, getCurrentLanguage, syncWithServer } = useLanguage();
+const { t } = useTranslation();
+const selectedLang = ref(getCurrentLanguage());
+
+// Получить переведенное название языка
+const getLanguageName = (langCode) => {
+    return t(`languages.${langCode}`) || langCode;
+};
+
+// Computed для отображения названия выбранного языка
+const selectedLangName = computed(() => {
+    if (!selectedLang.value) return '';
+    return getLanguageName(selectedLang.value.code);
+});
+
+// Отслеживаем изменения языка и обновляем selectedLang
+watch(() => currentLanguage.value, (newLang) => {
+    const langCode = typeof newLang === 'string' ? newLang : (newLang?.code || 'ru');
+    selectedLang.value = getCurrentLanguage();
+}, { immediate: true });
+
+// Обработчик изменения языка
+const handleLanguageChange = async (lang) => {
+    selectedLang.value = lang;
+    await setLanguage(lang.code);
+};
+
+// Инициализация языка при монтировании
+onMounted(() => {
+    // Получаем язык из localStorage (если есть)
+    const storedLang = getCurrentLanguage();
+
+    // Если в localStorage есть сохраненный язык, используем его
+    // Иначе синхронизируем с сервером
+    if (storedLang && storedLang.code) {
+        selectedLang.value = storedLang;
+        // Если серверный язык отличается от сохраненного, обновляем сервер
+        if (page.props.locale && page.props.locale !== storedLang.code) {
+            // Не вызываем syncWithServer, чтобы не перезаписать localStorage
+            // Вместо этого отправляем на сервер для синхронизации
+            window.axios.post('/api/language', { language: storedLang.code }).catch(() => {});
+        }
+    } else if (page.props.locale) {
+        // Если в localStorage нет языка, синхронизируем с сервером
+        syncWithServer(page.props.locale, true);
+        selectedLang.value = getCurrentLanguage();
+    } else {
+        selectedLang.value = storedLang;
+    }
+});
+
+// Отслеживаем изменения языка
+watch(currentLanguage, (newLang) => {
+    selectedLang.value = getCurrentLanguage();
+});
 
 // const searchInputOpen = ref(false);
 // const searchInputOpenShow = () => searchInputOpen.value = true;
@@ -124,7 +177,7 @@ watch(() => page.props.isBookmarked, (newValue) => {
             </div>
             <input @focus="onSearchFocus" @blur="onSearchBlur" type="text"
                 class="h-9 bc-text-gray w-full bc-button-background focus:outline-hidden border-none placeholder:text-center border-transparent focus:border-transparent focus:ring-0 placeholder:text-sm text-sm"
-                v-model="search" @keyup.enter="handleSearch" placeholder="Поиск">
+                v-model="search" @keyup.enter="handleSearch" :placeholder="t('nav.search')">
         </div>
 
         <div v-if="!showSearchX" class="bc-button h-11 w-14 flex justify-center items-center"
@@ -202,9 +255,9 @@ watch(() => page.props.isBookmarked, (newValue) => {
                         <div class="flex flex-col items-center w-36">
                             <img src="/logo-white.svg" class="size-3/4 fill-current text-gray-500">
                             <div class="mt-3 text-gray-800 text-center text-2xl font-serif leading-7">
-                                <div>ФОНД</div>
-                                <div>КАНОНА</div>
-                                <div>БУДДИЗМА</div>
+                                <div>{{ t('logo.foundation') }}</div>
+                                <div>{{ t('logo.canon') }}</div>
+                                <div>{{ t('logo.buddhism') }}</div>
                             </div>
                         </div>
                     </div>
@@ -214,34 +267,34 @@ watch(() => page.props.isBookmarked, (newValue) => {
 
                     <Link v-if="!$page.props.auth.user"
                         class="bc-border bc-button-background bc-rounded text-center mt-7 py-4 text-base"
-                        :href="'/login'">Вход / Регистрация</Link>
+                        :href="'/login'">{{ t('nav.login') }}</Link>
                     <Link v-else class="bc-border bc-button-background bc-rounded text-center mt-7 py-4 text-base"
-                        :href="'/profile'">Профиль</Link>
+                        :href="'/profile'">{{ t('nav.profile') }}</Link>
 
                     <Link v-if="page.props.auth?.user" class="bc-border bc-button-background bc-rounded text-center mt-7 py-4 text-base" :href="'/bookmarks'">
-                    Мои закладки</Link>
+                    {{ t('nav.bookmarks') }}</Link>
                     <Link class="bc-border bc-button-background bc-rounded text-center mt-7 py-4 text-base" :href="'/'">
-                    Главная страница</Link>
+                    {{ t('nav.home') }}</Link>
                     <Link class="bc-border bc-button-background bc-rounded text-center mt-7 py-4 text-base"
-                        :href="'/about'">О Фонде</Link>
+                        :href="'/about'">{{ t('nav.about') }}</Link>
 
                     <div class="bc-border bc-button-background bc-rounded text-center mt-7 py-4 text-base">
-                        <Listbox v-model="selectedLang">
+                        <Listbox v-model="selectedLang" @update:model-value="handleLanguageChange">
                             <ListboxButton class="w-full h-full flex items-center">
                                 <span class="w-4 ml-8"></span>
-                                <span class="flex-1">{{ selectedLang.name }}</span>
+                                <span class="flex-1">{{ selectedLangName }}</span>
                                 <span class="w-4 mr-8">
                                     <PlayIcon class="rotate-90 h-4 text-gray-400" />
                                 </span>
                             </ListboxButton>
                             <ListboxOptions
                                 class="absolute mt-1 max-h-60 w-5/6 overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
-                                <ListboxOption v-slot="{ active, selected }" v-for="lang in langs" :key="lang.id"
-                                    :value="lang" :disabled="!lang.available" as="template">
+                                <ListboxOption v-slot="{ active, selected }" v-for="lang in availableLanguages" :key="lang.code"
+                                    :value="lang" as="template">
                                     <li
                                         :class="[active ? 'bg-indigo-50 bc-text-indigo' : 'text-gray-700', 'relative cursor-default select-none py-2 pl-10 pr-4']">
                                         <span :class="[selected ? 'font-medium' : 'font-normal', 'block truncate',]">
-                                            {{ lang.name }}
+                                            {{ getLanguageName(lang.code) }}
                                         </span>
                                         <span v-if="selected"
                                             class="absolute inset-y-0 left-0 flex items-center pl-3 bc-text-indigo">
@@ -256,7 +309,7 @@ watch(() => page.props.isBookmarked, (newValue) => {
                     <Link
                         class="bc-border bc-button-background bc-rounded text-center mt-7 py-4 text-base text-gray-400"
                         :href="'#'">
-                    Включить тёмное оформление</Link>
+                    {{ t('nav.dark_theme') }}</Link>
 
                 </div>
                 <div class="px-2">

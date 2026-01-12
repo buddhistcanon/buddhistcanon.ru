@@ -1,4 +1,7 @@
 <script setup>
+import { useTranslation } from '@/composables/useTranslation.js';
+
+const { t } = useTranslation();
 
 const rowClass = 'flex flex-row mt-4';
 const leftColClass = 'bg-white mr-4 flex-1 flex flex-col md:flex-row';
@@ -20,7 +23,7 @@ const iconClass = 'w-6 h-6 min-w-6';
                     <div :class="nameClass">
                         Игорь Васильев (Нара Лока)
                     </div>
-                    <div>ведущий дизайнер&nbsp;и инициатор создания фонда</div>
+                    <div>{{ t('participants.roles.lead_designer_and_founder') }}</div>
                 </div>
                 <div :class="socialCardClass">
                     <a href="https://www.youtube.com/naraloka" target="_blank" :class="linkClass">
@@ -42,7 +45,7 @@ const iconClass = 'w-6 h-6 min-w-6';
                     <div :class="nameClass">
                         Михаил Парфёнов
                     </div>
-                    <div>ведущий программист</div>
+                    <div>{{ t('participants.roles.lead_developer') }}</div>
                 </div>
                 <div :class="socialCardClass">
                 </div>
@@ -76,7 +79,7 @@ const iconClass = 'w-6 h-6 min-w-6';
                     <div :class="nameClass">
                         Борис Гвоздев
                     </div>
-                    <div>программист</div>
+                    <div>{{ t('participants.roles.developer') }}</div>
                 </div>
                 <div :class="socialCardClass">
                 </div>
